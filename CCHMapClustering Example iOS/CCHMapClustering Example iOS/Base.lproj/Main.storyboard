@@ -16,12 +16,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="SuL-zn-qht">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="SuL-zn-qht">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="SuL-zn-qht" secondAttribute="trailing" id="7Ii-Aj-J1l"/>
+                            <constraint firstItem="SuL-zn-qht" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="EHT-ca-O8e"/>
+                            <constraint firstItem="SuL-zn-qht" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="LHr-xW-0g2"/>
+                            <constraint firstAttribute="bottom" secondItem="SuL-zn-qht" secondAttribute="bottom" id="QCw-fn-R0q"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="hXc-Bz-tIh"/>
                     <connections>

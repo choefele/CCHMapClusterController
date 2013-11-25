@@ -132,10 +132,10 @@
 				48D06B4D1843F535005AC9C7 /* MapViewController.m */,
 				48D06B741843F7FB005AC9C7 /* Annotation.h */,
 				48D06B751843F7FB005AC9C7 /* Annotation.m */,
+				48D06B721843F7D2005AC9C7 /* Data.json */,
 				48D06B6E1843F759005AC9C7 /* DataReader.h */,
 				48D06B6F1843F759005AC9C7 /* DataReader.m */,
 				48D06B701843F759005AC9C7 /* DataReaderDelegate.h */,
-				48D06B721843F7D2005AC9C7 /* Data.json */,
 				48D06B4F1843F535005AC9C7 /* Images.xcassets */,
 				48D06B3E1843F535005AC9C7 /* Supporting Files */,
 			);

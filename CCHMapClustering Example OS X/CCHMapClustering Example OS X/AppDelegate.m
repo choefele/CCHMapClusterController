@@ -1,26 +1,24 @@
 //
-//  ViewController.m
-//  CCHMapClustering Example iOS
+//  AppDelegate.m
+//  CCHMapClustering Example OS X
 //
 //  Created by Claus on 25.11.13.
 //  Copyright (c) 2013 Claus Höfele. All rights reserved.
 //
 
-#import "MapViewController.h"
+#import "AppDelegate.h"
 
 #import "DataReader.h"
 #import "DataReaderDelegate.h"
 
-@interface MapViewController()<DataReaderDelegate>
+@interface AppDelegate()<DataReaderDelegate>
 
 @end
 
-@implementation MapViewController
+@implementation AppDelegate
 
-- (void)viewDidLoad
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [super viewDidLoad];
-    
     // Show Berlin
     CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
