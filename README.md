@@ -1,7 +1,7 @@
 CCHMapClustering
 ================
 
-High-performance map clustering for MapKit. Integrate with 3 lines of code.
+If you have your project setup with an MKMapView, integrating clustering will take 3 lines of code:
 
 ````
   #import "MapClusterController.h"
