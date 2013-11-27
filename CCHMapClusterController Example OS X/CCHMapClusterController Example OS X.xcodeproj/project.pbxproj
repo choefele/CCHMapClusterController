@@ -12,7 +12,6 @@
 		48D06BDE18466FF4005AC9C7 /* CCHMapClusterControllerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D06BD918466FF4005AC9C7 /* CCHMapClusterControllerUtils.m */; };
 		48D06BDF18466FF4005AC9C7 /* CCHMapViewDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D06BDB18466FF4005AC9C7 /* CCHMapViewDelegateProxy.m */; };
 		48D06BE11846732B005AC9C7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48D06BE01846732B005AC9C7 /* CoreLocation.framework */; };
-		48D06BE8184673E0005AC9C7 /* Annotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D06BE3184673E0005AC9C7 /* Annotation.m */; };
 		48D06BE9184673E0005AC9C7 /* Data.json in Resources */ = {isa = PBXBuildFile; fileRef = 48D06BE4184673E0005AC9C7 /* Data.json */; };
 		48D06BEA184673E0005AC9C7 /* DataReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D06BE6184673E0005AC9C7 /* DataReader.m */; };
 		62D667431845E0BA0046D5D5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667421845E0BA0046D5D5 /* Cocoa.framework */; };
@@ -50,8 +49,6 @@
 		48D06BDA18466FF4005AC9C7 /* CCHMapViewDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapViewDelegateProxy.h; sourceTree = "<group>"; };
 		48D06BDB18466FF4005AC9C7 /* CCHMapViewDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapViewDelegateProxy.m; sourceTree = "<group>"; };
 		48D06BE01846732B005AC9C7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		48D06BE2184673E0005AC9C7 /* Annotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Annotation.h; path = "../../CCHMapClusterController Example iOS/CCHMapClusterController Example iOS/Annotation.h"; sourceTree = "<group>"; };
-		48D06BE3184673E0005AC9C7 /* Annotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Annotation.m; path = "../../CCHMapClusterController Example iOS/CCHMapClusterController Example iOS/Annotation.m"; sourceTree = "<group>"; };
 		48D06BE4184673E0005AC9C7 /* Data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Data.json; path = "../../CCHMapClusterController Example iOS/CCHMapClusterController Example iOS/Data.json"; sourceTree = "<group>"; };
 		48D06BE5184673E0005AC9C7 /* DataReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataReader.h; path = "../../CCHMapClusterController Example iOS/CCHMapClusterController Example iOS/DataReader.h"; sourceTree = "<group>"; };
 		48D06BE6184673E0005AC9C7 /* DataReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataReader.m; path = "../../CCHMapClusterController Example iOS/CCHMapClusterController Example iOS/DataReader.m"; sourceTree = "<group>"; };
@@ -166,8 +163,6 @@
 				62D667541845E0BA0046D5D5 /* AppDelegate.h */,
 				62D667551845E0BA0046D5D5 /* AppDelegate.m */,
 				62D667571845E0BA0046D5D5 /* MainMenu.xib */,
-				48D06BE2184673E0005AC9C7 /* Annotation.h */,
-				48D06BE3184673E0005AC9C7 /* Annotation.m */,
 				48D06BE4184673E0005AC9C7 /* Data.json */,
 				48D06BE5184673E0005AC9C7 /* DataReader.h */,
 				48D06BE6184673E0005AC9C7 /* DataReader.m */,
@@ -310,7 +305,6 @@
 				62D667561845E0BA0046D5D5 /* AppDelegate.m in Sources */,
 				48D06BDE18466FF4005AC9C7 /* CCHMapClusterControllerUtils.m in Sources */,
 				48D06BDF18466FF4005AC9C7 /* CCHMapViewDelegateProxy.m in Sources */,
-				48D06BE8184673E0005AC9C7 /* Annotation.m in Sources */,
 				48D06BEA184673E0005AC9C7 /* DataReader.m in Sources */,
 				62D6674F1845E0BA0046D5D5 /* main.m in Sources */,
 				48D06BDD18466FF4005AC9C7 /* CCHMapClusterController.m in Sources */,

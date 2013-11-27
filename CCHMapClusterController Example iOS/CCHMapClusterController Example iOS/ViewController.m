@@ -10,9 +10,12 @@
 
 #import "DataReader.h"
 #import "DataReaderDelegate.h"
-#import "CCHMapClusterController.h"
 
-@interface ViewController()<DataReaderDelegate>
+#import "CCHMapClusterAnnotation.h"
+#import "CCHMapClusterController.h"
+#import "CCHMapClusterControllerDelegate.h"
+
+@interface ViewController()<DataReaderDelegate, CCHMapClusterControllerDelegate>
 
 @property (strong, nonatomic) CCHMapClusterController *mapClusterController;
 
@@ -31,6 +34,7 @@
     
     // Set up map clustering
     self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+    self.mapClusterController.delegate = self;
     
     // Read annotations
     DataReader *dataReader = [[DataReader alloc] init];
@@ -42,6 +46,21 @@
 {
 //    [self.mapView addAnnotations:annotations];
     [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];
+}
+
+- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController titleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+{
+    NSUInteger numAnnotations = mapClusterAnnotation.annotations.count;
+    NSString *unit = numAnnotations > 1 ? @"annotations" : @"annotation";
+    return [NSString stringWithFormat:@"%tu %@", numAnnotations, unit];
+}
+
+- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+{
+    NSUInteger numAnnotations = MIN(mapClusterAnnotation.annotations.count, 5);
+    NSArray *annotations = [mapClusterAnnotation.annotations subarrayWithRange:NSMakeRange(0, numAnnotations)];
+    NSArray *titles = [annotations valueForKey:@"title"];
+    return [titles componentsJoinedByString:@", "];
 }
 
 @end

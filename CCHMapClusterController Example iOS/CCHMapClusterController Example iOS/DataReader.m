@@ -9,7 +9,8 @@
 #import "DataReader.h"
 
 #import "DataReaderDelegate.h"
-#import "Annotation.h"
+
+#import <MapKit/MapKit.h>
 
 #define BATCH_COUNT 500
 
@@ -27,7 +28,7 @@
         NSMutableArray *annotations = [NSMutableArray arrayWithCapacity:BATCH_COUNT];
         for (NSDictionary *annotationAsJSON in dataAsJson) {
             // Convert JSON into annotation object
-            Annotation *annotation = [[Annotation alloc] init];
+            MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
             NSString *latitudeAsString = [annotationAsJSON valueForKeyPath:@"location.coordinates.latitude"];
             NSString *longitudeAsString = [annotationAsJSON valueForKeyPath:@"location.coordinates.longitude"];
             annotation.coordinate = CLLocationCoordinate2DMake(latitudeAsString.doubleValue, longitudeAsString.doubleValue);
