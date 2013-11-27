@@ -16,7 +16,7 @@ If you have your project set up with an `MKMapView`, integrating clustering will
   {
     [super viewDidLoad]
     
-    ...
+    NSArray annotations = ...
     <b>self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];</b>
   }
