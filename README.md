@@ -16,10 +16,12 @@ If you have your project set up with an `MKMapView`, integrating clustering will
   {
     [super viewDidLoad]
     
-    <b>self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];*
+    <b>self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];</b>
   }
 </pre>
+
+![Map Clustering](MapClustering.png "Map Clustering")
 
 ## License (MIT)
 
