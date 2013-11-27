@@ -10,11 +10,11 @@
 
 #import "DataReader.h"
 #import "DataReaderDelegate.h"
-//#import "CCHMapClusterController.h"
+#import "CCHMapClusterController.h"
 
 @interface ViewController()<DataReaderDelegate>
 
-//@property (strong, nonatomic) CCHMapClusterController *mapClusterController;
+@property (strong, nonatomic) CCHMapClusterController *mapClusterController;
 
 @end
 
@@ -29,8 +29,8 @@
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
     self.mapView.region = region;
     
-//    // Set up map clustering
-//    self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+    // Set up map clustering
+    self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     
     // Read annotations
     DataReader *dataReader = [[DataReader alloc] init];
