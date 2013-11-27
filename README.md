@@ -1,19 +1,26 @@
 CCHMapClustering
 ================
 
-If you have your project setup with an MKMapView, integrating clustering will take 3 lines of code:
+If you have your project set up with an `MKMapView`, integrating clustering will take 4 lines of code:
 
-````
-  #import "MapClusterController.h"
+<pre>
+  <b>#import "CCHMapClusterController.h"</b>
   
+  @interface ViewController()
+
+  <b>@property (strong, nonatomic) CCHMapClusterController *mapClusterController;</b>
+
+  @end
+
   - (void)viewDidLoad
   {
-    ...
-    self.mapClusterController = [[MapClusterController alloc] initWithMapView:self.mapView];
-    [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];
+    [super viewDidLoad]
+    
+    <b>self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];*
+    [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];</b>
   }
+</pre>
 
-````
 ## License (MIT)
 
 Copyright (C) 2013 Option-U Software
