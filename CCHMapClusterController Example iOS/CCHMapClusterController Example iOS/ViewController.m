@@ -40,8 +40,8 @@
 
 - (void)dataReader:(DataReader *)dataReader addAnnotations:(NSArray *)annotations
 {
-    [self.mapView addAnnotations:annotations];
-//    [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];
+//    [self.mapView addAnnotations:annotations];
+    [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];
 }
 
 @end

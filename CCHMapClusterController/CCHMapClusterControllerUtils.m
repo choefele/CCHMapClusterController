@@ -76,7 +76,11 @@ CCHMapClusterAnnotation *CCHMapClusterControllerFindAnnotation(MKMapRect cellMap
     return annotation;
 }
 
+#if TARGET_OS_IPHONE
 double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, UIView *view, double length)
+#else
+double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, NSView *view, double length)
+#endif
 {
     // Convert points to coordinates
     CLLocationCoordinate2D leftCoordinate = [mapView convertPoint:CGPointZero toCoordinateFromView:view];

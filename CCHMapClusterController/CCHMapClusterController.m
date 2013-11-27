@@ -144,12 +144,16 @@
 {
     // Animate annotations that get removed
     for (id<MKAnnotation> annotation in annotations) {
+#if TARGET_OS_IPHONE
         MKAnnotationView *annotationView = [self.mapView viewForAnnotation:annotation];
         [UIView animateWithDuration:0.2 animations:^{
             annotationView.alpha = 0.0;
         } completion:^(BOOL finished) {
             [self.mapView removeAnnotation:annotation];
         }];
+#else
+        [self.mapView removeAnnotation:annotation];
+#endif
     }
 }
 
@@ -163,6 +167,7 @@
     }
 
     // Animate annotations that get added
+#if TARGET_OS_IPHONE
     for (MKAnnotationView *annotationView in annotationViews)
     {
         annotationView.alpha = 0.0;
@@ -170,6 +175,7 @@
             annotationView.alpha = 1.0;
         }];
     }
+#endif
 }
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
