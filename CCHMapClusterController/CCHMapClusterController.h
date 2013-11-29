@@ -1,8 +1,8 @@
 //
 //  MapClusterController.h
-//  Stolpersteine
+//  CCHMapClusterController
 //
-//  Copyright (C) 2013 Option-U Software
+//  Copyright (C) 2013 Claus Höfele
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
