@@ -27,6 +27,8 @@
 
 #import "CCHMapClusterAnnotation.h"
 
+#import <float.h>
+
 #define fequal(a, b) (fabs((a) - (b)) < FLT_EPSILON)
 
 id<MKAnnotation> CCHMapClusterControllerFindClosestAnnotation(NSSet *annotations, MKMapPoint mapPoint)

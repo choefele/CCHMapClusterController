@@ -27,6 +27,8 @@
 
 #import "CCHMapClusterControllerDelegate.h"
 
+#import <float.h>
+
 #define fequal(a, b) (fabs((a) - (b)) < FLT_EPSILON)
 
 @implementation CCHMapClusterAnnotation
