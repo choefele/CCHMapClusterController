@@ -32,6 +32,7 @@
 
 @property (nonatomic, assign) double marginFactor;
 @property (nonatomic, assign) double cellSize;
+@property (nonatomic, assign, getter = isDebuggingEnabled) BOOL debuggingEnabled;
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
 @property (nonatomic, assign, readonly) NSUInteger numberOfAnnotations;
 

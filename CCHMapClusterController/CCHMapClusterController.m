@@ -33,14 +33,18 @@
 #import "CCHMapViewDelegateProxy.h"
 
 #define fequal(a, b) (fabs((a) - (b)) < FLT_EPSILON)
+@interface CCHMapClusterControllerPolygon : MKPolygon
+@end
+@implementation CCHMapClusterControllerPolygon
+@end
 
 @interface CCHMapClusterController()<MKMapViewDelegate>
 
 @property (strong, nonatomic) MKMapView *mapView;
 @property (strong, nonatomic) MKMapView *allAnnotationsMapView;
 @property (strong, nonatomic) CCHMapViewDelegateProxy *mapViewDelegateProxy;
-@property (nonatomic, strong) id<MKAnnotation> stolpersteinToSelect;
-@property (nonatomic, strong) CCHMapClusterAnnotation *annotationToSelect;
+@property (nonatomic, strong) id<MKAnnotation> annotationToSelect;
+@property (nonatomic, strong) CCHMapClusterAnnotation *mapClusterAnnotationToSelect;
 @property (nonatomic, assign) MKCoordinateSpan regionSpanBeforeChange;
 
 @end
@@ -55,7 +59,6 @@
         self.cellSize = 60;
         self.mapView = mapView;
         self.allAnnotationsMapView = [[MKMapView alloc] initWithFrame:CGRectZero];
-        
         self.mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
     }
     return self;
@@ -111,6 +114,28 @@
         cellMapRect.origin.y += MKMapRectGetWidth(cellMapRect);
     }
     
+    if (self.isDebuggingEnabled) {
+        [self.mapView removeOverlays:self.mapView.overlays];
+        MKMapPoint points[4];
+
+        cellMapRect = MKMapRectMake(0, MKMapRectGetMinY(gridMapRect), cellSize, cellSize);
+        while (MKMapRectGetMinY(cellMapRect) < MKMapRectGetMaxY(gridMapRect)) {
+            cellMapRect.origin.x = MKMapRectGetMinX(gridMapRect);
+            
+            while (MKMapRectGetMinX(cellMapRect) < MKMapRectGetMaxX(gridMapRect)) {
+                points[0] = MKMapPointMake(MKMapRectGetMinX(cellMapRect), MKMapRectGetMinY(cellMapRect));
+                points[1] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect), MKMapRectGetMinY(cellMapRect));
+                points[2] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect), MKMapRectGetMaxY(cellMapRect));
+                points[3] = MKMapPointMake(MKMapRectGetMinX(cellMapRect), MKMapRectGetMaxY(cellMapRect));
+                MKPolygon *polygon = [CCHMapClusterControllerPolygon polygonWithPoints:points count:4];
+                [self.mapView addOverlay:polygon];
+
+                cellMapRect.origin.x += MKMapRectGetWidth(cellMapRect);
+            }
+            cellMapRect.origin.y += MKMapRectGetWidth(cellMapRect);
+        }
+    }
+    
     if (completionHandler) {
         completionHandler();
     }
@@ -130,7 +155,7 @@
     [self deselectAllAnnotations];
     
     // Zoom to annotation
-    self.stolpersteinToSelect = annotation;
+    self.annotationToSelect = annotation;
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation.coordinate, latitudinalMeters, longitudinalMeters);
     [self.mapView setRegion:region animated:YES];
     if (CCHMapClusterControllerCoordinateEqualToCoordinate(region.center, self.mapView.centerCoordinate)) {
@@ -204,30 +229,49 @@
     
     // Update annotations
     [self updateAnnotationsWithCompletionHandler:^{
-        if (self.stolpersteinToSelect) {
-            // Map has zoomed to selected stolperstein; search for cluster annotation that contains this stolperstein
-            id<MKAnnotation> annotation = CCHMapClusterControllerClusterAnnotationForAnnotation(self.mapView, self.stolpersteinToSelect, mapView.visibleMapRect);
-            self.stolpersteinToSelect = nil;
+        if (self.annotationToSelect) {
+            // Map has zoomed to selected annotation; search for cluster annotation that contains this annotation
+            CCHMapClusterAnnotation *mapClusterAnnotation = CCHMapClusterControllerClusterAnnotationForAnnotation(self.mapView, self.annotationToSelect, mapView.visibleMapRect);
+            self.annotationToSelect = nil;
             
-            if (CCHMapClusterControllerCoordinateEqualToCoordinate(self.mapView.centerCoordinate, annotation.coordinate)) {
+            if (CCHMapClusterControllerCoordinateEqualToCoordinate(self.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
                 // Select immediately since region won't change
-                [self.mapView selectAnnotation:annotation animated:YES];
+                [self.mapView selectAnnotation:mapClusterAnnotation animated:YES];
             } else {
                 // Actual selection happens in next call to mapView:regionDidChangeAnimated:
-                self.annotationToSelect = annotation;
+                self.mapClusterAnnotationToSelect = mapClusterAnnotation;
                 
                 // Dispatch async to avoid calling regionDidChangeAnimated immediately
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    // No zooming, only panning. Otherwise, stolperstein might change to a different cluster annotation
-                    [self.mapView setCenterCoordinate:annotation.coordinate animated:NO];
+                    // No zooming, only panning. Otherwise, annotation might change to a different cluster annotation
+                    [self.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
                 });
             }
-        } else if (self.annotationToSelect) {
+        } else if (self.mapClusterAnnotationToSelect) {
             // Map has zoomed to annotation
-            [self.mapView selectAnnotation:self.annotationToSelect animated:YES];
-            self.annotationToSelect = nil;
+            [self.mapView selectAnnotation:self.mapClusterAnnotationToSelect animated:YES];
+            self.mapClusterAnnotationToSelect = nil;
         }
     }];
+}
+
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
+{
+    // Forward to standard delegate
+    if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:viewForOverlay:)]) {
+        [self.mapViewDelegateProxy.target mapView:mapView viewForOverlay:overlay];
+    }
+
+    // Display debug polygons
+    MKOverlayView *view;
+    if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
+        MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon *)overlay];
+        polygonView.strokeColor = [UIColor.blueColor colorWithAlphaComponent:0.7];
+        polygonView.lineWidth = 1;
+        view = polygonView;
+    }
+    
+    return view;
 }
 
 @end
