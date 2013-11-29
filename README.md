@@ -1,5 +1,5 @@
-CCHMapClustering
-================
+CCHMapClusterController
+=======================
 
 If you have your project set up with an `MKMapView`, integrating clustering will take 4 lines of code:
 
