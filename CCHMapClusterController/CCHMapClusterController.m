@@ -257,6 +257,7 @@
     }];
 }
 
+#if TARGET_OS_IPHONE
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
 {
     // Forward to standard delegate
@@ -275,5 +276,25 @@
     
     return view;
 }
+#else
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
+{
+    // Forward to standard delegate
+    if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:rendererForOverlay:)]) {
+        [self.mapViewDelegateProxy.target mapView:mapView rendererForOverlay:overlay];
+    }
+    
+    // Display debug polygons
+    MKOverlayRenderer *renderer;
+    if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
+        MKPolygonRenderer *polygonRenderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
+        polygonRenderer.strokeColor = [NSColor.blueColor colorWithAlphaComponent:0.7];
+        polygonRenderer.lineWidth = 1;
+        renderer = polygonRenderer;
+    }
+    
+    return renderer;
+}
+#endif
 
 @end
