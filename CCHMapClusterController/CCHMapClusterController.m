@@ -32,9 +32,7 @@
 #import "CCHMapClusterControllerDelegate.h"
 #import "CCHMapViewDelegateProxy.h"
 
-#import <float.h>
-
-#define fequal(a, b) (fabs((a) - (b)) < FLT_EPSILON)
+#define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 @interface CCHMapClusterControllerPolygon : MKPolygon
 @end
 @implementation CCHMapClusterControllerPolygon
