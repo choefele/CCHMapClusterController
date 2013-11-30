@@ -36,7 +36,6 @@
     self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.mapClusterController.delegate = self;
 //    self.mapClusterController.debuggingEnabled = YES;
-//    
     
     // Read annotations
     DataReader *dataReader = [[DataReader alloc] init];
