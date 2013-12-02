@@ -34,7 +34,7 @@
 id<MKAnnotation> CCHMapClusterControllerFindClosestAnnotation(NSSet *annotations, MKMapPoint mapPoint)
 {
     id<MKAnnotation> closestAnnotation;
-    CLLocationDistance closestDistance = DBL_MAX;
+    CLLocationDistance closestDistance = __DBL_MAX__;
     for (id<MKAnnotation> annotation in annotations) {
         MKMapPoint annotationAsMapPoint = MKMapPointForCoordinate(annotation.coordinate);
         CLLocationDistance distance = MKMetersBetweenMapPoints(mapPoint, annotationAsMapPoint);
