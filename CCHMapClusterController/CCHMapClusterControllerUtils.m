@@ -58,9 +58,8 @@ MKMapRect CCHMapClusterControllerAlignToCellSize(MKMapRect mapRect, double cellS
     return MKMapRectMake(startX, startY, endX - startX, endY - startY);
 }
 
-CCHMapClusterAnnotation *CCHMapClusterControllerFindAnnotation(MKMapRect cellMapRect, NSSet *annotations, NSSet *visibleAnnotations)
+CCHMapClusterAnnotation *CCHMapClusterControllerFindVisibleAnnotation(NSSet *annotations, NSSet *visibleAnnotations)
 {
-    // See if there's already a visible annotation in this cell
     for (id<MKAnnotation> annotation in annotations) {
         for (CCHMapClusterAnnotation *visibleAnnotation in visibleAnnotations) {
             if ([visibleAnnotation.annotations containsObject:annotation]) {
@@ -69,11 +68,19 @@ CCHMapClusterAnnotation *CCHMapClusterControllerFindAnnotation(MKMapRect cellMap
         }
     }
     
-    // Otherwise, choose the closest annotation to the center
-    MKMapPoint centerMapPoint = MKMapPointMake(MKMapRectGetMidX(cellMapRect), MKMapRectGetMidY(cellMapRect));
-    id<MKAnnotation> closestAnnotation = CCHMapClusterControllerFindClosestAnnotation(annotations, centerMapPoint);
-    CCHMapClusterAnnotation *annotation = [[CCHMapClusterAnnotation alloc] init];
-    annotation.coordinate = closestAnnotation.coordinate;
+    return nil;
+}
+
+CCHMapClusterAnnotation *CCHMapClusterControllerFindAnnotation(MKMapRect cellMapRect, NSSet *annotations, NSSet *visibleAnnotations)
+{
+    CCHMapClusterAnnotation *annotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
+    if (annotation == nil) {
+        // Otherwise, choose the closest annotation to the center
+        MKMapPoint centerMapPoint = MKMapPointMake(MKMapRectGetMidX(cellMapRect), MKMapRectGetMidY(cellMapRect));
+        id<MKAnnotation> closestAnnotation = CCHMapClusterControllerFindClosestAnnotation(annotations, centerMapPoint);
+        annotation = [[CCHMapClusterAnnotation alloc] init];
+        annotation.coordinate = closestAnnotation.coordinate;
+    }
     
     return annotation;
 }

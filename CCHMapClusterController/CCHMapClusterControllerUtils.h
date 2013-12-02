@@ -30,6 +30,7 @@
 
 id<MKAnnotation> CCHMapClusterControllerFindClosestAnnotation(NSSet *annotations, MKMapPoint mapPoint);
 MKMapRect CCHMapClusterControllerAlignToCellSize(MKMapRect mapRect, double cellSize);
+CCHMapClusterAnnotation *CCHMapClusterControllerFindVisibleAnnotation(NSSet *annotations, NSSet *visibleAnnotations);
 CCHMapClusterAnnotation *CCHMapClusterControllerFindAnnotation(MKMapRect cellMapRect, NSSet *annotations, NSSet *visibleAnnotations);
 #if TARGET_OS_IPHONE
 double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, UIView *view, double length);

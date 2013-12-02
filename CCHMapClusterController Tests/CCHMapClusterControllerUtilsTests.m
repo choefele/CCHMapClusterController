@@ -85,6 +85,32 @@
     XCTAssertEqual(adjustedMapRect.size.height, 24.0, @"Wrong size height");
 }
 
+- (void)testFindVisibleAnnotation
+{
+    MKPointAnnotation *pointAnnotation = [[MKPointAnnotation alloc] init];
+    NSSet *annotations = [NSSet setWithObjects:[[MKPointAnnotation alloc] init], [[MKPointAnnotation alloc] init], pointAnnotation, nil];
+    NSMutableSet *visibleAnnotations = [NSMutableSet set];
+    
+    // Empty cluster
+    CCHMapClusterAnnotation *clusterAnnotationEmpty = [[CCHMapClusterAnnotation alloc] init];
+    [visibleAnnotations addObject:clusterAnnotationEmpty];
+    CCHMapClusterAnnotation *visibleAnnotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
+    XCTAssertNil(visibleAnnotation, @"Wrong visible annotation");
+    
+    // Cluster does not contain annotation
+    CCHMapClusterAnnotation *clusterAnnotationDoesNotContain = [[CCHMapClusterAnnotation alloc] init];
+    [visibleAnnotations addObject:clusterAnnotationDoesNotContain];
+    visibleAnnotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
+    XCTAssertNil(visibleAnnotation, @"Wrong visible annotation");
+    
+    // Cluster does contain annotation
+    CCHMapClusterAnnotation *clusterAnnotationContains = [[CCHMapClusterAnnotation alloc] init];
+    clusterAnnotationContains.annotations = @[[[MKPointAnnotation alloc] init], pointAnnotation, [[MKPointAnnotation alloc] init], [[MKPointAnnotation alloc] init]];
+    [visibleAnnotations addObject:clusterAnnotationContains];
+    visibleAnnotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
+    XCTAssertEqualObjects(clusterAnnotationContains, visibleAnnotation, @"Wrong visible annotation");
+}
+
 - (void)testCoordinateEqualToCoordinate
 {
     // Same struct
