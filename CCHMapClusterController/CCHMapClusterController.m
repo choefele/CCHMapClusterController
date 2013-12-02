@@ -91,7 +91,7 @@
         cellMapRect.origin.x = MKMapRectGetMinX(gridMapRect);
         
         while (MKMapRectGetMinX(cellMapRect) < MKMapRectGetMaxX(gridMapRect)) {
-            NSMutableSet *allAnnotationsInCell = [[self.allAnnotationsMapView annotationsInMapRect:cellMapRect] mutableCopy];
+            NSSet *allAnnotationsInCell = [self.allAnnotationsMapView annotationsInMapRect:cellMapRect];
             if (allAnnotationsInCell.count > 0) {
                 NSMutableSet *visibleAnnotationsInCell = [[self.mapView annotationsInMapRect:cellMapRect] mutableCopy];
                 MKUserLocation *userLocation = self.mapView.userLocation;
