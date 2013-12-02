@@ -22,7 +22,9 @@ If you have your project set up with an `MKMapView`, integrating clustering will
 }
 </pre>
 
-![Map Clustering](MapClustering.png "Map Clustering")
+<p align="center" >
+  <img src="MapClustering.png" alt="AFNetworking" title="Map Clustering">
+</p>
 
 ## Installation
 
