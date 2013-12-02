@@ -1,6 +1,8 @@
 CCHMapClusterController
 =======================
 
+[![Build Status](https://travis-ci.org/choefele/CCHMapClusterController.png?branch=master)](https://travis-ci.org/choefele/CCHMapClusterController)
+
 If you have your project set up with an `MKMapView`, integrating clustering will take 4 lines of code:
 
 <pre>
