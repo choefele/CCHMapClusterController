@@ -1,5 +1,5 @@
 //
-//  MapClusterAnnotation.h
+//  CCHMapClusterAnnotation.h
 //  CCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele

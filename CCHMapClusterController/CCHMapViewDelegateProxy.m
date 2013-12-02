@@ -1,5 +1,5 @@
 //
-//  MapClusterMapViewDelegateProxy.m
+//  CCHMapViewDelegateProxy.m
 //  CCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele

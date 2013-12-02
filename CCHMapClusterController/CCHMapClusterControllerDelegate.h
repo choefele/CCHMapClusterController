@@ -1,5 +1,5 @@
 //
-//  MapClusterControllerDelegate.h
+//  CCHMapClusterControllerDelegate.h
 //  CCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
