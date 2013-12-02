@@ -46,22 +46,24 @@ pod "CCHMapClusterController"
 
 Your code can customize titles and subtitles of the clustered annotations by setting itself as `CCHMapClusterControllerDelegate` and implementing two delegate methods. Here is an example:
 
-    - (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController
-        titleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
-    {
-        NSUInteger numAnnotations = mapClusterAnnotation.annotations.count;
-        NSString *unit = numAnnotations > 1 ? @"annotations" : @"annotation";
-        return [NSString stringWithFormat:@"%tu %@", numAnnotations, unit];
-    }
+```Objective-C
+- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController
+    titleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+{
+    NSUInteger numAnnotations = mapClusterAnnotation.annotations.count;
+    NSString *unit = numAnnotations > 1 ? @"annotations" : @"annotation";
+    return [NSString stringWithFormat:@"%tu %@", numAnnotations, unit];
+}
 
-    - (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController
-        subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
-    {
-        NSUInteger numAnnotations = MIN(mapClusterAnnotation.annotations.count, 5);
-        NSArray *annotations = [mapClusterAnnotation.annotations subarrayWithRange:NSMakeRange(0, numAnnotations)];
-        NSArray *titles = [annotations valueForKey:@"title"];
-        return [titles componentsJoinedByString:@", "];
-    }
+- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController
+    subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+{
+    NSUInteger numAnnotations = MIN(mapClusterAnnotation.annotations.count, 5);
+    NSArray *annotations = [mapClusterAnnotation.annotations subarrayWithRange:NSMakeRange(0, numAnnotations)];
+    NSArray *titles = [annotations valueForKey:@"title"];
+    return [titles componentsJoinedByString:@", "];
+}
+```
 
 Further customization of the annotation view is possible via the standard `mapView:viewForAnnotation:` method that's part of `MKMapViewDelegate`.
 
@@ -74,6 +76,20 @@ The clustering algorithm splits a rectangular area of the map into a grid of squ
 The `marginFactor` property configures the additional map area around the visible area that's included for clustering. This avoids sudden changes at the edges of the visible map area when the user pans the map. Ideally, you would set this value to 1.0 (100% additional map area on each side), as this is the maximum scroll area a user can achieve with a paning gesture. However, this is affects performance as this will cover 9x the map area for clustering. The default is 0.5 (50% additional area on each side).
 
 To debug these settings, set the `debugEnabled` property to `YES`. This will display the grid used for clustering overlayed onto the map.
+
+## Selecting annotations
+
+A common use case is to have a search field where the user can make a choice from a list of items displayed on the map. Selecting an item would then zoom to the respective annotation position on the map. 
+
+For this to work, you have to figure out which cluster contains the selected marker. In addition, the clustering changes while zooming thus requiring an incremental approach to finding the cluster that contains the annotation the user is looking for.
+
+`CCHMapClusterController` contains an easy to use interface to help you with this:
+
+```Objective-C
+[self.mapClusterController selectAnnotation:annotation 
+       andZoomToRegionWithLatitudinalMeters:1000 
+                         longitudinalMeters:1000];
+``` 
 
 ## License (MIT)
 
