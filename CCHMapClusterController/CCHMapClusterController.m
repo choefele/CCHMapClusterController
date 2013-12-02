@@ -99,12 +99,17 @@
                     [visibleAnnotationsInCell removeObject:userLocation];
                 }
                 
-                CCHMapClusterAnnotation *annotationForCell = CCHMapClusterControllerFindAnnotation(cellMapRect, allAnnotationsInCell, visibleAnnotationsInCell);
+                // Select cluster representation
+                CCHMapClusterAnnotation *annotationForCell = CCHMapClusterControllerFindVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
+                if (annotationForCell == nil) {
+                    annotationForCell = CCHMapClusterControllerChooseAnnotationCenter(cellMapRect, allAnnotationsInCell);
+                }
                 annotationForCell.annotations = allAnnotationsInCell.allObjects;
                 annotationForCell.delegate = self.delegate;
                 annotationForCell.title = nil;
                 annotationForCell.subtitle = nil;
                 
+                // Show cluster annotation on map
                 [visibleAnnotationsInCell removeObject:annotationForCell];
                 [self removeAnnotations:visibleAnnotationsInCell];
                 [self.mapView addAnnotation:annotationForCell];

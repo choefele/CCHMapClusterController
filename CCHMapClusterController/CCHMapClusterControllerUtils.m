@@ -71,16 +71,12 @@ CCHMapClusterAnnotation *CCHMapClusterControllerFindVisibleAnnotation(NSSet *ann
     return nil;
 }
 
-CCHMapClusterAnnotation *CCHMapClusterControllerFindAnnotation(MKMapRect cellMapRect, NSSet *annotations, NSSet *visibleAnnotations)
+CCHMapClusterAnnotation *CCHMapClusterControllerChooseAnnotationCenter(MKMapRect cellMapRect, NSSet *annotations)
 {
-    CCHMapClusterAnnotation *annotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
-    if (annotation == nil) {
-        // Otherwise, choose the closest annotation to the center
-        MKMapPoint centerMapPoint = MKMapPointMake(MKMapRectGetMidX(cellMapRect), MKMapRectGetMidY(cellMapRect));
-        id<MKAnnotation> closestAnnotation = CCHMapClusterControllerFindClosestAnnotation(annotations, centerMapPoint);
-        annotation = [[CCHMapClusterAnnotation alloc] init];
-        annotation.coordinate = closestAnnotation.coordinate;
-    }
+    MKMapPoint centerMapPoint = MKMapPointMake(MKMapRectGetMidX(cellMapRect), MKMapRectGetMidY(cellMapRect));
+    id<MKAnnotation> closestAnnotation = CCHMapClusterControllerFindClosestAnnotation(annotations, centerMapPoint);
+    CCHMapClusterAnnotation *annotation = [[CCHMapClusterAnnotation alloc] init];
+    annotation.coordinate = closestAnnotation.coordinate;
     
     return annotation;
 }
