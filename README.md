@@ -24,10 +24,19 @@ If you have your project set up with an `MKMapView`, integrating clustering will
 
 ![Map Clustering](MapClustering.png "Map Clustering")
 
-## Integration
+## Installation
 
-- Cocoapods
-- iOS/OS X min versions
+Use [CocoaPods](http://cocoapods.org) for easily integrating `CCHMapClusterController` into your project. Minum deployment targets are 6.0 for iOS and 10.9 for OS X.
+
+```ruby
+platform :ios, '6.0'
+pod "CCHMapClusterController"
+```
+
+```ruby
+platform :osx, '10.9'
+pod "CCHMapClusterController"
+```
 
 ## Customizing annotation views
 
@@ -58,7 +67,7 @@ The clustering algorithm splits a rectangular area of the map into a grid of squ
 
 `CCHMapClusterController` has a property `cellSize` to configure the size of the cell. The unit is points (1 point = 2 pixels on Retina displays). This way, you can select a cell size that is large enough to display map icons with minimal overlap. More likely, however, you will choose the cell size to optimize clustering performance (the larger the size, the better the performance).
 
-The 'marginFactor' property configures the additional map area around the visible area that's included for clustering. This avoids sudden changes at the edges of the visible map area when the user pans the map. Ideally, you would set this value to 1.0 (100% additional map area on each side), as this is the maximum scroll area a user can achieve with a paning gesture. However, this is affects performance as this will cover 9x the map area for clustering. The default is 0.5 (50% additional area on each side).
+The `marginFactor` property configures the additional map area around the visible area that's included for clustering. This avoids sudden changes at the edges of the visible map area when the user pans the map. Ideally, you would set this value to 1.0 (100% additional map area on each side), as this is the maximum scroll area a user can achieve with a paning gesture. However, this is affects performance as this will cover 9x the map area for clustering. The default is 0.5 (50% additional area on each side).
 
 To debug these settings, set the `debugEnabled` property to `YES`. This will display the grid used for clustering overlayed onto the map.
 
