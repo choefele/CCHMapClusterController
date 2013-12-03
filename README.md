@@ -20,13 +20,16 @@ If you have your project set up with an `MKMapView`, integrating clustering will
     
   NSArray annotations = ...
   <b>self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
-  [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];</b>
+  [self.mapClusterController addAnnotations:annotations 
+                      withCompletionHandler:NULL];</b>
 }
 </pre>
 
 <p align="center" >
   <img src="MapClustering.png" alt="AFNetworking" title="Map Clustering">
 </p>
+
+To try out the clustering, experiment with the examples included in this project or download the Stolpersteine app [![Download on the App Store](https://linkmaker.itunes.apple.com/htmlResources/assets//images/web/linkmaker/badge_appstore-sm.png)](https://itunes.apple.com/de/app/stolpersteine-in-berlin/id640731757?mt=8&uo=4).
 
 ## Installation
 
