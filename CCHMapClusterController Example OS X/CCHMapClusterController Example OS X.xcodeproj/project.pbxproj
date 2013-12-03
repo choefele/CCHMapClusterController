@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		489AE784184E5D5800E7577A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667C21845F8330046D5D5 /* MapKit.framework */; };
+		489AE785184E5D5E00E7577A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48D06BE01846732B005AC9C7 /* CoreLocation.framework */; };
 		48D06BDC18466FF4005AC9C7 /* CCHMapClusterAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D06BD418466FF4005AC9C7 /* CCHMapClusterAnnotation.m */; };
 		48D06BDD18466FF4005AC9C7 /* CCHMapClusterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D06BD618466FF4005AC9C7 /* CCHMapClusterController.m */; };
 		48D06BDE18466FF4005AC9C7 /* CCHMapClusterControllerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D06BD918466FF4005AC9C7 /* CCHMapClusterControllerUtils.m */; };
@@ -91,6 +93,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				489AE785184E5D5E00E7577A /* CoreLocation.framework in Frameworks */,
+				489AE784184E5D5800E7577A /* MapKit.framework in Frameworks */,
 				62D667631845E0BA0046D5D5 /* Cocoa.framework in Frameworks */,
 				62D667621845E0BA0046D5D5 /* XCTest.framework in Frameworks */,
 			);
