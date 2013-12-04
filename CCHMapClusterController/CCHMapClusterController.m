@@ -31,6 +31,7 @@
 #import "CCHMapClusterAnnotation.h"
 #import "CCHMapClusterControllerDelegate.h"
 #import "CCHMapViewDelegateProxy.h"
+#import "CCHMapCenterClusterer.h"
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 @interface CCHMapClusterControllerPolygon : MKPolygon
@@ -40,9 +41,9 @@
 
 @interface CCHMapClusterController()<MKMapViewDelegate>
 
-@property (strong, nonatomic) MKMapView *mapView;
-@property (strong, nonatomic) MKMapView *allAnnotationsMapView;
-@property (strong, nonatomic) CCHMapViewDelegateProxy *mapViewDelegateProxy;
+@property (nonatomic, strong) MKMapView *mapView;
+@property (nonatomic, strong) MKMapView *allAnnotationsMapView;
+@property (nonatomic, strong) CCHMapViewDelegateProxy *mapViewDelegateProxy;
 @property (nonatomic, strong) id<MKAnnotation> annotationToSelect;
 @property (nonatomic, strong) CCHMapClusterAnnotation *mapClusterAnnotationToSelect;
 @property (nonatomic, assign) MKCoordinateSpan regionSpanBeforeChange;
@@ -60,6 +61,7 @@
         self.mapView = mapView;
         self.allAnnotationsMapView = [[MKMapView alloc] initWithFrame:CGRectZero];
         self.mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
+        self.clusterer = [[CCHMapCenterClusterer alloc] init];
     }
     return self;
 }
@@ -78,10 +80,10 @@
 - (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler
 {
     // Calculate cell size in map point units
-    double cellSize = CCHMapClusterControllerMapLengthForLength(self.mapView, self.mapView.superview, self.cellSize);
+    double cellSize = CCHMapClusterControllerMapLengthForLength(_mapView, _mapView.superview, _cellSize);
     
     // Expand map rect and align to cell size to avoid popping when panning
-    MKMapRect visibleMapRect = self.mapView.visibleMapRect;
+    MKMapRect visibleMapRect = _mapView.visibleMapRect;
     MKMapRect gridMapRect = MKMapRectInset(visibleMapRect, -_marginFactor * visibleMapRect.size.width, -_marginFactor * visibleMapRect.size.height);
     gridMapRect = CCHMapClusterControllerAlignToCellSize(gridMapRect, cellSize);
     MKMapRect cellMapRect = MKMapRectMake(0, MKMapRectGetMinY(gridMapRect), cellSize, cellSize);
@@ -91,10 +93,10 @@
         cellMapRect.origin.x = MKMapRectGetMinX(gridMapRect);
         
         while (MKMapRectGetMinX(cellMapRect) < MKMapRectGetMaxX(gridMapRect)) {
-            NSSet *allAnnotationsInCell = [self.allAnnotationsMapView annotationsInMapRect:cellMapRect];
+            NSSet *allAnnotationsInCell = [_allAnnotationsMapView annotationsInMapRect:cellMapRect];
             if (allAnnotationsInCell.count > 0) {
-                NSMutableSet *visibleAnnotationsInCell = [[self.mapView annotationsInMapRect:cellMapRect] mutableCopy];
-                MKUserLocation *userLocation = self.mapView.userLocation;
+                NSMutableSet *visibleAnnotationsInCell = [[_mapView annotationsInMapRect:cellMapRect] mutableCopy];
+                MKUserLocation *userLocation = _mapView.userLocation;
                 if (userLocation) {
                     [visibleAnnotationsInCell removeObject:userLocation];
                 }
@@ -102,17 +104,18 @@
                 // Select cluster representation
                 CCHMapClusterAnnotation *annotationForCell = CCHMapClusterControllerFindVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
                 if (annotationForCell == nil) {
-                    annotationForCell = CCHMapClusterControllerChooseAnnotationCenter(cellMapRect, allAnnotationsInCell);
+                    annotationForCell = [[CCHMapClusterAnnotation alloc] init];
+                    annotationForCell.coordinate = [_clusterer coordinateForAnnotations:allAnnotationsInCell inMapRect:cellMapRect];
                 }
                 annotationForCell.annotations = allAnnotationsInCell.allObjects;
-                annotationForCell.delegate = self.delegate;
+                annotationForCell.delegate = _delegate;
                 annotationForCell.title = nil;
                 annotationForCell.subtitle = nil;
                 
                 // Show cluster annotation on map
                 [visibleAnnotationsInCell removeObject:annotationForCell];
                 [self removeAnnotations:visibleAnnotationsInCell];
-                [self.mapView addAnnotation:annotationForCell];
+                [_mapView addAnnotation:annotationForCell];
             }
             cellMapRect.origin.x += MKMapRectGetWidth(cellMapRect);
         }
@@ -120,7 +123,7 @@
     }
     
     if (self.isDebuggingEnabled) {
-        [self.mapView removeOverlays:self.mapView.overlays];
+        [_mapView removeOverlays:_mapView.overlays];
         MKMapPoint points[4];
 
         cellMapRect = MKMapRectMake(0, MKMapRectGetMinY(gridMapRect), cellSize, cellSize);
@@ -133,7 +136,7 @@
                 points[2] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect), MKMapRectGetMaxY(cellMapRect));
                 points[3] = MKMapPointMake(MKMapRectGetMinX(cellMapRect), MKMapRectGetMaxY(cellMapRect));
                 MKPolygon *polygon = [CCHMapClusterControllerPolygon polygonWithPoints:points count:4];
-                [self.mapView addOverlay:polygon];
+                [_mapView addOverlay:polygon];
 
                 cellMapRect.origin.x += MKMapRectGetWidth(cellMapRect);
             }

@@ -30,43 +30,43 @@
 
 @implementation CCHMapClusterControllerUtilsTests
 
-- (void)testFindClosestAnnotationNil
-{
-    MKMapPoint mapPoint = MKMapPointMake(0, 0);
-    id<MKAnnotation> annotation = CCHMapClusterControllerFindClosestAnnotation(nil, mapPoint);
-    XCTAssertNil(annotation, @"Wrong annotation");
-}
-
-- (void)testFindClosestAnnotationEmpty
-{
-    NSMutableSet *annotations = [[NSMutableSet alloc] init];
-    MKMapPoint mapPoint = MKMapPointMake(0, 0);
-    id<MKAnnotation> annotation = CCHMapClusterControllerFindClosestAnnotation(annotations, mapPoint);
-    XCTAssertNil(annotation, @"Wrong annotation");
-}
-
-- (void)testFindClosestAnnotation
-{
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(45, 45);
-    MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
-
-    NSMutableSet *annotations = [[NSMutableSet alloc] initWithCapacity:5];
-    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
-    annotation0.coordinate = CLLocationCoordinate2DMake(40, 40);
-    [annotations addObject:annotation0];
-    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
-    annotation1.coordinate = CLLocationCoordinate2DMake(47, 47);
-    [annotations addObject:annotation1];
-    MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
-    annotation2.coordinate = CLLocationCoordinate2DMake(45.1, 44.9);
-    [annotations addObject:annotation2];
-    MKPointAnnotation *annotation3 = [[MKPointAnnotation alloc] init];
-    annotation3.coordinate = CLLocationCoordinate2DMake(42.1, 43.7);
-    [annotations addObject:annotation3];
-    
-    id<MKAnnotation> annotation = CCHMapClusterControllerFindClosestAnnotation(annotations, mapPoint);
-    XCTAssertEqualObjects(annotation, annotation2, @"Wrong annotation");
-}
+//- (void)testFindClosestAnnotationNil
+//{
+//    MKMapPoint mapPoint = MKMapPointMake(0, 0);
+//    id<MKAnnotation> annotation = CCHMapClusterControllerFindClosestAnnotation(nil, mapPoint);
+//    XCTAssertNil(annotation, @"Wrong annotation");
+//}
+//
+//- (void)testFindClosestAnnotationEmpty
+//{
+//    NSMutableSet *annotations = [[NSMutableSet alloc] init];
+//    MKMapPoint mapPoint = MKMapPointMake(0, 0);
+//    id<MKAnnotation> annotation = CCHMapClusterControllerFindClosestAnnotation(annotations, mapPoint);
+//    XCTAssertNil(annotation, @"Wrong annotation");
+//}
+//
+//- (void)testFindClosestAnnotation
+//{
+//    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(45, 45);
+//    MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
+//
+//    NSMutableSet *annotations = [[NSMutableSet alloc] initWithCapacity:5];
+//    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+//    annotation0.coordinate = CLLocationCoordinate2DMake(40, 40);
+//    [annotations addObject:annotation0];
+//    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+//    annotation1.coordinate = CLLocationCoordinate2DMake(47, 47);
+//    [annotations addObject:annotation1];
+//    MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
+//    annotation2.coordinate = CLLocationCoordinate2DMake(45.1, 44.9);
+//    [annotations addObject:annotation2];
+//    MKPointAnnotation *annotation3 = [[MKPointAnnotation alloc] init];
+//    annotation3.coordinate = CLLocationCoordinate2DMake(42.1, 43.7);
+//    [annotations addObject:annotation3];
+//    
+//    id<MKAnnotation> annotation = CCHMapClusterControllerFindClosestAnnotation(annotations, mapPoint);
+//    XCTAssertEqualObjects(annotation, annotation2, @"Wrong annotation");
+//}
 
 - (void)testAlignToCellSize
 {

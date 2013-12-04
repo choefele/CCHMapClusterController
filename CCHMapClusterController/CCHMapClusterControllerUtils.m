@@ -31,22 +31,6 @@
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 
-id<MKAnnotation> CCHMapClusterControllerFindClosestAnnotation(NSSet *annotations, MKMapPoint mapPoint)
-{
-    id<MKAnnotation> closestAnnotation;
-    CLLocationDistance closestDistance = __DBL_MAX__;
-    for (id<MKAnnotation> annotation in annotations) {
-        MKMapPoint annotationAsMapPoint = MKMapPointForCoordinate(annotation.coordinate);
-        CLLocationDistance distance = MKMetersBetweenMapPoints(mapPoint, annotationAsMapPoint);
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closestAnnotation = annotation;
-        }
-    }
-    
-    return closestAnnotation;
-}
-
 MKMapRect CCHMapClusterControllerAlignToCellSize(MKMapRect mapRect, double cellSize)
 {
 //    NSCAssert(cellSize != 0, @"Invalid cell size");
@@ -69,16 +53,6 @@ CCHMapClusterAnnotation *CCHMapClusterControllerFindVisibleAnnotation(NSSet *ann
     }
     
     return nil;
-}
-
-CCHMapClusterAnnotation *CCHMapClusterControllerChooseAnnotationCenter(MKMapRect cellMapRect, NSSet *annotations)
-{
-    MKMapPoint centerMapPoint = MKMapPointMake(MKMapRectGetMidX(cellMapRect), MKMapRectGetMidY(cellMapRect));
-    id<MKAnnotation> closestAnnotation = CCHMapClusterControllerFindClosestAnnotation(annotations, centerMapPoint);
-    CCHMapClusterAnnotation *annotation = [[CCHMapClusterAnnotation alloc] init];
-    annotation.coordinate = closestAnnotation.coordinate;
-    
-    return annotation;
 }
 
 #if TARGET_OS_IPHONE

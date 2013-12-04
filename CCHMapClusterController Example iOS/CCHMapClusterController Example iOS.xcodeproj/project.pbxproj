@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4869F183184FC4CC00251ADC /* CCHMapCenterClusterer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F182184FC4CC00251ADC /* CCHMapCenterClusterer.m */; };
+		4869F186184FD5F100251ADC /* CCHMapCenterOfMassClusterer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F185184FD5F100251ADC /* CCHMapCenterOfMassClusterer.m */; };
 		626379F9184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */; };
 		62D667831845E0F20046D5D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667821845E0F20046D5D5 /* Foundation.framework */; };
 		62D667851845E0F20046D5D5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667841845E0F20046D5D5 /* CoreGraphics.framework */; };
@@ -41,6 +43,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4869F180184FC1E700251ADC /* CCHMapClusterer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCHMapClusterer.h; sourceTree = "<group>"; };
+		4869F181184FC4CC00251ADC /* CCHMapCenterClusterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapCenterClusterer.h; sourceTree = "<group>"; };
+		4869F182184FC4CC00251ADC /* CCHMapCenterClusterer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapCenterClusterer.m; sourceTree = "<group>"; };
+		4869F184184FD5F000251ADC /* CCHMapCenterOfMassClusterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapCenterOfMassClusterer.h; sourceTree = "<group>"; };
+		4869F185184FD5F100251ADC /* CCHMapCenterOfMassClusterer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapCenterOfMassClusterer.m; sourceTree = "<group>"; };
 		626379F7184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCHMapClusterControllerUtilsTests.h; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerUtilsTests.h"; sourceTree = "<group>"; };
 		626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerUtilsTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerUtilsTests.m"; sourceTree = "<group>"; };
 		62D6677F1845E0F20046D5D5 /* CCHMapClusterController Example iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CCHMapClusterController Example iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -192,6 +199,11 @@
 				62D667C91845F8A40046D5D5 /* CCHMapClusterControllerDelegate.h */,
 				62D667CA1845F8A40046D5D5 /* CCHMapClusterControllerUtils.h */,
 				62D667CB1845F8A40046D5D5 /* CCHMapClusterControllerUtils.m */,
+				4869F180184FC1E700251ADC /* CCHMapClusterer.h */,
+				4869F181184FC4CC00251ADC /* CCHMapCenterClusterer.h */,
+				4869F182184FC4CC00251ADC /* CCHMapCenterClusterer.m */,
+				4869F184184FD5F000251ADC /* CCHMapCenterOfMassClusterer.h */,
+				4869F185184FD5F100251ADC /* CCHMapCenterOfMassClusterer.m */,
 				62D667CC1845F8A40046D5D5 /* CCHMapViewDelegateProxy.h */,
 				62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */,
 			);
@@ -302,9 +314,11 @@
 				62D667D41845F8A40046D5D5 /* CCHMapViewDelegateProxy.m in Sources */,
 				62D667C11845F76F0046D5D5 /* DataReader.m in Sources */,
 				62D667D21845F8A40046D5D5 /* CCHMapClusterControllerUtils.m in Sources */,
+				4869F186184FD5F100251ADC /* CCHMapCenterOfMassClusterer.m in Sources */,
 				62D667D01845F8A40046D5D5 /* CCHMapClusterController.m in Sources */,
 				62D6678F1845E0F20046D5D5 /* main.m in Sources */,
 				62D667CE1845F8A40046D5D5 /* CCHMapClusterAnnotation.m in Sources */,
+				4869F183184FC4CC00251ADC /* CCHMapCenterClusterer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
