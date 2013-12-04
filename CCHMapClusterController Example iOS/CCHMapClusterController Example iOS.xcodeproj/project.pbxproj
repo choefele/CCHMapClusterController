@@ -25,13 +25,9 @@
 		62D667C01845F76F0046D5D5 /* Data.json in Resources */ = {isa = PBXBuildFile; fileRef = 62D667BB1845F76F0046D5D5 /* Data.json */; };
 		62D667C11845F76F0046D5D5 /* DataReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667BD1845F76F0046D5D5 /* DataReader.m */; };
 		62D667CE1845F8A40046D5D5 /* CCHMapClusterAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667C61845F8A40046D5D5 /* CCHMapClusterAnnotation.m */; };
-		62D667CF1845F8A40046D5D5 /* CCHMapClusterAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667C61845F8A40046D5D5 /* CCHMapClusterAnnotation.m */; };
 		62D667D01845F8A40046D5D5 /* CCHMapClusterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667C81845F8A40046D5D5 /* CCHMapClusterController.m */; };
-		62D667D11845F8A40046D5D5 /* CCHMapClusterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667C81845F8A40046D5D5 /* CCHMapClusterController.m */; };
 		62D667D21845F8A40046D5D5 /* CCHMapClusterControllerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667CB1845F8A40046D5D5 /* CCHMapClusterControllerUtils.m */; };
-		62D667D31845F8A40046D5D5 /* CCHMapClusterControllerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667CB1845F8A40046D5D5 /* CCHMapClusterControllerUtils.m */; };
 		62D667D41845F8A40046D5D5 /* CCHMapViewDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */; };
-		62D667D51845F8A40046D5D5 /* CCHMapViewDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -316,11 +312,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				62D667D51845F8A40046D5D5 /* CCHMapViewDelegateProxy.m in Sources */,
-				62D667D31845F8A40046D5D5 /* CCHMapClusterControllerUtils.m in Sources */,
-				62D667D11845F8A40046D5D5 /* CCHMapClusterController.m in Sources */,
 				626379F9184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m in Sources */,
-				62D667CF1845F8A40046D5D5 /* CCHMapClusterAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
