@@ -1,5 +1,5 @@
 //
-//  CCHNearCenterMapClustererTests.m
+//  CCHCenterOfMassMapClustererTests.m
 //  CCHMapClusterController Example iOS
 //
 //  Created by Claus on 05.12.13.
@@ -8,21 +8,21 @@
 
 #import <XCTest/XCTest.h>
 
-#import "CCHNearCenterMapClusterer.h"
+#import "CCHCenterOfMassMapClusterer.h"
 
-@interface CCHNearCenterMapClustererTests : XCTestCase
+@interface CCHCenterOfMassMapClustererTests : XCTestCase
 
-@property (nonatomic, strong) CCHNearCenterMapClusterer *mapClusterer;
+@property (nonatomic, strong) CCHCenterOfMassMapClusterer *mapClusterer;
 
 @end
 
-@implementation CCHNearCenterMapClustererTests
+@implementation CCHCenterOfMassMapClustererTests
 
 - (void)setUp
 {
     [super setUp];
-
-    self.mapClusterer = [[CCHNearCenterMapClusterer alloc] init];
+    
+    self.mapClusterer = [[CCHCenterOfMassMapClusterer alloc] init];
 }
 
 - (void)testCoordinateForAnnotationsNil
@@ -42,27 +42,24 @@
 
 - (void)testCoordinateForAnnotations
 {
-    MKMapPoint mapPoint = MKMapPointForCoordinate(CLLocationCoordinate2DMake(45, 45));
-    MKMapRect mapRect = MKMapRectMake(mapPoint.x, mapPoint.y, 0, 0);
-    mapRect = MKMapRectInset(mapRect, -10000, -10000);
-
     NSMutableSet *annotations = [[NSMutableSet alloc] initWithCapacity:4];
     MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
-    annotation0.coordinate = CLLocationCoordinate2DMake(40, 40);
+    annotation0.coordinate = CLLocationCoordinate2DMake(10, 0);
     [annotations addObject:annotation0];
     MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
-    annotation1.coordinate = CLLocationCoordinate2DMake(47, 47);
+    annotation1.coordinate = CLLocationCoordinate2DMake(10, 10);
     [annotations addObject:annotation1];
     MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
-    annotation2.coordinate = CLLocationCoordinate2DMake(45.1, 44.9);
+    annotation2.coordinate = CLLocationCoordinate2DMake(10, 20);
     [annotations addObject:annotation2];
     MKPointAnnotation *annotation3 = [[MKPointAnnotation alloc] init];
-    annotation3.coordinate = CLLocationCoordinate2DMake(42.1, 43.7);
+    annotation3.coordinate = CLLocationCoordinate2DMake(10, 30);
     [annotations addObject:annotation3];
-
-    CLLocationCoordinate2D coordinate = [self.mapClusterer coordinateForAnnotations:annotations inMapRect:mapRect];
-    XCTAssertEqualWithAccuracy(annotation2.coordinate.latitude, coordinate.latitude, __FLT_EPSILON__, @"Wrong coordinate");
-    XCTAssertEqualWithAccuracy(annotation2.coordinate.longitude, coordinate.longitude, __FLT_EPSILON__, @"Wrong coordinate");
+    
+    CLLocationCoordinate2D averageCoordinate = CLLocationCoordinate2DMake(40 / 4, 60 / 4);
+    CLLocationCoordinate2D coordinate = [self.mapClusterer coordinateForAnnotations:annotations inMapRect:MKMapRectNull];
+    XCTAssertEqualWithAccuracy(averageCoordinate.latitude, coordinate.latitude, __FLT_EPSILON__, @"Wrong coordinate");
+    XCTAssertEqualWithAccuracy(averageCoordinate.longitude, coordinate.longitude, __FLT_EPSILON__, @"Wrong coordinate");
 }
 
 @end

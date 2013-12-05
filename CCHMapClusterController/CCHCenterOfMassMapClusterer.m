@@ -35,8 +35,15 @@
         longitude += annotation.coordinate.longitude;
     }
     
-    double count = annotations.count;
-    return CLLocationCoordinate2DMake(latitude / count, longitude / count);
+    CLLocationCoordinate2D coordinate;
+    if (annotations.count > 0) {
+        double count = (double)annotations.count;
+        coordinate = CLLocationCoordinate2DMake(latitude / count, longitude / count);
+    } else {
+        coordinate = CLLocationCoordinate2DMake(0, 0);
+    }
+    
+    return coordinate;
 }
 
 @end

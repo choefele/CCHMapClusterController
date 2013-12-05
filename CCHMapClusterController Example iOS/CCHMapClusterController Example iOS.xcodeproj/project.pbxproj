@@ -10,6 +10,7 @@
 		4869F183184FC4CC00251ADC /* CCHNearCenterMapClusterer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F182184FC4CC00251ADC /* CCHNearCenterMapClusterer.m */; };
 		4869F186184FD5F100251ADC /* CCHCenterOfMassMapClusterer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F185184FD5F100251ADC /* CCHCenterOfMassMapClusterer.m */; };
 		4869F1911851105A00251ADC /* CCHNearCenterMapClustererTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F1901851105A00251ADC /* CCHNearCenterMapClustererTests.m */; };
+		4869F19818511B6D00251ADC /* CCHCenterOfMassMapClustererTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F19718511B6D00251ADC /* CCHCenterOfMassMapClustererTests.m */; };
 		626379F9184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */; };
 		62D667831845E0F20046D5D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667821845E0F20046D5D5 /* Foundation.framework */; };
 		62D667851845E0F20046D5D5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667841845E0F20046D5D5 /* CoreGraphics.framework */; };
@@ -50,6 +51,7 @@
 		4869F184184FD5F000251ADC /* CCHCenterOfMassMapClusterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHCenterOfMassMapClusterer.h; sourceTree = "<group>"; };
 		4869F185184FD5F100251ADC /* CCHCenterOfMassMapClusterer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHCenterOfMassMapClusterer.m; sourceTree = "<group>"; };
 		4869F1901851105A00251ADC /* CCHNearCenterMapClustererTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHNearCenterMapClustererTests.m; path = "../../CCHMapClusterController Tests/CCHNearCenterMapClustererTests.m"; sourceTree = "<group>"; };
+		4869F19718511B6D00251ADC /* CCHCenterOfMassMapClustererTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHCenterOfMassMapClustererTests.m; path = "../../CCHMapClusterController Tests/CCHCenterOfMassMapClustererTests.m"; sourceTree = "<group>"; };
 		626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerUtilsTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerUtilsTests.m"; sourceTree = "<group>"; };
 		62D6677F1845E0F20046D5D5 /* CCHMapClusterController Example iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CCHMapClusterController Example iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62D667821845E0F20046D5D5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -176,6 +178,7 @@
 			children = (
 				626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */,
 				4869F1901851105A00251ADC /* CCHNearCenterMapClustererTests.m */,
+				4869F19718511B6D00251ADC /* CCHCenterOfMassMapClustererTests.m */,
 				62D667A81845E0F20046D5D5 /* Supporting Files */,
 			);
 			path = "CCHMapClusterController Example iOSTests";
@@ -328,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4869F1911851105A00251ADC /* CCHNearCenterMapClustererTests.m in Sources */,
+				4869F19818511B6D00251ADC /* CCHCenterOfMassMapClustererTests.m in Sources */,
 				626379F9184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
