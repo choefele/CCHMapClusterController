@@ -28,7 +28,6 @@
 
 @class CCHMapClusterAnnotation;
 
-id<MKAnnotation> CCHMapClusterControllerFindClosestAnnotation(NSSet *annotations, MKMapPoint mapPoint);
 MKMapRect CCHMapClusterControllerAlignToCellSize(MKMapRect mapRect, double cellSize);
 CCHMapClusterAnnotation *CCHMapClusterControllerFindVisibleAnnotation(NSSet *annotations, NSSet *visibleAnnotations);
 #if TARGET_OS_IPHONE

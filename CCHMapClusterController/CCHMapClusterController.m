@@ -48,6 +48,7 @@
 @property (nonatomic, strong) CCHMapClusterAnnotation *mapClusterAnnotationToSelect;
 @property (nonatomic, assign) MKCoordinateSpan regionSpanBeforeChange;
 @property (nonatomic, strong) id<CCHMapClusterer> strongClusterer;
+@property (nonatomic, strong) CCHMapClusterAnnotation *(^findVisibleAnnotation)(NSSet *annotations, NSSet *visibleAnnotations);
 
 @end
 
@@ -57,6 +58,7 @@
 {
     self = [super init];
     if (self) {
+        self.reuseExistingClusterAnnotations = YES;
         self.marginFactor = 0.5;
         self.cellSize = 60;
         self.mapView = mapView;
@@ -73,10 +75,22 @@
 
 - (void)setClusterer:(id<CCHMapClusterer>)clusterer
 {
-    NSAssert(clusterer != nil, @"Clusterer must not be nil");
-    
     _clusterer = clusterer;
     self.strongClusterer = nil;
+}
+
+- (void)setReuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotations
+{
+    _reuseExistingClusterAnnotations = reuseExistingClusterAnnotations;
+    if (reuseExistingClusterAnnotations) {
+        self.findVisibleAnnotation = ^CCHMapClusterAnnotation *(NSSet *annotations, NSSet *visibleAnnotations) {
+            return CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
+        };
+    } else {
+        self.findVisibleAnnotation = ^CCHMapClusterAnnotation *(NSSet *annotations, NSSet *visibleAnnotations) {
+            return nil;
+        };
+    }
 }
 
 - (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
@@ -115,7 +129,7 @@
                 }
                 
                 // Select cluster representation
-                CCHMapClusterAnnotation *annotationForCell = CCHMapClusterControllerFindVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
+                CCHMapClusterAnnotation *annotationForCell = _findVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
                 if (annotationForCell == nil) {
                     annotationForCell = [[CCHMapClusterAnnotation alloc] init];
                     annotationForCell.coordinate = [_clusterer coordinateForAnnotations:allAnnotationsInCell inMapRect:cellMapRect];

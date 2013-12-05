@@ -36,6 +36,7 @@
 @property (nonatomic, assign, getter = isDebuggingEnabled) BOOL debuggingEnabled;
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
 @property (nonatomic, weak) id<CCHMapClusterer> clusterer;
+@property (nonatomic, assign) BOOL reuseExistingClusterAnnotations;
 @property (nonatomic, assign, readonly) NSUInteger numberOfAnnotations;
 
 - (id)initWithMapView:(MKMapView *)mapView;

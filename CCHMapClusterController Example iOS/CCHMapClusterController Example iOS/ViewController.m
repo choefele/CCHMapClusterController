@@ -40,6 +40,7 @@
     self.mapClusterer = [[CCHCenterOfMassMapClusterer alloc] init];
 //    self.mapClusterController.clusterer = self.mapClusterer;
 //    self.mapClusterController.debuggingEnabled = YES;
+//    self.mapClusterController.reuseExistingClusterAnnotations = NO;
     
     // Read annotations
     DataReader *dataReader = [[DataReader alloc] init];
