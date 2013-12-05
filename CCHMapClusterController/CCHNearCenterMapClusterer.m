@@ -1,5 +1,5 @@
 //
-//  CCHMapClusterer.h
+//  CCHNearCenterMapClusterer.m
 //  CCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
@@ -23,11 +23,33 @@
 //  THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
-#import <MapKit/MapKit.h>
+#import "CCHNearCenterMapClusterer.h"
 
-@protocol CCHMapClusterer
+#import <float.h>
 
-- (CLLocationCoordinate2D)coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
+@implementation CCHNearCenterMapClusterer
+
+id<MKAnnotation> findClosestAnnotation(NSSet *annotations, MKMapPoint mapPoint)
+{
+    id<MKAnnotation> closestAnnotation;
+    CLLocationDistance closestDistance = __DBL_MAX__;
+    for (id<MKAnnotation> annotation in annotations) {
+        MKMapPoint annotationAsMapPoint = MKMapPointForCoordinate(annotation.coordinate);
+        CLLocationDistance distance = MKMetersBetweenMapPoints(mapPoint, annotationAsMapPoint);
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestAnnotation = annotation;
+        }
+    }
+    
+    return closestAnnotation;
+}
+
+- (CLLocationCoordinate2D)coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect
+{
+    MKMapPoint centerMapPoint = MKMapPointMake(MKMapRectGetMidX(mapRect), MKMapRectGetMidY(mapRect));
+    id<MKAnnotation> closestAnnotation = findClosestAnnotation(annotations, centerMapPoint);
+    return closestAnnotation.coordinate;
+}
 
 @end

@@ -14,7 +14,7 @@
 #import "CCHMapClusterAnnotation.h"
 #import "CCHMapClusterController.h"
 #import "CCHMapClusterControllerDelegate.h"
-#import "CCHMapCenterOfMassClusterer.h"
+#import "CCHCenterOfMassMapClusterer.h"
 
 @interface ViewController()<DataReaderDelegate, CCHMapClusterControllerDelegate>
 
@@ -37,7 +37,7 @@
     // Set up map clustering
     self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.mapClusterController.delegate = self;
-    self.mapClusterer = [[CCHMapCenterOfMassClusterer alloc] init];
+    self.mapClusterer = [[CCHCenterOfMassMapClusterer alloc] init];
 //    self.mapClusterController.clusterer = self.mapClusterer;
 //    self.mapClusterController.debuggingEnabled = YES;
     

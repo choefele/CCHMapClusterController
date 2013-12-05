@@ -1,5 +1,5 @@
 //
-//  CCHMapClusterer.h
+//  CCHCenterOfMassMapClusterer.h
 //  CCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
@@ -24,9 +24,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <MapKit/MapKit.h>
 
-@protocol CCHMapClusterer
+#import "CCHMapClusterer.h"
+
+@interface CCHCenterOfMassMapClusterer : NSObject<CCHMapClusterer>
 
 - (CLLocationCoordinate2D)coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
 

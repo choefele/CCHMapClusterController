@@ -31,7 +31,7 @@
 #import "CCHMapClusterAnnotation.h"
 #import "CCHMapClusterControllerDelegate.h"
 #import "CCHMapViewDelegateProxy.h"
-#import "CCHMapNearCenterClusterer.h"
+#import "CCHNearCenterMapClusterer.h"
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 @interface CCHMapClusterControllerPolygon : MKPolygon
@@ -64,7 +64,7 @@
         self.mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
         
         // Keep strong reference to default instance because public property is weak
-        CCHMapNearCenterClusterer *clusterer = [[CCHMapNearCenterClusterer alloc] init];
+        CCHNearCenterMapClusterer *clusterer = [[CCHNearCenterMapClusterer alloc] init];
         self.clusterer = clusterer;
         self.strongClusterer = clusterer;
     }
