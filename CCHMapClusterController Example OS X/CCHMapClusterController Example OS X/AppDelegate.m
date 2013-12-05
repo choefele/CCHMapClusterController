@@ -14,10 +14,12 @@
 #import "CCHMapClusterAnnotation.h"
 #import "CCHMapClusterController.h"
 #import "CCHMapClusterControllerDelegate.h"
+#import "CCHCenterOfMassMapClusterer.h"
 
 @interface AppDelegate()<DataReaderDelegate, CCHMapClusterControllerDelegate>
 
 @property (strong, nonatomic) CCHMapClusterController *mapClusterController;
+@property (strong, nonatomic) id<CCHMapClusterer> mapClusterer;
 
 @end
 
@@ -33,7 +35,16 @@
     // Set up map clustering
     self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.mapClusterController.delegate = self;
-//    self.mapClusterController.debuggingEnabled = YES;
+
+    // Cell size and margin factor
+//    self.mapClusterController.cellSize = 100;           // [points]
+//    self.mapClusterController.marginFactor = 0;         // 0 = no additional margin
+//    self.mapClusterController.debuggingEnabled = YES;   // display grid
+    
+    // Selecting cluster representations
+//    self.mapClusterer = [[CCHCenterOfMassMapClusterer alloc] init];
+//    self.mapClusterController.clusterer = self.mapClusterer;        // change default clusterer
+//    self.mapClusterController.reuseExistingClusterAnnotations = NO; // YES to avoid updating positions
     
     // Read annotations
     DataReader *dataReader = [[DataReader alloc] init];
