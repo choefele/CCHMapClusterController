@@ -62,7 +62,8 @@ Clustered annotations are of type `CCHMapClusterAnnotation`. Your code can custo
     subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
 {
     NSUInteger numAnnotations = MIN(mapClusterAnnotation.annotations.count, 5);
-    NSArray *annotations = [mapClusterAnnotation.annotations subarrayWithRange:NSMakeRange(0, numAnnotations)];
+    NSArray *annotations = [mapClusterAnnotation.annotations 
+        subarrayWithRange:NSMakeRange(0, numAnnotations)];
     NSArray *titles = [annotations valueForKey:@"title"];
     return [titles componentsJoinedByString:@", "];
 }
@@ -80,9 +81,9 @@ The `marginFactor` property configures the additional map area around the visibl
 
 To debug these settings, set the `debugEnabled` property to `YES`. This will display the grid used for clustering overlayed onto the map.
 
-## Selecting annotations
+## Finding a clustered annotation
 
-A common use case is to have a search field where the user can look for a specific annotation. Selecting this annotation would then zoom to its position on the map. 
+A common use case is to have a search field where the user can make a choice from a list of matching annotations. Selecting an annotation would then zoom to its position on the map.
 
 For this to work, you have to figure out which cluster contains the selected annotation. In addition, the clustering changes while zooming thus requiring an incremental approach to finding the cluster that contains the annotation the user is looking for.
 
