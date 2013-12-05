@@ -19,6 +19,7 @@
 @interface ViewController()<DataReaderDelegate, CCHMapClusterControllerDelegate>
 
 @property (strong, nonatomic) CCHMapClusterController *mapClusterController;
+@property (strong, nonatomic) id<CCHMapClusterer> mapClusterer;
 
 @end
 
@@ -36,8 +37,9 @@
     // Set up map clustering
     self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.mapClusterController.delegate = self;
-    self.mapClusterController.clusterer = [[CCHMapCenterOfMassClusterer alloc] init];
-    self.mapClusterController.debuggingEnabled = YES;
+    self.mapClusterer = [[CCHMapCenterOfMassClusterer alloc] init];
+//    self.mapClusterController.clusterer = self.mapClusterer;
+//    self.mapClusterController.debuggingEnabled = YES;
     
     // Read annotations
     DataReader *dataReader = [[DataReader alloc] init];

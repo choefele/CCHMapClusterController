@@ -47,6 +47,7 @@
 @property (nonatomic, strong) id<MKAnnotation> annotationToSelect;
 @property (nonatomic, strong) CCHMapClusterAnnotation *mapClusterAnnotationToSelect;
 @property (nonatomic, assign) MKCoordinateSpan regionSpanBeforeChange;
+@property (nonatomic, strong) id<CCHMapClusterer> strongClusterer;
 
 @end
 
@@ -61,9 +62,21 @@
         self.mapView = mapView;
         self.allAnnotationsMapView = [[MKMapView alloc] initWithFrame:CGRectZero];
         self.mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
-        self.clusterer = [[CCHMapNearCenterClusterer alloc] init];
+        
+        // Keep strong reference to default instance because public property is weak
+        CCHMapNearCenterClusterer *clusterer = [[CCHMapNearCenterClusterer alloc] init];
+        self.clusterer = clusterer;
+        self.strongClusterer = clusterer;
     }
     return self;
+}
+
+- (void)setClusterer:(id<CCHMapClusterer>)clusterer
+{
+    NSAssert(clusterer != nil, @"Clusterer must not be nil");
+    
+    _clusterer = clusterer;
+    self.strongClusterer = nil;
 }
 
 - (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler

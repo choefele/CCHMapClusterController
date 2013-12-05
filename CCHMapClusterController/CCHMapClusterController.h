@@ -35,7 +35,7 @@
 @property (nonatomic, assign) double cellSize;
 @property (nonatomic, assign, getter = isDebuggingEnabled) BOOL debuggingEnabled;
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
-@property (nonatomic, strong) id<CCHMapClusterer> clusterer;
+@property (nonatomic, weak) id<CCHMapClusterer> clusterer;
 @property (nonatomic, assign, readonly) NSUInteger numberOfAnnotations;
 
 - (id)initWithMapView:(MKMapView *)mapView;
