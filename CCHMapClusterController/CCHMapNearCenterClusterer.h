@@ -10,7 +10,7 @@
 
 #import "CCHMapClusterer.h"
 
-@interface CCHMapCenterClusterer : NSObject<CCHMapClusterer>
+@interface CCHMapNearCenterClusterer : NSObject<CCHMapClusterer>
 
 - (CLLocationCoordinate2D)coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
 

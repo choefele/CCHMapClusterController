@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4869F18C184FDC0800251ADC /* CCHMapCenterClusterer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F188184FDC0800251ADC /* CCHMapCenterClusterer.m */; };
+		4869F18C184FDC0800251ADC /* CCHMapNearCenterClusterer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F188184FDC0800251ADC /* CCHMapNearCenterClusterer.m */; };
 		4869F18D184FDC0800251ADC /* CCHMapCenterOfMassClusterer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F18A184FDC0800251ADC /* CCHMapCenterOfMassClusterer.m */; };
 		489AE784184E5D5800E7577A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667C21845F8330046D5D5 /* MapKit.framework */; };
 		489AE785184E5D5E00E7577A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48D06BE01846732B005AC9C7 /* CoreLocation.framework */; };
@@ -43,8 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4869F187184FDC0800251ADC /* CCHMapCenterClusterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapCenterClusterer.h; sourceTree = "<group>"; };
-		4869F188184FDC0800251ADC /* CCHMapCenterClusterer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapCenterClusterer.m; sourceTree = "<group>"; };
+		4869F187184FDC0800251ADC /* CCHMapNearCenterClusterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapNearCenterClusterer.h; sourceTree = "<group>"; };
+		4869F188184FDC0800251ADC /* CCHMapNearCenterClusterer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapNearCenterClusterer.m; sourceTree = "<group>"; };
 		4869F189184FDC0800251ADC /* CCHMapCenterOfMassClusterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapCenterOfMassClusterer.h; sourceTree = "<group>"; };
 		4869F18A184FDC0800251ADC /* CCHMapCenterOfMassClusterer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapCenterOfMassClusterer.m; sourceTree = "<group>"; };
 		4869F18B184FDC0800251ADC /* CCHMapClusterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapClusterer.h; sourceTree = "<group>"; };
@@ -121,8 +121,8 @@
 				48D06BD818466FF4005AC9C7 /* CCHMapClusterControllerUtils.h */,
 				48D06BD918466FF4005AC9C7 /* CCHMapClusterControllerUtils.m */,
 				4869F18B184FDC0800251ADC /* CCHMapClusterer.h */,
-				4869F187184FDC0800251ADC /* CCHMapCenterClusterer.h */,
-				4869F188184FDC0800251ADC /* CCHMapCenterClusterer.m */,
+				4869F187184FDC0800251ADC /* CCHMapNearCenterClusterer.h */,
+				4869F188184FDC0800251ADC /* CCHMapNearCenterClusterer.m */,
 				4869F189184FDC0800251ADC /* CCHMapCenterOfMassClusterer.h */,
 				4869F18A184FDC0800251ADC /* CCHMapCenterOfMassClusterer.m */,
 				48D06BDA18466FF4005AC9C7 /* CCHMapViewDelegateProxy.h */,
@@ -320,7 +320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4869F18C184FDC0800251ADC /* CCHMapCenterClusterer.m in Sources */,
+				4869F18C184FDC0800251ADC /* CCHMapNearCenterClusterer.m in Sources */,
 				62D667561845E0BA0046D5D5 /* AppDelegate.m in Sources */,
 				48D06BDE18466FF4005AC9C7 /* CCHMapClusterControllerUtils.m in Sources */,
 				48D06BDF18466FF4005AC9C7 /* CCHMapViewDelegateProxy.m in Sources */,

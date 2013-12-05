@@ -8,8 +8,6 @@
 
 #import "CCHMapCenterOfMassClusterer.h"
 
-#import "CCHMapClusterAnnotation.h"
-
 @implementation CCHMapCenterOfMassClusterer
 
 - (CLLocationCoordinate2D)coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect

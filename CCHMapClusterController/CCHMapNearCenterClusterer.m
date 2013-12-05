@@ -6,13 +6,11 @@
 //  Copyright (c) 2013 Claus Höfele. All rights reserved.
 //
 
-#import "CCHMapCenterClusterer.h"
-
-#import "CCHMapClusterAnnotation.h"
+#import "CCHMapNearCenterClusterer.h"
 
 #import <float.h>
 
-@implementation CCHMapCenterClusterer
+@implementation CCHMapNearCenterClusterer
 
 id<MKAnnotation> findClosestAnnotation(NSSet *annotations, MKMapPoint mapPoint)
 {

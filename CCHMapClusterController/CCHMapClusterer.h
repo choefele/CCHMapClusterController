@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
-@class CCHMapClusterAnnotation;
-
 @protocol CCHMapClusterer
 
 - (CLLocationCoordinate2D)coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;

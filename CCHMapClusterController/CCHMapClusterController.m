@@ -31,7 +31,7 @@
 #import "CCHMapClusterAnnotation.h"
 #import "CCHMapClusterControllerDelegate.h"
 #import "CCHMapViewDelegateProxy.h"
-#import "CCHMapCenterClusterer.h"
+#import "CCHMapNearCenterClusterer.h"
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 @interface CCHMapClusterControllerPolygon : MKPolygon
@@ -61,7 +61,7 @@
         self.mapView = mapView;
         self.allAnnotationsMapView = [[MKMapView alloc] initWithFrame:CGRectZero];
         self.mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
-        self.clusterer = [[CCHMapCenterClusterer alloc] init];
+        self.clusterer = [[CCHMapNearCenterClusterer alloc] init];
     }
     return self;
 }
