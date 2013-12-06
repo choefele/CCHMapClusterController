@@ -16,12 +16,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="MFm-39-WZl">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="MFm-39-WZl">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="MFm-39-WZl" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="8Sh-V0-mhs"/>
+                            <constraint firstItem="MFm-39-WZl" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="PNS-tl-5yg"/>
+                            <constraint firstAttribute="trailing" secondItem="MFm-39-WZl" secondAttribute="trailing" id="tea-8r-93P"/>
+                            <constraint firstAttribute="bottom" secondItem="MFm-39-WZl" secondAttribute="bottom" id="uIP-OU-7Yj"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Map Clustering" id="fDr-eL-MQe"/>
                     <connections>
