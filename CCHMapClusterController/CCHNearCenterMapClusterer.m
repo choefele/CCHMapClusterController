@@ -25,6 +25,8 @@
 
 #import "CCHNearCenterMapClusterer.h"
 
+#import "CCHMapClusterController.h"
+
 #import <float.h>
 
 @implementation CCHNearCenterMapClusterer
@@ -45,7 +47,7 @@ id<MKAnnotation> findClosestAnnotation(NSSet *annotations, MKMapPoint mapPoint)
     return closestAnnotation;
 }
 
-- (CLLocationCoordinate2D)coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect
+- (CLLocationCoordinate2D)mapClusterController:(CCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect
 {
     MKMapPoint centerMapPoint = MKMapPointMake(MKMapRectGetMidX(mapRect), MKMapRectGetMidY(mapRect));
     id<MKAnnotation> closestAnnotation = findClosestAnnotation(annotations, centerMapPoint);

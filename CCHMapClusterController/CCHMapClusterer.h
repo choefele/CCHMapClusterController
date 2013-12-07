@@ -26,8 +26,10 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
+@class CCHMapClusterController;
+
 @protocol CCHMapClusterer
 
-- (CLLocationCoordinate2D)coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
+- (CLLocationCoordinate2D)mapClusterController:(CCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
 
 @end

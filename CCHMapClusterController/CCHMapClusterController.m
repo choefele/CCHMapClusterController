@@ -132,7 +132,7 @@
                 CCHMapClusterAnnotation *annotationForCell = _findVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
                 if (annotationForCell == nil) {
                     annotationForCell = [[CCHMapClusterAnnotation alloc] init];
-                    annotationForCell.coordinate = [_clusterer coordinateForAnnotations:allAnnotationsInCell inMapRect:cellMapRect];
+                    annotationForCell.coordinate = [_clusterer mapClusterController:self coordinateForAnnotations:allAnnotationsInCell inMapRect:cellMapRect];
                 }
                 annotationForCell.annotations = allAnnotationsInCell.allObjects;
                 annotationForCell.delegate = _delegate;

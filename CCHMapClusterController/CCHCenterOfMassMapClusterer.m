@@ -25,9 +25,11 @@
 
 #import "CCHCenterOfMassMapClusterer.h"
 
+#import "CCHMapClusterController.h"
+
 @implementation CCHCenterOfMassMapClusterer
 
-- (CLLocationCoordinate2D)coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect
+- (CLLocationCoordinate2D)mapClusterController:(CCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect
 {
     double latitude = 0, longitude = 0;
     for (id<MKAnnotation> annotation in annotations) {
