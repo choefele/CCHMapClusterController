@@ -28,11 +28,17 @@
 
 @protocol CCHMapClusterControllerDelegate;
 @protocol CCHMapClusterer;
+@protocol CCHMapAnimator;
 
 /**
  Controller to cluster annotations. Automatically updates clustering when user zooms or pans the map.
  */
 @interface CCHMapClusterController : NSObject
+
+/** Map view to display clustered annotations. */
+@property (nonatomic, strong, readonly) MKMapView *mapView;
+/** Number of clustered annotations. */
+@property (nonatomic, assign, readonly) NSUInteger numberOfAnnotations;
 
 /** Multiplier to extend visible area that's included for clustering (default: 0.5). */
 @property (nonatomic, assign) double marginFactor;
@@ -40,14 +46,17 @@
 @property (nonatomic, assign) double cellSize;
 /** Displays the grid used for clustering. */
 @property (nonatomic, assign, getter = isDebuggingEnabled) BOOL debuggingEnabled;
+
 /** Delegate to configure cluster annotations. */
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
+
 /** Delegate to define strategy for positioning cluster annotations. */
 @property (nonatomic, weak) id<CCHMapClusterer> clusterer;
 /** Reuse existing cluster annotations for a cell (default: `YES`). */
 @property (nonatomic, assign) BOOL reuseExistingClusterAnnotations;
-/** Number of clustered annotations. */
-@property (nonatomic, assign, readonly) NSUInteger numberOfAnnotations;
+
+/** Delegate to define strategy for animating cluster annotations in and out. */
+@property (nonatomic, weak) id<CCHMapAnimator> animator;
 
 /**
  Initializes the cluster controller.

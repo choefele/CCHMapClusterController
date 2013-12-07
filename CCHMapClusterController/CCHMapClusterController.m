@@ -32,6 +32,7 @@
 #import "CCHMapClusterControllerDelegate.h"
 #import "CCHMapViewDelegateProxy.h"
 #import "CCHNearCenterMapClusterer.h"
+#import "CCHFadeInOutMapAnimator.h"
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 @interface CCHMapClusterControllerPolygon : MKPolygon
@@ -49,6 +50,7 @@
 @property (nonatomic, assign) MKCoordinateSpan regionSpanBeforeChange;
 @property (nonatomic, strong) id<CCHMapClusterer> strongClusterer;
 @property (nonatomic, strong) CCHMapClusterAnnotation *(^findVisibleAnnotation)(NSSet *annotations, NSSet *visibleAnnotations);
+@property (nonatomic, strong) id<CCHMapAnimator> strongAnimator;
 
 @end
 
@@ -66,9 +68,12 @@
         self.mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
         
         // Keep strong reference to default instance because public property is weak
-        CCHNearCenterMapClusterer *clusterer = [[CCHNearCenterMapClusterer alloc] init];
+        id<CCHMapClusterer> clusterer = [[CCHNearCenterMapClusterer alloc] init];
         self.clusterer = clusterer;
         self.strongClusterer = clusterer;
+        id<CCHMapAnimator> animator = [[CCHFadeInOutMapAnimator alloc] init];
+        self.animator = animator;
+        self.strongAnimator = animator;
     }
     return self;
 }
@@ -77,6 +82,12 @@
 {
     _clusterer = clusterer;
     self.strongClusterer = nil;
+}
+
+- (void)setAnimator:(id<CCHMapAnimator>)animator
+{
+    _animator = animator;
+    self.strongAnimator = nil;
 }
 
 - (void)setReuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotations
@@ -141,7 +152,7 @@
                 
                 // Show cluster annotation on map
                 [visibleAnnotationsInCell removeObject:annotationForCell];
-                [self removeAnnotations:visibleAnnotationsInCell];
+                [_animator mapClusterController:self removeAnnotations:visibleAnnotationsInCell];
                 [_mapView addAnnotation:annotationForCell];
             }
             cellMapRect.origin.x += MKMapRectGetWidth(cellMapRect);
@@ -200,23 +211,6 @@
     }
 }
 
-- (void)removeAnnotations:(NSSet *)annotations
-{
-    // Animate annotations that get removed
-    for (id<MKAnnotation> annotation in annotations) {
-#if TARGET_OS_IPHONE
-        MKAnnotationView *annotationView = [self.mapView viewForAnnotation:annotation];
-        [UIView animateWithDuration:0.2 animations:^{
-            annotationView.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [self.mapView removeAnnotation:annotation];
-        }];
-#else
-        [self.mapView removeAnnotation:annotation];
-#endif
-    }
-}
-
 #pragma mark - Map view proxied delegate methods
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)annotationViews
@@ -227,15 +221,7 @@
     }
 
     // Animate annotations that get added
-#if TARGET_OS_IPHONE
-    for (MKAnnotationView *annotationView in annotationViews)
-    {
-        annotationView.alpha = 0.0;
-        [UIView animateWithDuration:0.2 animations:^{
-            annotationView.alpha = 1.0;
-        }];
-    }
-#endif
+    [self.animator mapClusterController:self didAddAnnotationViews:annotationViews];
 }
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
