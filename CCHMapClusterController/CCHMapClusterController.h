@@ -29,18 +29,45 @@
 @protocol CCHMapClusterControllerDelegate;
 @protocol CCHMapClusterer;
 
+/**
+ Controller to cluster annotations. Automatically updates clustering when user zooms or pans the map.
+ */
 @interface CCHMapClusterController : NSObject
 
+/** Multiplier to extend visible area that's included for clustering (default: 0.5). */
 @property (nonatomic, assign) double marginFactor;
+/** Cell size in [points] (default: 60). */
 @property (nonatomic, assign) double cellSize;
+/** Displays the grid used for clustering. */
 @property (nonatomic, assign, getter = isDebuggingEnabled) BOOL debuggingEnabled;
+/** Delegate to configure cluster annotations. */
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
+/** Delegate to define strategy for positioning cluster annotations. */
 @property (nonatomic, weak) id<CCHMapClusterer> clusterer;
+/** Reuse existing cluster annotations for a cell (default: `YES`). */
 @property (nonatomic, assign) BOOL reuseExistingClusterAnnotations;
+/** Number of clustered annotations. */
 @property (nonatomic, assign, readonly) NSUInteger numberOfAnnotations;
 
+/**
+ Initializes the cluster controller.
+ @param mapView `MKMapView` to use to display clusters.
+ */
 - (id)initWithMapView:(MKMapView *)mapView;
+
+/** 
+ Adds annotations and immediately updates clustering.
+ @param annotations Annotations to add.
+ @param completionHandler Called when the clustering finished updating.
+ */
 - (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
+
+/** 
+ Zooms to the position of the cluster that contains the given annotation and selects the cluster's annotation view.
+ @param annotation The annotation to look for. Uses `isEqual:` to check for a matching annotation previously added with `addAnnotations:withCompletionHandler:`.
+ @param latitudinalMeters North-to-south distance used for zooming.
+ @param longitudinalMeters East-to-west distance used for zooming.
+ */
 - (void)selectAnnotation:(id<MKAnnotation>)annotation andZoomToRegionWithLatitudinalMeters:(CLLocationDistance)latitudinalMeters longitudinalMeters:(CLLocationDistance)longitudinalMeters;
 
 @end
