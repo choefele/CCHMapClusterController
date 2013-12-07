@@ -20,8 +20,7 @@ If you have your project set up with an `MKMapView`, integrating clustering will
     
   NSArray annotations = ...
   <b>self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
-  [self.mapClusterController addAnnotations:annotations 
-                      withCompletionHandler:NULL];</b>
+  [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];</b>
 }
 </pre>
 
@@ -87,7 +86,14 @@ To debug these settings, set the `debugEnabled` property to `YES`. This will dis
 
 ## Positioning cluster annotations
 
-For aesthetic reasons, you don't want to line up cluster annotations evenly as this would make the underlying grid obvious and look odd.
+For aesthetic reasons, you don't want to line up cluster annotations evenly as this would make the underlying grid obvious. This library comes with two implementations to choose the position of cluster annotations:
+
+- `CCHNearCenterMapClusterer` (default): uses the position of the annotation in a cluster that's closest to the center
+- `CCHCenterOfMassMapClusterer`: computes the average of the coordinates of all annotations in a cluster
+
+Instances of these classes can be assigned to `CCHMapClusterController`'s property `clusterer`. By implementing the protocol `CCHMapClusterer`, you can provide your own strategy for positioning cluster annotations.
+
+In addition, `CCHMapClusterController` by default reuses cluster annotations for a cell. This is beneficial for incrementally adding more annotations to the clustering (e.g. when downloading batches of data) because you want to avoid the cluster annotation jumping around during updates. Set `reuseExistingClusterAnnotations` to `NO` if you don't want this behavior.
 
 ## Finding a clustered annotation
 
