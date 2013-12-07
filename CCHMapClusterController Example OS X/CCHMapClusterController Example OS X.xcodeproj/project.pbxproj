@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4869F18C184FDC0800251ADC /* CCHNearCenterMapClusterer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F188184FDC0800251ADC /* CCHNearCenterMapClusterer.m */; };
 		4869F18D184FDC0800251ADC /* CCHCenterOfMassMapClusterer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F18A184FDC0800251ADC /* CCHCenterOfMassMapClusterer.m */; };
+		4869F1A41853D09800251ADC /* CCHFadeInOutMapAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F1A21853D09800251ADC /* CCHFadeInOutMapAnimator.m */; };
 		489AE784184E5D5800E7577A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667C21845F8330046D5D5 /* MapKit.framework */; };
 		489AE785184E5D5E00E7577A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48D06BE01846732B005AC9C7 /* CoreLocation.framework */; };
 		48D06BDC18466FF4005AC9C7 /* CCHMapClusterAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D06BD418466FF4005AC9C7 /* CCHMapClusterAnnotation.m */; };
@@ -48,6 +49,9 @@
 		4869F189184FDC0800251ADC /* CCHCenterOfMassMapClusterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHCenterOfMassMapClusterer.h; sourceTree = "<group>"; };
 		4869F18A184FDC0800251ADC /* CCHCenterOfMassMapClusterer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHCenterOfMassMapClusterer.m; sourceTree = "<group>"; };
 		4869F18B184FDC0800251ADC /* CCHMapClusterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapClusterer.h; sourceTree = "<group>"; };
+		4869F1A11853D09800251ADC /* CCHFadeInOutMapAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHFadeInOutMapAnimator.h; sourceTree = "<group>"; };
+		4869F1A21853D09800251ADC /* CCHFadeInOutMapAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHFadeInOutMapAnimator.m; sourceTree = "<group>"; };
+		4869F1A31853D09800251ADC /* CCHMapAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapAnimator.h; sourceTree = "<group>"; };
 		48D06BD318466FF4005AC9C7 /* CCHMapClusterAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapClusterAnnotation.h; sourceTree = "<group>"; };
 		48D06BD418466FF4005AC9C7 /* CCHMapClusterAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapClusterAnnotation.m; sourceTree = "<group>"; };
 		48D06BD518466FF4005AC9C7 /* CCHMapClusterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapClusterController.h; sourceTree = "<group>"; };
@@ -125,6 +129,9 @@
 				4869F188184FDC0800251ADC /* CCHNearCenterMapClusterer.m */,
 				4869F189184FDC0800251ADC /* CCHCenterOfMassMapClusterer.h */,
 				4869F18A184FDC0800251ADC /* CCHCenterOfMassMapClusterer.m */,
+				4869F1A31853D09800251ADC /* CCHMapAnimator.h */,
+				4869F1A11853D09800251ADC /* CCHFadeInOutMapAnimator.h */,
+				4869F1A21853D09800251ADC /* CCHFadeInOutMapAnimator.m */,
 				48D06BDA18466FF4005AC9C7 /* CCHMapViewDelegateProxy.h */,
 				48D06BDB18466FF4005AC9C7 /* CCHMapViewDelegateProxy.m */,
 			);
@@ -324,6 +331,7 @@
 				62D667561845E0BA0046D5D5 /* AppDelegate.m in Sources */,
 				48D06BDE18466FF4005AC9C7 /* CCHMapClusterControllerUtils.m in Sources */,
 				48D06BDF18466FF4005AC9C7 /* CCHMapViewDelegateProxy.m in Sources */,
+				4869F1A41853D09800251ADC /* CCHFadeInOutMapAnimator.m in Sources */,
 				48D06BEA184673E0005AC9C7 /* DataReader.m in Sources */,
 				62D6674F1845E0BA0046D5D5 /* main.m in Sources */,
 				4869F18D184FDC0800251ADC /* CCHCenterOfMassMapClusterer.m in Sources */,
