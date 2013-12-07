@@ -20,8 +20,7 @@ If you have your project set up with an `MKMapView`, integrating clustering will
     
   NSArray annotations = ...
   <b>self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
-  [self.mapClusterController addAnnotations:annotations 
-                      withCompletionHandler:NULL];</b>
+  [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];</b>
 }
 </pre>
 
@@ -45,9 +44,13 @@ platform :osx, '10.9'
 pod "CCHMapClusterController"
 ```
 
-## Customizing annotations
+## Customizing cluster annotations
 
-Clustered annotations are of type `CCHMapClusterAnnotation`. Your code can customize their titles and subtitles by registering as a `CCHMapClusterControllerDelegate` with `CCHMapClusterController` and implementing two delegate methods. Here is an example:
+Cluster annotations are of type `CCHMapClusterAnnotation`. Your code can customize their titles and subtitles by registering as a `CCHMapClusterControllerDelegate` with `CCHMapClusterController` and implementing two delegate methods.
+
+In these methods, `CCHMapClusterAnnotation` gives you access to the annotations contained in the cluster through the property `annotations`. An annotation in this array will always implement `MKAnnotation`, but is otherwise of same type as the instances you added to `CCHMapClusterController` when calling `addAnnotations:withCompletionHandler:`.
+
+Here is an example:
 
 ```Objective-C
 - (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController
@@ -80,6 +83,17 @@ The clustering algorithm splits a rectangular area of the map into a grid of squ
 The `marginFactor` property configures the additional map area around the visible area that's included for clustering. This avoids sudden changes at the edges of the visible area when the user pans the map. Ideally, you would set this value to 1.0 (100% additional map area on each side), as this is the maximum scroll area a user can achieve with a panning gesture. However, this is affects performance as this will cover 9x the map area for clustering. The default is 0.5 (50% additional area on each side).
 
 To debug these settings, set the `debugEnabled` property to `YES`. This will display the grid used for clustering overlayed onto the map.
+
+## Positioning cluster annotations
+
+For aesthetic reasons, you don't want to line up cluster annotations evenly as this would make the underlying grid obvious. This library comes with two implementations to choose the position of cluster annotations:
+
+- `CCHNearCenterMapClusterer` (default): uses the position of the annotation in a cluster that's closest to the center
+- `CCHCenterOfMassMapClusterer`: computes the average of the coordinates of all annotations in a cluster
+
+Instances of these classes can be assigned to `CCHMapClusterController`'s property `clusterer`. By implementing the protocol `CCHMapClusterer`, you can provide your own strategy for positioning cluster annotations.
+
+In addition, `CCHMapClusterController` by default reuses cluster annotations for a cell. This is beneficial for incrementally adding more annotations to the clustering (e.g. when downloading batches of data) because you want to avoid the cluster annotation jumping around during updates. Set `reuseExistingClusterAnnotations` to `NO` if you don't want this behavior.
 
 ## Finding a clustered annotation
 
