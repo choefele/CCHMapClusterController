@@ -44,6 +44,8 @@ platform :osx, '10.9'
 pod "CCHMapClusterController"
 ```
 
+See [Changes.md](https://github.com/choefele/CCHMapClusterController/blob/master/CHANGES.md) for a high-level overview of recent updates.
+
 ## Cell size and margin factor
 
 The clustering algorithm splits a rectangular area of the map into a grid of square cells. For each cell, a representation for the annotations in this cell is selected and displayed. 
