@@ -6,6 +6,7 @@ Changes
 - Added option to configure positioning of cluster annotations
 - Added option to enable/disable reusing existing cluster annotations
 - Added option to configure how cluster annotations are animated
+- Added more unit tests
 
 ## 1.0.1
 
