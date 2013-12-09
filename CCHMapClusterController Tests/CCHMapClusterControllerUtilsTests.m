@@ -176,4 +176,30 @@
     XCTAssertEqualObjects(mapClusterAnnotation0, mapClusterAnnotationFound, @"Wrong cluster annotation");
 }
 
+- (void)testEnumerateCells
+{
+    MKMapRect mapRect = MKMapRectMake(0, 0, 100, 100);
+    __block NSUInteger numCalls = 0;
+    CCHMapClusterControllerEnumerateCells(mapRect, 10, ^(MKMapRect cellRect) {
+        numCalls++;
+        
+        XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__, @"Wrong size");
+        XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__, @"Wrong size");
+    });
+    XCTAssertEqual(numCalls, 100u, @"Wrong number of calls");
+}
+
+- (void)testEnumerateCellsAlign
+{
+    MKMapRect mapRect = MKMapRectMake(0, 0, 95, 95);
+    __block NSUInteger numCalls = 0;
+    CCHMapClusterControllerEnumerateCells(mapRect, 10, ^(MKMapRect cellRect) {
+        numCalls++;
+        
+        XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__, @"Wrong size");
+        XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__, @"Wrong size");
+    });
+    XCTAssertEqual(numCalls, 100u, @"Wrong number of calls");
+}
+
 @end

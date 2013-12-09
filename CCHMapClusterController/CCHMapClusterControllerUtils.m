@@ -103,3 +103,23 @@ CCHMapClusterAnnotation *CCHMapClusterControllerClusterAnnotationForAnnotation(M
     
     return annotationResult;
 }
+
+void CCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, void (^block)(MKMapRect cellRect))
+{
+    NSCAssert(block != NULL, @"block argument can't be NULL");
+    if (block == nil) {
+        return;
+    }
+    
+    MKMapRect cellRect = MKMapRectMake(0, MKMapRectGetMinY(mapRect), cellSize, cellSize);
+    while (MKMapRectGetMinY(cellRect) < MKMapRectGetMaxY(mapRect)) {
+        cellRect.origin.x = MKMapRectGetMinX(mapRect);
+        
+        while (MKMapRectGetMinX(cellRect) < MKMapRectGetMaxX(mapRect)) {
+            block(cellRect);
+            
+            cellRect.origin.x += MKMapRectGetWidth(cellRect);
+        }
+        cellRect.origin.y += MKMapRectGetWidth(cellRect);
+    }
+}
