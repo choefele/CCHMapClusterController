@@ -154,7 +154,11 @@
     });
     
     if (self.isDebuggingEnabled) {
-        [_mapView removeOverlays:_mapView.overlays];
+        for (id<MKOverlay> overlay in _mapView.overlays) {
+            if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
+                [_mapView removeOverlay:overlay];
+            }
+        }
 
         CCHMapClusterControllerEnumerateCells(gridMapRect, cellSize, ^(MKMapRect cellRect) {
             MKMapPoint points[4];
