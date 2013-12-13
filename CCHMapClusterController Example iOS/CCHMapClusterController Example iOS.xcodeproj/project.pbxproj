@@ -15,6 +15,7 @@
 		48D7B0C7185A679F0071636B /* KPAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0BE185A679F0071636B /* KPAnnotation.m */; };
 		48D7B0C8185A679F0071636B /* KPAnnotationTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0C0185A679F0071636B /* KPAnnotationTree.m */; };
 		48D7B0CA185A679F0071636B /* KPTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0C4185A679F0071636B /* KPTreeNode.m */; };
+		48D7B0CF185BA3750071636B /* TBQuadTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0CE185BA3750071636B /* TBQuadTree.m */; };
 		626379F9184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */; };
 		62978DDF1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */; };
 		62978DE11859DAAB00748230 /* Data.json in Resources */ = {isa = PBXBuildFile; fileRef = 62978DE01859DAAB00748230 /* Data.json */; };
@@ -67,6 +68,8 @@
 		48D7B0C0185A679F0071636B /* KPAnnotationTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KPAnnotationTree.m; sourceTree = "<group>"; };
 		48D7B0C3185A679F0071636B /* KPTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPTreeNode.h; sourceTree = "<group>"; };
 		48D7B0C4185A679F0071636B /* KPTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KPTreeNode.m; sourceTree = "<group>"; };
+		48D7B0CD185BA3750071636B /* TBQuadTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBQuadTree.h; sourceTree = "<group>"; };
+		48D7B0CE185BA3750071636B /* TBQuadTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBQuadTree.m; sourceTree = "<group>"; };
 		626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerUtilsTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerUtilsTests.m"; sourceTree = "<group>"; };
 		62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerPerformanceTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerPerformanceTests.m"; sourceTree = "<group>"; };
 		62978DE01859DAAB00748230 /* Data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Data.json; path = ../../Data.json; sourceTree = "<group>"; };
@@ -142,6 +145,16 @@
 			path = "../../CCHMapClusterController Tests/KPAnnotationTree";
 			sourceTree = "<group>";
 		};
+		48D7B0CC185BA3750071636B /* TBQuadTree */ = {
+			isa = PBXGroup;
+			children = (
+				48D7B0CD185BA3750071636B /* TBQuadTree.h */,
+				48D7B0CE185BA3750071636B /* TBQuadTree.m */,
+			);
+			name = TBQuadTree;
+			path = "../../CCHMapClusterController Tests/TBQuadTree";
+			sourceTree = "<group>";
+		};
 		62D667761845E0F20046D5D5 = {
 			isa = PBXGroup;
 			children = (
@@ -206,6 +219,7 @@
 		62D667A71845E0F20046D5D5 /* CCHMapClusterController Example iOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				48D7B0CC185BA3750071636B /* TBQuadTree */,
 				48D7B0BC185A679F0071636B /* KPAnnotationTree */,
 				626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */,
 				4869F1901851105A00251ADC /* CCHNearCenterMapClustererTests.m */,
@@ -367,6 +381,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48D7B0CF185BA3750071636B /* TBQuadTree.m in Sources */,
 				48D7B0CA185A679F0071636B /* KPTreeNode.m in Sources */,
 				48D7B0C7185A679F0071636B /* KPAnnotation.m in Sources */,
 				4869F1911851105A00251ADC /* CCHNearCenterMapClustererTests.m in Sources */,

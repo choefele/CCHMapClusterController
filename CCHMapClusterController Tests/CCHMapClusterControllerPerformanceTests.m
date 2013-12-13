@@ -10,6 +10,7 @@
 
 #import "CCHMapClusterControllerUtils.h"
 #import "KPAnnotationTree.h"
+#import "TBQuadTree.h"
 
 #define NUM_PASSES 10
 
@@ -87,6 +88,55 @@
         NSMutableArray *clusterCounts = [NSMutableArray array];
         CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
             NSArray *allAnnotationsInCell = [tree annotationsInMapRect:cellRect];
+            [clusterCounts addObject:@(allAnnotationsInCell.count)];
+        });
+        
+        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198, @"Wrong number of cells");
+        XCTAssertEqualObjects(clusterCounts, self.clusterCounts, @"Wrong cell counts");
+    }
+    
+    NSTimeInterval duration = ([NSDate timeIntervalSinceReferenceDate] - start) / (double)NUM_PASSES;
+    NSLog(@"Duration %@: %f", NSStringFromSelector(_cmd), duration);
+}
+
+TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
+{
+    CLLocationCoordinate2D topLeft = MKCoordinateForMapPoint(mapRect.origin);
+    CLLocationCoordinate2D botRight = MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMaxX(mapRect), MKMapRectGetMaxY(mapRect)));
+    
+    CLLocationDegrees minLat = botRight.latitude;
+    CLLocationDegrees maxLat = topLeft.latitude;
+    
+    CLLocationDegrees minLon = topLeft.longitude;
+    CLLocationDegrees maxLon = botRight.longitude;
+    
+    return TBBoundingBoxMake(minLat, minLon, maxLat, maxLon);
+}
+
+- (void)testTBQuadTree
+{
+    NSUInteger count = self.annotations.count;
+    TBQuadTreeNodeData *dataArray = malloc(sizeof(TBQuadTreeNodeData) * count);
+    for (NSInteger i = 0; i < count; i++) {
+        id<MKAnnotation> annotation = self.annotations[i];
+        dataArray[i] = TBQuadTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void*)annotation);
+    }
+
+    TBBoundingBox world = TBBoundingBoxMake(50, 10, 60, 20); // minLat, minLon, maxLat, maxLon
+    TBQuadTreeNode *root = TBQuadTreeBuildWithData(dataArray, count, world, 4);
+
+    double cellSize = self.cellSize;
+    MKMapRect mapRect = self.mapRect;
+    
+    NSTimeInterval start = [NSDate timeIntervalSinceReferenceDate];
+    
+    for (int i = 0; i < NUM_PASSES; i++) {
+        NSMutableArray *clusterCounts = [NSMutableArray array];
+        CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
+            __block NSMutableArray *allAnnotationsInCell = [NSMutableArray array];
+            TBQuadTreeGatherDataInRange(root, TBBoundingBoxForMapRect(cellRect), ^(TBQuadTreeNodeData data) {
+                [allAnnotationsInCell addObject:(__bridge id)data.data];
+            });
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
