@@ -16,6 +16,8 @@
 		48899956185CE2B000F3D6ED /* QTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48899950185CE2B000F3D6ED /* QTree.m */; };
 		48899957185CE2B000F3D6ED /* QTreeGeometryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 48899952185CE2B000F3D6ED /* QTreeGeometryUtils.m */; };
 		4889995A185D175000F3D6ED /* QCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = 48899959185D175000F3D6ED /* QCluster.m */; };
+		4889995D185D1C1300F3D6ED /* CCHMapTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 4889995C185D1C1300F3D6ED /* CCHMapTree.m */; };
+		4889995F185D1D9300F3D6ED /* CCHMapTreeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4889995E185D1D9300F3D6ED /* CCHMapTreeTests.m */; };
 		48D7B0C8185A679F0071636B /* KPAnnotationTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0C0185A679F0071636B /* KPAnnotationTree.m */; };
 		48D7B0CA185A679F0071636B /* KPTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0C4185A679F0071636B /* KPTreeNode.m */; };
 		48D7B0CF185BA3750071636B /* TBQuadTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0CE185BA3750071636B /* TBQuadTree.m */; };
@@ -74,6 +76,9 @@
 		48899953185CE2B000F3D6ED /* QTreeInsertable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTreeInsertable.h; sourceTree = "<group>"; };
 		48899958185D175000F3D6ED /* QCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QCluster.h; sourceTree = "<group>"; };
 		48899959185D175000F3D6ED /* QCluster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QCluster.m; sourceTree = "<group>"; };
+		4889995B185D1C1300F3D6ED /* CCHMapTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapTree.h; sourceTree = "<group>"; };
+		4889995C185D1C1300F3D6ED /* CCHMapTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapTree.m; sourceTree = "<group>"; };
+		4889995E185D1D9300F3D6ED /* CCHMapTreeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapTreeTests.m; path = "../../CCHMapClusterController Tests/CCHMapTreeTests.m"; sourceTree = "<group>"; };
 		48D7B0BF185A679F0071636B /* KPAnnotationTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPAnnotationTree.h; sourceTree = "<group>"; };
 		48D7B0C0185A679F0071636B /* KPAnnotationTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KPAnnotationTree.m; sourceTree = "<group>"; };
 		48D7B0C3185A679F0071636B /* KPTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPTreeNode.h; sourceTree = "<group>"; };
@@ -251,6 +256,7 @@
 				4869F1901851105A00251ADC /* CCHNearCenterMapClustererTests.m */,
 				4869F19718511B6D00251ADC /* CCHCenterOfMassMapClustererTests.m */,
 				62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */,
+				4889995E185D1D9300F3D6ED /* CCHMapTreeTests.m */,
 				62D667A81845E0F20046D5D5 /* Supporting Files */,
 			);
 			path = "CCHMapClusterController Example iOSTests";
@@ -285,6 +291,8 @@
 				4869F19B18536E6700251ADC /* CCHFadeInOutMapAnimator.m */,
 				62D667CC1845F8A40046D5D5 /* CCHMapViewDelegateProxy.h */,
 				62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */,
+				4889995B185D1C1300F3D6ED /* CCHMapTree.h */,
+				4889995C185D1C1300F3D6ED /* CCHMapTree.m */,
 			);
 			name = CCHMapClusterController;
 			path = ../CCHMapClusterController;
@@ -396,6 +404,7 @@
 				62D667C11845F76F0046D5D5 /* DataReader.m in Sources */,
 				62D667D21845F8A40046D5D5 /* CCHMapClusterControllerUtils.m in Sources */,
 				4869F186184FD5F100251ADC /* CCHCenterOfMassMapClusterer.m in Sources */,
+				4889995D185D1C1300F3D6ED /* CCHMapTree.m in Sources */,
 				62D667D01845F8A40046D5D5 /* CCHMapClusterController.m in Sources */,
 				62D6678F1845E0F20046D5D5 /* main.m in Sources */,
 				62D667CE1845F8A40046D5D5 /* CCHMapClusterAnnotation.m in Sources */,
@@ -410,6 +419,7 @@
 				48D7B0CF185BA3750071636B /* TBQuadTree.m in Sources */,
 				48899957185CE2B000F3D6ED /* QTreeGeometryUtils.m in Sources */,
 				4889995A185D175000F3D6ED /* QCluster.m in Sources */,
+				4889995F185D1D9300F3D6ED /* CCHMapTreeTests.m in Sources */,
 				48899956185CE2B000F3D6ED /* QTree.m in Sources */,
 				48D7B0CA185A679F0071636B /* KPTreeNode.m in Sources */,
 				4869F1911851105A00251ADC /* CCHNearCenterMapClustererTests.m in Sources */,
