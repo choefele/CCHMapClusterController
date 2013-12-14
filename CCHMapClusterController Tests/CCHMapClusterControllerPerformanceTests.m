@@ -94,6 +94,7 @@ double performAndTrackTime(int numPasses, dispatch_block_t block)
         NSMutableArray *clusterCounts = [NSMutableArray array];
         CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
             NSSet *allAnnotationsInCell = [mapView annotationsInMapRect:cellRect];
+            
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
@@ -114,6 +115,7 @@ double performAndTrackTime(int numPasses, dispatch_block_t block)
         NSMutableArray *clusterCounts = [NSMutableArray array];
         CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
             NSArray *allAnnotationsInCell = [tree annotationsInMapRect:cellRect];
+            
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
@@ -156,10 +158,11 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
     double duration = performAndTrackTime(NUM_PASSES, ^{
         NSMutableArray *clusterCounts = [NSMutableArray array];
         CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
-            __block NSMutableArray *allAnnotationsInCell = [NSMutableArray array];
+            NSMutableArray *allAnnotationsInCell = [NSMutableArray array];
             TBQuadTreeGatherDataInRange(root, TBBoundingBoxForMapRect(cellRect), ^(TBQuadTreeNodeData data) {
                 [allAnnotationsInCell addObject:(__bridge id)data.data];
             });
+            
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
