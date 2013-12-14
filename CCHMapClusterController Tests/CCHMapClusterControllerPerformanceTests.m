@@ -170,6 +170,9 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
         XCTAssertEqualObjects(clusterCounts, self.clusterCounts, @"Wrong cell counts");
     });
     
+//    // Will also free data - bug?
+//    TBFreeQuadTreeNode(root);
+    
     NSLog(@"Duration %@: %f ms", NSStringFromSelector(_cmd), duration / 1E6);
 }
 
