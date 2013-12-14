@@ -11,8 +11,12 @@
 #import "CCHMapClusterControllerUtils.h"
 #import "KPAnnotationTree.h"
 #import "TBQuadTree.h"
+#import "QTree.h"
 
 #define NUM_PASSES 10
+
+@interface QTreeAnnotation : MKPointAnnotation<QTreeInsertable>
+@end
 
 @interface CCHMapClusterControllerPerformanceTests : XCTestCase
 
@@ -137,6 +141,35 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
             TBQuadTreeGatherDataInRange(root, TBBoundingBoxForMapRect(cellRect), ^(TBQuadTreeNodeData data) {
                 [allAnnotationsInCell addObject:(__bridge id)data.data];
             });
+            [clusterCounts addObject:@(allAnnotationsInCell.count)];
+        });
+        
+        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198, @"Wrong number of cells");
+        XCTAssertEqualObjects(clusterCounts, self.clusterCounts, @"Wrong cell counts");
+    }
+    
+    NSTimeInterval duration = ([NSDate timeIntervalSinceReferenceDate] - start) / (double)NUM_PASSES;
+    NSLog(@"Duration %@: %f", NSStringFromSelector(_cmd), duration);
+}
+
+- (void)testQTree
+{
+    QTree *tree = [[QTree alloc] init];
+    for (QTreeAnnotation *annotation in self.annotations) {
+        [tree insertObject:annotation];
+    }
+
+    double cellSize = self.cellSize;
+    MKMapRect mapRect = self.mapRect;
+    
+    NSTimeInterval start = [NSDate timeIntervalSinceReferenceDate];
+    
+    for (int i = 0; i < NUM_PASSES; i++) {
+        NSMutableArray *clusterCounts = [NSMutableArray array];
+        CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
+            MKCoordinateRegion region = MKCoordinateRegionForMapRect(cellRect);
+            NSArray* allAnnotationsInCell = [tree getObjectsInRegion:region minNonClusteredSpan:0];
+            
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
