@@ -16,7 +16,6 @@
 		48899955185CE2B000F3D6ED /* QNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4889994D185CE2B000F3D6ED /* QNode.m */; };
 		48899956185CE2B000F3D6ED /* QTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48899950185CE2B000F3D6ED /* QTree.m */; };
 		48899957185CE2B000F3D6ED /* QTreeGeometryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 48899952185CE2B000F3D6ED /* QTreeGeometryUtils.m */; };
-		48D7B0C7185A679F0071636B /* KPAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0BE185A679F0071636B /* KPAnnotation.m */; };
 		48D7B0C8185A679F0071636B /* KPAnnotationTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0C0185A679F0071636B /* KPAnnotationTree.m */; };
 		48D7B0CA185A679F0071636B /* KPTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0C4185A679F0071636B /* KPTreeNode.m */; };
 		48D7B0CF185BA3750071636B /* TBQuadTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0CE185BA3750071636B /* TBQuadTree.m */; };
@@ -75,8 +74,6 @@
 		48899951185CE2B000F3D6ED /* QTreeGeometryUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTreeGeometryUtils.h; sourceTree = "<group>"; };
 		48899952185CE2B000F3D6ED /* QTreeGeometryUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTreeGeometryUtils.m; sourceTree = "<group>"; };
 		48899953185CE2B000F3D6ED /* QTreeInsertable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTreeInsertable.h; sourceTree = "<group>"; };
-		48D7B0BD185A679F0071636B /* KPAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPAnnotation.h; sourceTree = "<group>"; };
-		48D7B0BE185A679F0071636B /* KPAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KPAnnotation.m; sourceTree = "<group>"; };
 		48D7B0BF185A679F0071636B /* KPAnnotationTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPAnnotationTree.h; sourceTree = "<group>"; };
 		48D7B0C0185A679F0071636B /* KPAnnotationTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KPAnnotationTree.m; sourceTree = "<group>"; };
 		48D7B0C3185A679F0071636B /* KPTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPTreeNode.h; sourceTree = "<group>"; };
@@ -164,8 +161,6 @@
 		48D7B0BC185A679F0071636B /* KPAnnotationTree */ = {
 			isa = PBXGroup;
 			children = (
-				48D7B0BD185A679F0071636B /* KPAnnotation.h */,
-				48D7B0BE185A679F0071636B /* KPAnnotation.m */,
 				48D7B0BF185A679F0071636B /* KPAnnotationTree.h */,
 				48D7B0C0185A679F0071636B /* KPAnnotationTree.m */,
 				48D7B0C3185A679F0071636B /* KPTreeNode.h */,
@@ -417,7 +412,6 @@
 				48899956185CE2B000F3D6ED /* QTree.m in Sources */,
 				48D7B0CA185A679F0071636B /* KPTreeNode.m in Sources */,
 				48899954185CE2B000F3D6ED /* QCluster.m in Sources */,
-				48D7B0C7185A679F0071636B /* KPAnnotation.m in Sources */,
 				4869F1911851105A00251ADC /* CCHNearCenterMapClustererTests.m in Sources */,
 				4869F19818511B6D00251ADC /* CCHCenterOfMassMapClustererTests.m in Sources */,
 				626379F9184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m in Sources */,
@@ -568,7 +562,6 @@
 		62D667B51845E0F20046D5D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CCHMapClusterController Example iOS.app/CCHMapClusterController Example iOS";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -591,7 +584,6 @@
 		62D667B61845E0F20046D5D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CCHMapClusterController Example iOS.app/CCHMapClusterController Example iOS";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

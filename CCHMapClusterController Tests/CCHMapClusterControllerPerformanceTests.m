@@ -148,7 +148,7 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
     }
 
     TBBoundingBox world = TBBoundingBoxMake(50, 10, 60, 20); // minLat, minLon, maxLat, maxLon
-    TBQuadTreeNode *root = TBQuadTreeBuildWithData(dataArray, count, world, 4);
+    TBQuadTreeNode *root = TBQuadTreeBuildWithData(dataArray, (int)count, world, 4);
 
     double cellSize = self.cellSize;
     MKMapRect mapRect = self.mapRect;
