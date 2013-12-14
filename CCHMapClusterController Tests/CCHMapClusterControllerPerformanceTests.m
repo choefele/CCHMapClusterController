@@ -13,7 +13,9 @@
 #import "TBQuadTree.h"
 #import "QTree.h"
 
-#define NUM_PASSES 10
+#include <mach/mach_time.h>
+
+#define NUM_PASSES 1
 
 @interface QTreeAnnotation : MKPointAnnotation<QTreeInsertable>
 @end
@@ -56,28 +58,50 @@
     self.clusterCounts = @[@(1), @(3), @(4), @(0), @(0), @(0), @(0), @(0), @(0), @(0), @(0), @(4), @(5), @(11), @(0), @(0), @(0), @(0), @(0), @(0), @(0), @(0), @(3), @(7), @(4), @(5), @(0), @(4), @(0), @(0), @(0), @(0), @(0), @(2), @(13), @(3), @(4), @(5), @(8), @(6), @(0), @(0), @(0), @(0), @(0), @(0), @(3), @(32), @(25), @(29), @(14), @(3), @(3), @(0), @(0), @(1), @(0), @(0), @(15), @(14), @(23), @(40), @(17), @(1), @(12), @(1), @(0), @(13), @(28), @(2), @(2), @(168), @(153), @(29), @(1), @(5), @(0), @(43), @(7), @(224), @(15), @(4), @(110), @(83), @(62), @(58), @(7), @(3), @(271), @(477), @(89), @(52), @(12), @(65), @(192), @(46), @(36), @(16), @(7), @(150), @(169), @(508), @(144), @(37), @(65), @(160), @(31), @(16), @(0), @(0), @(14), @(21), @(158), @(49), @(21), @(6), @(27), @(59), @(7), @(0), @(0), @(5), @(61), @(122), @(0), @(6), @(1), @(1), @(25), @(3), @(1), @(9), @(5), @(10), @(23), @(2), @(2), @(0), @(0), @(7), @(0), @(1), @(0), @(32), @(11), @(7), @(4), @(3), @(2), @(0), @(3), @(2), @(0), @(3), @(8), @(15), @(7), @(0), @(0), @(1), @(0), @(0), @(0), @(0), @(0), @(1), @(0), @(0), @(0), @(7), @(0), @(0), @(0), @(0), @(0), @(0), @(0), @(0), @(0), @(0), @(0), @(1), @(1), @(0), @(0), @(0), @(0), @(0), @(0), @(0), @(0), @(1), @(9), @(1), @(0), @(0), @(0), @(0)];
 }
 
+double performAndTrackTime(int numPasses, dispatch_block_t block)
+{
+    uint64_t startTime = mach_absolute_time();
+    for (int i = 0; i < numPasses; i++) {
+        block();
+    }
+    uint64_t endTime = mach_absolute_time();
+    
+    // Elapsed time in mach time units
+    uint64_t elapsedTime = endTime - startTime;
+    
+    // The first time we get here, ask the system
+    // how to convert mach time units to nanoseconds
+    static double ticksToNanoseconds = 0.0;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        mach_timebase_info_data_t timebase;
+        mach_timebase_info(&timebase);
+        ticksToNanoseconds = (double)timebase.numer / timebase.denom;
+    });
+    
+    double elapsedTimeInNanoseconds = (elapsedTime * ticksToNanoseconds) / numPasses;
+    return elapsedTimeInNanoseconds;
+}
+
 - (void)testMKMapView
 {
     MKMapView *mapView = [[MKMapView alloc] initWithFrame:CGRectZero];
     [mapView addAnnotations:self.annotations];
     double cellSize = self.cellSize;
     MKMapRect mapRect = self.mapRect;
-
-    NSTimeInterval start = [NSDate timeIntervalSinceReferenceDate];
     
-    for (int i = 0; i < NUM_PASSES; i++) {
+    double duration = performAndTrackTime(NUM_PASSES, ^{
         NSMutableArray *clusterCounts = [NSMutableArray array];
         CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
             NSSet *allAnnotationsInCell = [mapView annotationsInMapRect:cellRect];
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
-
+        
         XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198, @"Wrong number of cells");
         XCTAssertEqualObjects(clusterCounts, self.clusterCounts, @"Wrong cell counts");
-    }
+    });
 
-    NSTimeInterval duration = ([NSDate timeIntervalSinceReferenceDate] - start) / (double)NUM_PASSES;
-    NSLog(@"Duration %@: %f", NSStringFromSelector(_cmd), duration);
+    NSLog(@"Duration %@: %f ms", NSStringFromSelector(_cmd), duration / 1E6);
 }
 
 - (void)testKPAnnotationTree
@@ -86,9 +110,7 @@
     double cellSize = self.cellSize;
     MKMapRect mapRect = self.mapRect;
     
-    NSTimeInterval start = [NSDate timeIntervalSinceReferenceDate];
-    
-    for (int i = 0; i < NUM_PASSES; i++) {
+    double duration = performAndTrackTime(NUM_PASSES, ^{
         NSMutableArray *clusterCounts = [NSMutableArray array];
         CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
             NSArray *allAnnotationsInCell = [tree annotationsInMapRect:cellRect];
@@ -97,10 +119,9 @@
         
         XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198, @"Wrong number of cells");
         XCTAssertEqualObjects(clusterCounts, self.clusterCounts, @"Wrong cell counts");
-    }
+    });
     
-    NSTimeInterval duration = ([NSDate timeIntervalSinceReferenceDate] - start) / (double)NUM_PASSES;
-    NSLog(@"Duration %@: %f", NSStringFromSelector(_cmd), duration);
+    NSLog(@"Duration %@: %f ms", NSStringFromSelector(_cmd), duration / 1E6);
 }
 
 TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
@@ -132,9 +153,7 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
     double cellSize = self.cellSize;
     MKMapRect mapRect = self.mapRect;
     
-    NSTimeInterval start = [NSDate timeIntervalSinceReferenceDate];
-    
-    for (int i = 0; i < NUM_PASSES; i++) {
+    double duration = performAndTrackTime(NUM_PASSES, ^{
         NSMutableArray *clusterCounts = [NSMutableArray array];
         CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
             __block NSMutableArray *allAnnotationsInCell = [NSMutableArray array];
@@ -146,10 +165,9 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
         
         XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198, @"Wrong number of cells");
         XCTAssertEqualObjects(clusterCounts, self.clusterCounts, @"Wrong cell counts");
-    }
+    });
     
-    NSTimeInterval duration = ([NSDate timeIntervalSinceReferenceDate] - start) / (double)NUM_PASSES;
-    NSLog(@"Duration %@: %f", NSStringFromSelector(_cmd), duration);
+    NSLog(@"Duration %@: %f ms", NSStringFromSelector(_cmd), duration / 1E6);
 }
 
 - (void)testQTree
@@ -162,9 +180,7 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
     double cellSize = self.cellSize;
     MKMapRect mapRect = self.mapRect;
     
-    NSTimeInterval start = [NSDate timeIntervalSinceReferenceDate];
-    
-    for (int i = 0; i < NUM_PASSES; i++) {
+    double duration = performAndTrackTime(NUM_PASSES, ^{
         NSMutableArray *clusterCounts = [NSMutableArray array];
         CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
             MKCoordinateRegion region = MKCoordinateRegionForMapRect(cellRect);
@@ -175,10 +191,9 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
         
         XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198, @"Wrong number of cells");
         XCTAssertEqualObjects(clusterCounts, self.clusterCounts, @"Wrong cell counts");
-    }
+    });
     
-    NSTimeInterval duration = ([NSDate timeIntervalSinceReferenceDate] - start) / (double)NUM_PASSES;
-    NSLog(@"Duration %@: %f", NSStringFromSelector(_cmd), duration);
+    NSLog(@"Duration %@: %f ms", NSStringFromSelector(_cmd), duration / 1E6);
 }
 
 @end
