@@ -18,6 +18,7 @@
 		4889995A185D175000F3D6ED /* QCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = 48899959185D175000F3D6ED /* QCluster.m */; };
 		4889995D185D1C1300F3D6ED /* CCHMapTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 4889995C185D1C1300F3D6ED /* CCHMapTree.m */; };
 		4889995F185D1D9300F3D6ED /* CCHMapTreeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4889995E185D1D9300F3D6ED /* CCHMapTreeTests.m */; };
+		48899966185E398700F3D6ED /* CCHMapTreeUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 48899965185E398700F3D6ED /* CCHMapTreeUtils.m */; };
 		48D7B0C8185A679F0071636B /* KPAnnotationTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0C0185A679F0071636B /* KPAnnotationTree.m */; };
 		48D7B0CA185A679F0071636B /* KPTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0C4185A679F0071636B /* KPTreeNode.m */; };
 		48D7B0CF185BA3750071636B /* TBQuadTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0CE185BA3750071636B /* TBQuadTree.m */; };
@@ -79,6 +80,8 @@
 		4889995B185D1C1300F3D6ED /* CCHMapTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapTree.h; sourceTree = "<group>"; };
 		4889995C185D1C1300F3D6ED /* CCHMapTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapTree.m; sourceTree = "<group>"; };
 		4889995E185D1D9300F3D6ED /* CCHMapTreeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapTreeTests.m; path = "../../CCHMapClusterController Tests/CCHMapTreeTests.m"; sourceTree = "<group>"; };
+		48899964185E398700F3D6ED /* CCHMapTreeUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapTreeUtils.h; sourceTree = "<group>"; };
+		48899965185E398700F3D6ED /* CCHMapTreeUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapTreeUtils.m; sourceTree = "<group>"; };
 		48D7B0BF185A679F0071636B /* KPAnnotationTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPAnnotationTree.h; sourceTree = "<group>"; };
 		48D7B0C0185A679F0071636B /* KPAnnotationTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KPAnnotationTree.m; sourceTree = "<group>"; };
 		48D7B0C3185A679F0071636B /* KPTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPTreeNode.h; sourceTree = "<group>"; };
@@ -293,6 +296,8 @@
 				62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */,
 				4889995B185D1C1300F3D6ED /* CCHMapTree.h */,
 				4889995C185D1C1300F3D6ED /* CCHMapTree.m */,
+				48899964185E398700F3D6ED /* CCHMapTreeUtils.h */,
+				48899965185E398700F3D6ED /* CCHMapTreeUtils.m */,
 			);
 			name = CCHMapClusterController;
 			path = ../CCHMapClusterController;
@@ -397,6 +402,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48899966185E398700F3D6ED /* CCHMapTreeUtils.m in Sources */,
 				62D667991845E0F20046D5D5 /* ViewController.m in Sources */,
 				4869F19D1853AA6300251ADC /* CCHFadeInOutMapAnimator.m in Sources */,
 				62D667931845E0F20046D5D5 /* AppDelegate.m in Sources */,

@@ -10,6 +10,8 @@
 
 #import "CCHMapTree.h"
 
+#import "CCHMapClusterControllerUtils.h"
+
 @interface CCHMapTreeTests : XCTestCase
 
 @property (nonatomic, strong) CCHMapTree *mapTree;
@@ -25,57 +27,105 @@
     self.mapTree = [[CCHMapTree alloc] init];
 }
 
-- (void)testContains
+- (void)testDealloc
 {
-    
+    CCHMapTree *mapTree = [[CCHMapTree alloc] init];
+    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    annotation.coordinate = CLLocationCoordinate2DMake(52, 13);
+    [mapTree addAnnotations:@[annotation]];
 }
-//    public void testContains() {
-//        double[] key = new double[] {52.5191710, 13.40609120}; 
-//        Object obj = new Object();
-//        tree.add(key, obj);
-//        double[] bottomLeft = new double[] {52.50, 13.40};
-//        double[] topRight = new double[] {52.52, 13.41};
-//        List<Object> list = tree.getRange(bottomLeft, topRight);
-//        assertEquals(1, list.size());
-//        assertTrue(list.contains(obj));
-//    }
 
-//    public void testContainsBorder() {
-//        double[] bottomLeft = new double[] {52.50, 13.40};
-//        double[] topRight = new double[] {52.52, 13.41};
-//        Object obj0 = new Object();
-//        tree.add(bottomLeft, obj0);
-//        Object obj1 = new Object();
-//        tree.add(topRight, obj1);
-//        List<Object> list = tree.getRange(bottomLeft, topRight);
-//        assertEquals(2, list.size());
-//        assertTrue(list.contains(obj0));
-//        assertTrue(list.contains(obj1));
-//    }
-//
-//    public void testContainsSamePosition() {
-//		double[] key = new double[] { 52.5191710, 13.40609120 };
-//		Object obj0 = new Object();
-//		tree.add(key, obj0);
-//		Object obj1 = new Object();
-//		tree.add(key, obj1);
-//		double[] bottomLeft = new double[] { 52.50, 13.40 };
-//		double[] topRight = new double[] { 52.52, 13.41 };
-//		List<Object> list = tree.getRange(bottomLeft, topRight);
-//		assertEquals(2, list.size());
-//		assertTrue(list.contains(obj0));
-//		assertTrue(list.contains(obj1));
-//	}
-//
-//    public void testDoesNotContain(){
-//        double[] key = new double[] {52.0, 13.40609120}; 
-//        Object obj = new Object();
-//        tree.add(key, obj);
-//        double[] bottomLeft = new double[] {52.50, 13.40};
-//        double[] topRight = new double[] {52.52, 13.41};
-//        List<Object> list = tree.getRange(bottomLeft, topRight);
-//        assertEquals(0, list.size());
-//        assertFalse(list.contains(obj));
-//    }
+- (void)testAnnotationsInMapRectContainsRetain
+{
+    CCHMapTree *mapTree = [[CCHMapTree alloc] init];
+    NSString *title = @"title";
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(52, 13);
+    @autoreleasepool {
+        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+        annotation.coordinate = coordinate;
+        annotation.title = title;
+        
+        [mapTree addAnnotations:@[annotation]];
+    }
+
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
+    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    NSArray *annotations = [mapTree annotationsInMapRect:mapRect];
+    XCTAssertEqual(annotations.count, 1u, @"Wrong number of annotations");
+    if (annotations.count > 0) {
+        XCTAssertEqualObjects(title, [annotations[0] title], @"Wrong title");
+    }
+}
+
+- (void)testAnnotationsInMapRectEmpty
+{
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(52, 13), 1000, 1000);
+    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    NSArray *annotations = [self.mapTree annotationsInMapRect:mapRect];
+    XCTAssertEqual(annotations.count, 0u, @"Wrong number of annotations");
+}
+
+- (void)testAnnotationsInMapRectContains
+{
+    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    annotation.coordinate = CLLocationCoordinate2DMake(52, 13);
+    [self.mapTree addAnnotations:@[annotation]];
+    
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation.coordinate, 1000, 1000);
+    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    NSArray *annotations = [self.mapTree annotationsInMapRect:mapRect];
+    XCTAssertEqual(annotations.count, 1u, @"Wrong number of annotations");
+    if (annotations.count > 0) {
+        XCTAssertEqual(annotation, annotations[0], @"Wrong annotation");
+    }
+}
+
+- (void)testAnnotationsInMapRectContainsSamePosition
+{
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(52, 13);
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = annotation0.coordinate;
+    [self.mapTree addAnnotations:@[annotation0, annotation1]];
+    
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation0.coordinate, 1000, 1000);
+    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    NSArray *annotations = [self.mapTree annotationsInMapRect:mapRect];
+    XCTAssertEqual(annotations.count, 2u, @"Wrong number of annotations");
+    if (annotations.count > 0) {
+        XCTAssertTrue([annotations containsObject:annotation0], @"Wrong annotation");
+        XCTAssertTrue([annotations containsObject:annotation1], @"Wrong annotation");
+    }
+}
+
+- (void)testAnnotationsInMapRectDoesNotContain
+{
+    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    annotation.coordinate = CLLocationCoordinate2DMake(52, 13);
+    [self.mapTree addAnnotations:@[annotation]];
+    
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(50, 10);
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
+    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    NSArray *annotations = [self.mapTree annotationsInMapRect:mapRect];
+    XCTAssertEqual(annotations.count, 0u, @"Wrong number of annotations");
+}
+
+- (void)testAnnotationsInMapRectContainsSome
+{
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(52, 13);
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = CLLocationCoordinate2DMake(50, 10);
+    [self.mapTree addAnnotations:@[annotation0, annotation1]];
+    
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 1000, 1000);
+    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    NSArray *annotations = [self.mapTree annotationsInMapRect:mapRect];
+    XCTAssertEqual(annotations.count, 1u, @"Wrong number of annotations");
+    if (annotations.count > 0) {
+        XCTAssertEqual(annotation1, annotations[0], @"Wrong annotation");
+    }
+}
 
 @end
