@@ -202,4 +202,20 @@
     XCTAssertEqual(numCalls, 100u, @"Wrong number of calls");
 }
 
+- (void)testMapRectForCoordinateRegion
+{
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(52, 13);
+    MKCoordinateSpan span = MKCoordinateSpanMake(3, 4);
+    MKCoordinateRegion region = MKCoordinateRegionMake(coordinate, span);
+    
+    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    MKCoordinateRegion regionConverted = MKCoordinateRegionForMapRect(mapRect);
+    
+    // Pretty inaccurate
+    XCTAssertEqualWithAccuracy(regionConverted.center.latitude, region.center.latitude, 1000000 * __FLT_EPSILON__, @"Wrong region");
+    XCTAssertEqualWithAccuracy(regionConverted.center.longitude, region.center.longitude, __FLT_EPSILON__, @"Wrong region");
+    XCTAssertEqualWithAccuracy(regionConverted.span.latitudeDelta, region.span.latitudeDelta, __FLT_EPSILON__, @"Wrong region");
+    XCTAssertEqualWithAccuracy(regionConverted.span.longitudeDelta, region.span.longitudeDelta, __FLT_EPSILON__, @"Wrong region");
+}
+
 @end

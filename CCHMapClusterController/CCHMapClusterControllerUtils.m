@@ -123,3 +123,16 @@ void CCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, v
         cellRect.origin.y += MKMapRectGetWidth(cellRect);
     }
 }
+
+MKMapRect CCHMapClusterControllerMapRectForCoordinateRegion(MKCoordinateRegion coordinateRegion)
+{
+    CLLocationCoordinate2D topLeftCoordinate = CLLocationCoordinate2DMake(coordinateRegion.center.latitude + (coordinateRegion.span.latitudeDelta / 2.0), coordinateRegion.center.longitude - (coordinateRegion.span.longitudeDelta / 2.0));
+    MKMapPoint topLeftMapPoint = MKMapPointForCoordinate(topLeftCoordinate);
+    
+    CLLocationCoordinate2D bottomRightCoordinate = CLLocationCoordinate2DMake(coordinateRegion.center.latitude - (coordinateRegion.span.latitudeDelta / 2.0), coordinateRegion.center.longitude + (coordinateRegion.span.longitudeDelta / 2.0));
+    MKMapPoint bottomRightMapPoint = MKMapPointForCoordinate(bottomRightCoordinate);
+    
+    MKMapRect mapRect = MKMapRectMake(topLeftMapPoint.x, topLeftMapPoint.y, fabs(bottomRightMapPoint.x - topLeftMapPoint.x), fabs(bottomRightMapPoint.y - topLeftMapPoint.y));
+    
+    return mapRect;
+}
