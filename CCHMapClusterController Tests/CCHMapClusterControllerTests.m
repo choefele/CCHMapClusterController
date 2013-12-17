@@ -9,6 +9,8 @@
 #import <XCTest/XCTest.h>
 
 #import "CCHMapClusterController.h"
+#import "CCHMapClusterAnnotation.h"
+#import "CCHMapClusterControllerUtils.h"
 
 @interface CCHMapClusterControllerTests : XCTestCase
 
@@ -67,36 +69,43 @@
     XCTAssertEqual(self.mapView.annotations.count, 1u, @"Wrong number of annotations");
 }
 
-//- (void)testAddAnnotations
-//{
-////    self.cellSize = 15359.999231;
-//    MKMapRect mapRect = MKMapRectMake(144122872.779819, 87920635.595405, 168959.991536, 276479.986149);
-//    self.mapView.visibleMapRect = mapRect;
-//    
-//    // Read test data
-//    NSString *file = [NSBundle.mainBundle pathForResource:@"Data" ofType:@"json"];
-//    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:file];
-//    [inputStream open];
-//    NSArray *dataAsJson = [NSJSONSerialization JSONObjectWithStream:inputStream options:0 error:nil];
-//    
-//    // Convert JSON into annotation objects
-//    NSMutableArray *annotations = [NSMutableArray array];
-//    for (NSDictionary *annotationAsJSON in dataAsJson) {
-//        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-//        NSString *latitudeAsString = [annotationAsJSON valueForKeyPath:@"location.coordinates.latitude"];
-//        NSString *longitudeAsString = [annotationAsJSON valueForKeyPath:@"location.coordinates.longitude"];
-//        annotation.coordinate = CLLocationCoordinate2DMake(latitudeAsString.doubleValue, longitudeAsString.doubleValue);
-//        
-//        [annotations addObject:annotation];
-//    }
-//
-//    __weak CCHMapClusterControllerTests *weakSelf = self;
-//    [self.mapClusterController addAnnotations:annotations withCompletionHandler:^{
-//        weakSelf.done = YES;
-//    }];
-//
-//    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-//    XCTAssertEqual(self.mapView.annotations.count, 1u, @"Wrong number of annotations");
-//}
+- (void)testAddAnnotations
+{
+    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
+    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    self.mapView.visibleMapRect = mapRect;
+    
+    // Read test data
+    NSString *file = [NSBundle.mainBundle pathForResource:@"Data" ofType:@"json"];
+    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:file];
+    [inputStream open];
+    NSArray *dataAsJson = [NSJSONSerialization JSONObjectWithStream:inputStream options:0 error:nil];
+    
+    // Convert JSON into annotation objects
+    NSMutableArray *annotations = [NSMutableArray array];
+    for (NSDictionary *annotationAsJSON in dataAsJson) {
+        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+        NSString *latitudeAsString = [annotationAsJSON valueForKeyPath:@"location.coordinates.latitude"];
+        NSString *longitudeAsString = [annotationAsJSON valueForKeyPath:@"location.coordinates.longitude"];
+        annotation.coordinate = CLLocationCoordinate2DMake(latitudeAsString.doubleValue, longitudeAsString.doubleValue);
+        
+        [annotations addObject:annotation];
+    }
+
+    __weak CCHMapClusterControllerTests *weakSelf = self;
+    [self.mapClusterController addAnnotations:annotations withCompletionHandler:^{
+        weakSelf.done = YES;
+    }];
+
+    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
+    XCTAssertEqual(self.mapView.annotations.count, 18u, @"Wrong number of annotations");
+    
+    NSUInteger numClusteredAnnotations = 0;
+    for (CCHMapClusterAnnotation *annotation in self.mapView.annotations) {
+        numClusteredAnnotations += annotation.annotations.count;
+    }
+    XCTAssertEqual(numClusteredAnnotations, annotations.count, @"Wrong number of clustered annotations");
+}
 
 @end
