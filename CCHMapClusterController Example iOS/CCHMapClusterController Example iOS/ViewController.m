@@ -29,11 +29,11 @@
 {
     [super viewDidLoad];
     
-//    // Early out when running unit tests
-//    BOOL runningTests = NSClassFromString(@"XCTestCase") != nil;
-//    if (runningTests) {
-//        return;
-//    }
+    // Early out when running unit tests
+    BOOL runningTests = NSClassFromString(@"XCTestCase") != nil;
+    if (runningTests) {
+        return;
+    }
     
     // Show Berlin
     CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
