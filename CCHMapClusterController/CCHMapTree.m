@@ -58,9 +58,9 @@ CCHMapTreeBoundingBox CCHMapTreeBoundingBoxForMapRect(MKMapRect mapRect)
     return CCHMapTreeBoundingBoxMake(minLat, minLon, maxLat, maxLon);
 }
 
-- (NSArray *)annotationsInMapRect:(MKMapRect)mapRect
+- (NSSet *)annotationsInMapRect:(MKMapRect)mapRect
 {
-    NSMutableArray *annotations = [NSMutableArray array];
+    NSMutableSet *annotations = [NSMutableSet set];
     CCHMapTreeGatherDataInRange(self.root, CCHMapTreeBoundingBoxForMapRect(mapRect), ^(CCHMapTreeNodeData data) {
         [annotations addObject:(__bridge id)data.data];
     });

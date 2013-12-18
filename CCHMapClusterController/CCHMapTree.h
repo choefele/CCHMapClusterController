@@ -12,6 +12,6 @@
 @interface CCHMapTree : NSObject
 
 - (void)addAnnotations:(NSArray *)annotations;
-- (NSArray *)annotationsInMapRect:(MKMapRect)mapRect;
+- (NSSet *)annotationsInMapRect:(MKMapRect)mapRect;
 
 @end
