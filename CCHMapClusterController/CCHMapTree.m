@@ -24,7 +24,7 @@
     self = [super init];
     if (self) {
         self.annotations = [NSMutableSet set];
-        CCHMapTreeBoundingBox world = CCHMapTreeBoundingBoxMake(50, 10, 60, 20); // minLat, minLon, maxLat, maxLon
+        CCHMapTreeBoundingBox world = CCHMapTreeBoundingBoxMake(-180, -85, 180, 85); // minLat, minLon, maxLat, maxLon
         self.root = CCHMapTreeBuildWithData(NULL, 0, world, 4);
     }
     
