@@ -14,7 +14,6 @@
 
 @interface CCHMapClusterControllerTests : XCTestCase
 
-@property (nonatomic, strong) UIView *view;
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) CCHMapClusterController *mapClusterController;
 @property (nonatomic, assign) BOOL done;
@@ -27,9 +26,7 @@
 {
     [super setUp];
 
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
-    self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
-//    [self.view addSubview:self.mapView];
+    self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, 300, 300)];
     self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.done = NO;
 }
@@ -55,7 +52,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapView.annotations.count, 0u, @"Wrong number of annotations");
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)0, @"Wrong number of annotations");
 }
 
 - (void)testAddAnnotationsSimple
@@ -66,46 +63,69 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapView.annotations.count, 1u, @"Wrong number of annotations");
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1, @"Wrong number of annotations");
 }
 
 - (void)testAddAnnotations
 {
-    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
-    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
-    self.mapView.visibleMapRect = mapRect;
-    
-    // Read test data
-    NSString *file = [NSBundle.mainBundle pathForResource:@"Data" ofType:@"json"];
-    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:file];
-    [inputStream open];
-    NSArray *dataAsJson = [NSJSONSerialization JSONObjectWithStream:inputStream options:0 error:nil];
-    
-    // Convert JSON into annotation objects
-    NSMutableArray *annotations = [NSMutableArray array];
-    for (NSDictionary *annotationAsJSON in dataAsJson) {
-        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-        NSString *latitudeAsString = [annotationAsJSON valueForKeyPath:@"location.coordinates.latitude"];
-        NSString *longitudeAsString = [annotationAsJSON valueForKeyPath:@"location.coordinates.longitude"];
-        annotation.coordinate = CLLocationCoordinate2DMake(latitudeAsString.doubleValue, longitudeAsString.doubleValue);
-        
-        [annotations addObject:annotation];
-    }
+    // 3x3 grid
+    self.mapView.frame = CGRectMake(0, 0, 300, 300);
+    self.mapClusterController.marginFactor = 0;
+    self.mapClusterController.cellSize = 100;
 
+    // Grid panning 51-54 lng, 12-15 lat
+    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(52.5, 13.5), MKCoordinateSpanMake(3, 3));
+    MKMapRect visibleMapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    self.mapView.visibleMapRect = visibleMapRect;
+
+    // Bottom left
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(51.1, 12.1);
+    
+    // Top right
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = CLLocationCoordinate2DMake(53.9, 14.9);
+    MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
+    annotation2.coordinate = CLLocationCoordinate2DMake(53.9, 14.9);
+    MKPointAnnotation *annotation3 = [[MKPointAnnotation alloc] init];
+    annotation3.coordinate = CLLocationCoordinate2DMake(53.9, 14.9);
+    MKPointAnnotation *annotation4 = [[MKPointAnnotation alloc] init];
+    annotation4.coordinate = CLLocationCoordinate2DMake(53.9, 14.9);
+    MKPointAnnotation *annotation5 = [[MKPointAnnotation alloc] init];
+    annotation5.coordinate = CLLocationCoordinate2DMake(53.9, 14.6);
+
+    NSArray *annotations = @[annotation0, annotation1, annotation2, annotation3, annotation4, annotation5];
     __weak CCHMapClusterControllerTests *weakSelf = self;
     [self.mapClusterController addAnnotations:annotations withCompletionHandler:^{
         weakSelf.done = YES;
     }];
-
-    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapView.annotations.count, 18u, @"Wrong number of annotations");
     
-    NSUInteger numClusteredAnnotations = 0;
-    for (CCHMapClusterAnnotation *annotation in self.mapView.annotations) {
-        numClusteredAnnotations += annotation.annotations.count;
-    }
-    XCTAssertEqual(numClusteredAnnotations, annotations.count, @"Wrong number of clustered annotations");
+    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2, @"Wrong number of annotations");
+
+    // Origin MKCoordinateRegion -> bottom left, MKMapRect -> top left
+    double cellWidth = visibleMapRect.size.width / 3;
+    double cellHeight = visibleMapRect.size.height / 3;
+    MKMapPoint cellOrigin = visibleMapRect.origin;
+
+    // Bottom left
+    MKMapRect bottomLeftMapRect = MKMapRectMake(cellOrigin.x, cellOrigin.y + 2 * cellHeight, cellWidth, cellHeight);
+    NSSet *annotationsInMapRect = [self.mapView annotationsInMapRect:bottomLeftMapRect];
+    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)1, @"Wrong number of annotations");
+    CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
+    XCTAssertEqual(clusterAnnotation.annotations.count, (NSUInteger)1, @"Wrong number of annotations");
+
+    // Top right
+    MKMapRect topRightMapRect = MKMapRectMake(cellOrigin.x + 2 * cellWidth, cellOrigin.y, cellWidth, cellHeight);
+    annotationsInMapRect = [self.mapView annotationsInMapRect:topRightMapRect];
+    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)1, @"Wrong number of annotations");
+    clusterAnnotation = (CCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
+    XCTAssertEqual(clusterAnnotation.annotations.count, (NSUInteger)5, @"Wrong number of annotations");
+
+    // Center
+    MKMapRect middleMapRect = MKMapRectMake(cellOrigin.x + cellWidth, cellOrigin.y + cellHeight, cellWidth, cellHeight);
+    annotationsInMapRect = [self.mapView annotationsInMapRect:middleMapRect];
+    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0, @"Wrong number of annotations");
 }
 
 @end

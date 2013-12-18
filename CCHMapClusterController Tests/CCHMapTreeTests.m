@@ -51,7 +51,7 @@
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
     MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSArray *annotations = [mapTree annotationsInMapRect:mapRect];
-    XCTAssertEqual(annotations.count, 1u, @"Wrong number of annotations");
+    XCTAssertEqual(annotations.count, (NSUInteger)1, @"Wrong number of annotations");
     if (annotations.count > 0) {
         XCTAssertEqualObjects(title, [annotations[0] title], @"Wrong title");
     }
@@ -62,7 +62,7 @@
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(52, 13), 1000, 1000);
     MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSArray *annotations = [self.mapTree annotationsInMapRect:mapRect];
-    XCTAssertEqual(annotations.count, 0u, @"Wrong number of annotations");
+    XCTAssertEqual(annotations.count, (NSUInteger)0, @"Wrong number of annotations");
 }
 
 - (void)testAnnotationsInMapRectContains
@@ -74,7 +74,7 @@
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation.coordinate, 1000, 1000);
     MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSArray *annotations = [self.mapTree annotationsInMapRect:mapRect];
-    XCTAssertEqual(annotations.count, 1u, @"Wrong number of annotations");
+    XCTAssertEqual(annotations.count, (NSUInteger)1, @"Wrong number of annotations");
     if (annotations.count > 0) {
         XCTAssertEqual(annotation, annotations[0], @"Wrong annotation");
     }
@@ -91,7 +91,7 @@
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation0.coordinate, 1000, 1000);
     MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSArray *annotations = [self.mapTree annotationsInMapRect:mapRect];
-    XCTAssertEqual(annotations.count, 2u, @"Wrong number of annotations");
+    XCTAssertEqual(annotations.count, (NSUInteger)2, @"Wrong number of annotations");
     if (annotations.count > 0) {
         XCTAssertTrue([annotations containsObject:annotation0], @"Wrong annotation");
         XCTAssertTrue([annotations containsObject:annotation1], @"Wrong annotation");
@@ -108,7 +108,7 @@
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
     MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSArray *annotations = [self.mapTree annotationsInMapRect:mapRect];
-    XCTAssertEqual(annotations.count, 0u, @"Wrong number of annotations");
+    XCTAssertEqual(annotations.count, (NSUInteger)0, @"Wrong number of annotations");
 }
 
 - (void)testAnnotationsInMapRectContainsSome
@@ -122,7 +122,7 @@
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 1000, 1000);
     MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSArray *annotations = [self.mapTree annotationsInMapRect:mapRect];
-    XCTAssertEqual(annotations.count, 1u, @"Wrong number of annotations");
+    XCTAssertEqual(annotations.count, (NSUInteger)1, @"Wrong number of annotations");
     if (annotations.count > 0) {
         XCTAssertEqual(annotation1, annotations[0], @"Wrong annotation");
     }

@@ -186,7 +186,7 @@
         XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__, @"Wrong size");
         XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__, @"Wrong size");
     });
-    XCTAssertEqual(numCalls, 100u, @"Wrong number of calls");
+    XCTAssertEqual(numCalls, (NSUInteger)100, @"Wrong number of calls");
 }
 
 - (void)testEnumerateCellsAlign
@@ -199,7 +199,7 @@
         XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__, @"Wrong size");
         XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__, @"Wrong size");
     });
-    XCTAssertEqual(numCalls, 100u, @"Wrong number of calls");
+    XCTAssertEqual(numCalls, (NSUInteger)100, @"Wrong number of calls");
 }
 
 - (void)testMapRectForCoordinateRegion
