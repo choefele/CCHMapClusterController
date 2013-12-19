@@ -11,7 +11,13 @@
 
 @interface CCHMapTree : NSObject
 
+- (id)init;
+- (id)initWithNodeCapacity:(NSUInteger)nodeCapacity minLatitude:(double)minLatitude maxLatitude:(double)maxLatitude minLongitude:(double)minLongitude maxLongitude:(double)maxLongitude;
+
 - (void)addAnnotations:(NSArray *)annotations;
 - (NSSet *)annotationsInMapRect:(MKMapRect)mapRect;
+- (NSArray *)annotationsInMapRect2:(MKMapRect)mapRect;
+- (NSSet *)annotationsInMapRect3:(MKMapRect)mapRect;
+- (NSArray *)annotationsInMapRect4:(MKMapRect)mapRect;
 
 @end

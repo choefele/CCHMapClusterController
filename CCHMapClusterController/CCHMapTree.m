@@ -10,12 +10,11 @@
 
 #import "CCHMapTreeUtils.h"
 
-#define BUCKET_CAPACITY 10
-
 @interface CCHMapTree()
 
 @property (nonatomic, strong) NSMutableSet *annotations;
 @property (nonatomic, assign) CCHMapTreeNode *root;
+@property (nonatomic, assign) NSUInteger nodeCapacity;
 
 @end
 
@@ -23,11 +22,17 @@
 
 - (id)init
 {
+    return [self initWithNodeCapacity:10 minLatitude:-85.0 maxLatitude:85.0 minLongitude:-180.0 maxLongitude:180.0];
+}
+
+- (id)initWithNodeCapacity:(NSUInteger)nodeCapacity minLatitude:(double)minLatitude maxLatitude:(double)maxLatitude minLongitude:(double)minLongitude maxLongitude:(double)maxLongitude
+{
     self = [super init];
     if (self) {
+        self.nodeCapacity = nodeCapacity;
         self.annotations = [NSMutableSet set];
-        CCHMapTreeBoundingBox world = CCHMapTreeBoundingBoxMake(-180, -85, 180, 85); // minLat, minLon, maxLat, maxLon
-        self.root = CCHMapTreeBuildWithData(NULL, 0, world, BUCKET_CAPACITY);
+        CCHMapTreeBoundingBox world = CCHMapTreeBoundingBoxMake(minLatitude, minLongitude, maxLatitude, maxLongitude);
+        self.root = CCHMapTreeBuildWithData(NULL, 0, world, nodeCapacity);
     }
     
     return self;
@@ -43,7 +48,7 @@
     [self.annotations addObjectsFromArray:annotations];
     for (id<MKAnnotation> annotation in _annotations) {
         CCHMapTreeNodeData data = CCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)annotation);
-        CCHMapTreeNodeInsertData(_root, data, BUCKET_CAPACITY);
+        CCHMapTreeNodeInsertData(_root, data, (int)_nodeCapacity);
     }
 }
 
