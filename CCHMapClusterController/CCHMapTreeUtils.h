@@ -13,40 +13,37 @@
 #import <Foundation/Foundation.h>
 
 typedef struct CCHMapTreeNodeData {
-    double x;
-    double y;
-    void* data;
+    double x, y;
+    void *data;
 } CCHMapTreeNodeData;
-CCHMapTreeNodeData CCHMapTreeNodeDataMake(double x, double y, void* data);
+NS_INLINE CCHMapTreeNodeData CCHMapTreeNodeDataMake(double x, double y, void *data) {
+    return (CCHMapTreeNodeData){x, y, data};
+}
 
 typedef struct CCHMapTreeBoundingBox {
-    double x0; double y0;
-    double xf; double yf;
+    double x0, y0, xf, yf;
 } CCHMapTreeBoundingBox;
-CCHMapTreeBoundingBox CCHMapTreeBoundingBoxMake(double x0, double y0, double xf, double yf);
+NS_INLINE CCHMapTreeBoundingBox CCHMapTreeBoundingBoxMake(double x0, double y0, double xf, double yf) {
+    return (CCHMapTreeBoundingBox){x0, y0, xf, yf};
+}
 
-typedef struct quadTreeNode {
-    struct quadTreeNode* northWest;
-    struct quadTreeNode* northEast;
-    struct quadTreeNode* southWest;
-    struct quadTreeNode* southEast;
+typedef struct CCHMapTreeNode {
     CCHMapTreeBoundingBox boundingBox;
-    int bucketCapacity;
+    struct CCHMapTreeNode *northWest;
+    struct CCHMapTreeNode *northEast;
+    struct CCHMapTreeNode *southWest;
+    struct CCHMapTreeNode *southEast;
     CCHMapTreeNodeData *points;
     int count;
 } CCHMapTreeNode;
-CCHMapTreeNode* CCHMapTreeNodeMake(CCHMapTreeBoundingBox boundary, int bucketCapacity);
+CCHMapTreeNode *CCHMapTreeNodeMake(CCHMapTreeBoundingBox boundary, int bucketCapacity);
+void CCHMapTreeFreeQuadTreeNode(CCHMapTreeNode *node);
 
-void CCHMapTreeFreeQuadTreeNode(CCHMapTreeNode* node);
-
-bool CCHMapTreeBoundingBoxContainsData(CCHMapTreeBoundingBox box, CCHMapTreeNodeData data);
-bool CCHMapTreeBoundingBoxIntersectsBoundingBox(CCHMapTreeBoundingBox b1, CCHMapTreeBoundingBox b2);
-
-typedef void(^CCHMapTreeTraverseBlock)(CCHMapTreeNode* currentNode);
-void CCHMapTreeTraverse(CCHMapTreeNode* node, CCHMapTreeTraverseBlock block);
+typedef void(^CCHMapTreeTraverseBlock)(CCHMapTreeNode *currentNode);
+void CCHMapTreeTraverse(CCHMapTreeNode *node, CCHMapTreeTraverseBlock block);
 
 typedef void(^TBDataReturnBlock)(CCHMapTreeNodeData data);
-void CCHMapTreeGatherDataInRange(CCHMapTreeNode* node, CCHMapTreeBoundingBox range, TBDataReturnBlock block);
+void CCHMapTreeGatherDataInRange(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, TBDataReturnBlock block);
 
-bool CCHMapTreeNodeInsertData(CCHMapTreeNode* node, CCHMapTreeNodeData data);
-CCHMapTreeNode* CCHMapTreeBuildWithData(CCHMapTreeNodeData *data, int count, CCHMapTreeBoundingBox boundingBox, int capacity);
+bool CCHMapTreeNodeInsertData(CCHMapTreeNode* node, CCHMapTreeNodeData data, int bucketCapacity);
+CCHMapTreeNode *CCHMapTreeBuildWithData(CCHMapTreeNodeData *data, int count, CCHMapTreeBoundingBox boundingBox, int bucketCapacity);

@@ -10,6 +10,8 @@
 
 #import "CCHMapTreeUtils.h"
 
+#define BUCKET_CAPACITY 10
+
 @interface CCHMapTree()
 
 @property (nonatomic, strong) NSMutableSet *annotations;
@@ -25,7 +27,7 @@
     if (self) {
         self.annotations = [NSMutableSet set];
         CCHMapTreeBoundingBox world = CCHMapTreeBoundingBoxMake(-180, -85, 180, 85); // minLat, minLon, maxLat, maxLon
-        self.root = CCHMapTreeBuildWithData(NULL, 0, world, 4);
+        self.root = CCHMapTreeBuildWithData(NULL, 0, world, BUCKET_CAPACITY);
     }
     
     return self;
@@ -39,9 +41,9 @@
 - (void)addAnnotations:(NSArray *)annotations
 {
     [self.annotations addObjectsFromArray:annotations];
-    for (id<MKAnnotation> annotation in self.annotations) {
+    for (id<MKAnnotation> annotation in _annotations) {
         CCHMapTreeNodeData data = CCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)annotation);
-        CCHMapTreeNodeInsertData(self.root, data);
+        CCHMapTreeNodeInsertData(_root, data, BUCKET_CAPACITY);
     }
 }
 
