@@ -10,6 +10,47 @@
 
 #import "CCHMapTreeUtils.h"
 
+@interface UnsafeMutableArray()
+
+@property (nonatomic, assign) id __unsafe_unretained *objects;
+@property (nonatomic, assign) NSUInteger numObjects;
+@property (nonatomic, assign) NSUInteger capacity;
+
+@end
+
+@implementation UnsafeMutableArray
+
+- (id)initWithCapacity:(NSUInteger)capacity
+{
+    self = [super init];
+    if (self) {
+        _objects = (__unsafe_unretained id *)malloc(sizeof(id) * capacity);
+        _numObjects = 0;
+        _capacity = capacity;
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    free(_objects);
+}
+
+- (void)addObject:(__unsafe_unretained id)object
+{
+    if (_numObjects >= _capacity) {
+        NSUInteger newCapacity = 2 * _capacity;
+        if (newCapacity < _capacity + 4) {
+            newCapacity = _capacity + 4;
+        }
+        _objects = (__unsafe_unretained id *)realloc(_objects, newCapacity * sizeof(id));
+        _capacity = newCapacity;
+    }
+    _objects[_numObjects++] = object;
+}
+
+@end
+
 @interface CCHMapTree()
 
 @property (nonatomic, strong) NSMutableSet *annotations;
@@ -65,12 +106,12 @@ CCHMapTreeBoundingBox CCHMapTreeBoundingBoxForMapRect(MKMapRect mapRect)
     return CCHMapTreeBoundingBoxMake(minLat, minLon, maxLat, maxLon);
 }
 
-- (NSSet *)annotationsInMapRect:(MKMapRect)mapRect
+- (UnsafeMutableArray *)annotationsInMapRect:(MKMapRect)mapRect
 {
-    NSMutableSet *annotations = [NSMutableSet set];
-    CCHMapTreeGatherDataInRange2(self.root, CCHMapTreeBoundingBoxForMapRect(mapRect), annotations);
+    UnsafeMutableArray *array = [[UnsafeMutableArray alloc] initWithCapacity:10];
+    CCHMapTreeGatherDataInRange3(self.root, CCHMapTreeBoundingBoxForMapRect(mapRect), array);
     
-    return annotations;
+    return array;
 }
 
 @end

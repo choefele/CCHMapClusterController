@@ -8,6 +8,8 @@
 
 #import "CCHMapTreeUtils.h"
 
+#import "CCHMapTree.h"
+
 #pragma mark - Constructors
 
 CCHMapTreeNode* CCHMapTreeNodeMake(CCHMapTreeBoundingBox boundary, int bucketCapacity)
@@ -124,6 +126,28 @@ void CCHMapTreeGatherDataInRange2(CCHMapTreeNode* node, CCHMapTreeBoundingBox ra
     CCHMapTreeGatherDataInRange2(node->northEast, range, annotations);
     CCHMapTreeGatherDataInRange2(node->southWest, range, annotations);
     CCHMapTreeGatherDataInRange2(node->southEast, range, annotations);
+}
+
+void CCHMapTreeGatherDataInRange3(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, __unsafe_unretained UnsafeMutableArray *annotations)
+{
+    if (!CCHMapTreeBoundingBoxIntersectsBoundingBox(node->boundingBox, range)) {
+        return;
+    }
+
+    for (int i = 0; i < node->count; i++) {
+        if (CCHMapTreeBoundingBoxContainsData(range, node->points[i])) {
+            [annotations addObject:(__bridge id)node->points[i].data];
+        }
+    }
+
+    if (node->northWest == NULL) {
+        return;
+    }
+
+    CCHMapTreeGatherDataInRange3(node->northWest, range, annotations);
+    CCHMapTreeGatherDataInRange3(node->northEast, range, annotations);
+    CCHMapTreeGatherDataInRange3(node->southWest, range, annotations);
+    CCHMapTreeGatherDataInRange3(node->southEast, range, annotations);
 }
 
 void CCHMapTreeTraverse(CCHMapTreeNode* node, CCHMapTreeTraverseBlock block)

@@ -136,7 +136,8 @@
     
     // For each cell in the grid, pick one annotation to show
     CCHMapClusterControllerEnumerateCells(gridMapRect, cellSize, ^(MKMapRect cellRect) {
-        NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellRect];
+        UnsafeMutableArray *array = [_allAnnotationsMapTree annotationsInMapRect:cellRect];
+        NSSet *allAnnotationsInCell = [NSSet setWithObjects:array.objects count:array.numObjects];
         if (allAnnotationsInCell.count > 0) {
             NSMutableSet *visibleAnnotationsInCell = [[_mapView annotationsInMapRect:cellRect] mutableCopy];
             MKUserLocation *userLocation = _mapView.userLocation;
