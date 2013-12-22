@@ -104,6 +104,28 @@ void CCHMapTreeGatherDataInRange(CCHMapTreeNode* node, CCHMapTreeBoundingBox ran
     CCHMapTreeGatherDataInRange(node->southEast, range, block);
 }
 
+void CCHMapTreeGatherDataInRange2(CCHMapTreeNode* node, CCHMapTreeBoundingBox range, __unsafe_unretained NSMutableSet *annotations)
+{
+    if (!CCHMapTreeBoundingBoxIntersectsBoundingBox(node->boundingBox, range)) {
+        return;
+    }
+    
+    for (int i = 0; i < node->count; i++) {
+        if (CCHMapTreeBoundingBoxContainsData(range, node->points[i])) {
+            [annotations addObject:(__bridge id)node->points[i].data];
+        }
+    }
+    
+    if (node->northWest == NULL) {
+        return;
+    }
+    
+    CCHMapTreeGatherDataInRange2(node->northWest, range, annotations);
+    CCHMapTreeGatherDataInRange2(node->northEast, range, annotations);
+    CCHMapTreeGatherDataInRange2(node->southWest, range, annotations);
+    CCHMapTreeGatherDataInRange2(node->southEast, range, annotations);
+}
+
 void CCHMapTreeTraverse(CCHMapTreeNode* node, CCHMapTreeTraverseBlock block)
 {
     block(node);

@@ -68,10 +68,8 @@ CCHMapTreeBoundingBox CCHMapTreeBoundingBoxForMapRect(MKMapRect mapRect)
 - (NSSet *)annotationsInMapRect:(MKMapRect)mapRect
 {
     NSMutableSet *annotations = [NSMutableSet set];
-    CCHMapTreeGatherDataInRange(self.root, CCHMapTreeBoundingBoxForMapRect(mapRect), ^(CCHMapTreeNodeData data) {
-        [annotations addObject:(__bridge id)data.data];
-    });
-
+    CCHMapTreeGatherDataInRange2(self.root, CCHMapTreeBoundingBoxForMapRect(mapRect), annotations);
+    
     return annotations;
 }
 

@@ -35,7 +35,7 @@
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
-@property (nonatomic, strong) NSArray *annotations;
+@property (nonatomic, copy) NSSet *annotations;
 
 - (BOOL)isCluster;
 - (BOOL)isOneLocation;

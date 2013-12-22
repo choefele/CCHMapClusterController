@@ -92,8 +92,7 @@ CCHMapClusterAnnotation *CCHMapClusterControllerClusterAnnotationForAnnotation(M
         if ([mapAnnotation isKindOfClass:CCHMapClusterAnnotation.class]) {
             CCHMapClusterAnnotation *mapClusterAnnotation = (CCHMapClusterAnnotation *)mapAnnotation;
             if (mapClusterAnnotation.annotations) {
-                NSUInteger index = [mapClusterAnnotation.annotations indexOfObject:annotation];
-                if (index != NSNotFound) {
+                if ([mapClusterAnnotation.annotations containsObject:annotation]) {
                     annotationResult = mapClusterAnnotation;
                     break;
                 }

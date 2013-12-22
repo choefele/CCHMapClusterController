@@ -33,8 +33,16 @@
 #import "CCHMapViewDelegateProxy.h"
 #import "CCHNearCenterMapClusterer.h"
 #import "CCHFadeInOutMapAnimator.h"
+#import "CCHMapTree.h"
+
+#define NODE_CAPACITY 50
+#define WORLD_MIN_LAT 45
+#define WORLD_MIN_LON 5
+#define WORLD_MAX_LAT 55
+#define WORLD_MAX_LON 15
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
+
 @interface CCHMapClusterControllerPolygon : MKPolygon
 @end
 @implementation CCHMapClusterControllerPolygon
@@ -42,8 +50,8 @@
 
 @interface CCHMapClusterController()<MKMapViewDelegate>
 
+@property (nonatomic, strong) CCHMapTree *allAnnotationsMapTree;
 @property (nonatomic, strong) MKMapView *mapView;
-@property (nonatomic, strong) MKMapView *allAnnotationsMapView;
 @property (nonatomic, strong) CCHMapViewDelegateProxy *mapViewDelegateProxy;
 @property (nonatomic, strong) id<MKAnnotation> annotationToSelect;
 @property (nonatomic, strong) CCHMapClusterAnnotation *mapClusterAnnotationToSelect;
@@ -64,7 +72,7 @@
         self.marginFactor = 0.5;
         self.cellSize = 60;
         self.mapView = mapView;
-        self.allAnnotationsMapView = [[MKMapView alloc] initWithFrame:CGRectZero];
+        self.allAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
         self.mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
         
         // Keep strong reference to default instance because public property is weak
@@ -106,13 +114,14 @@
 
 - (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
 {
-    [self.allAnnotationsMapView addAnnotations:annotations];
+    [self.allAnnotationsMapTree addAnnotations:annotations];
     [self updateAnnotationsWithCompletionHandler:completionHandler];
 }
 
 - (NSUInteger)numberOfAnnotations
 {
-    return self.allAnnotationsMapView.annotations.count;
+//    return self.allAnnotationsMapTree.count;
+    return 0;
 }
 
 - (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler
@@ -127,7 +136,7 @@
     
     // For each cell in the grid, pick one annotation to show
     CCHMapClusterControllerEnumerateCells(gridMapRect, cellSize, ^(MKMapRect cellRect) {
-        NSSet *allAnnotationsInCell = [_allAnnotationsMapView annotationsInMapRect:cellRect];
+        NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellRect];
         if (allAnnotationsInCell.count > 0) {
             NSMutableSet *visibleAnnotationsInCell = [[_mapView annotationsInMapRect:cellRect] mutableCopy];
             MKUserLocation *userLocation = _mapView.userLocation;
@@ -141,7 +150,7 @@
                 annotationForCell = [[CCHMapClusterAnnotation alloc] init];
                 annotationForCell.coordinate = [_clusterer mapClusterController:self coordinateForAnnotations:allAnnotationsInCell inMapRect:cellRect];
             }
-            annotationForCell.annotations = allAnnotationsInCell.allObjects;
+            annotationForCell.annotations = allAnnotationsInCell;
             annotationForCell.delegate = _delegate;
             annotationForCell.title = nil;
             annotationForCell.subtitle = nil;

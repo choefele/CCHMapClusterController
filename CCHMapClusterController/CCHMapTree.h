@@ -16,8 +16,5 @@
 
 - (void)addAnnotations:(NSArray *)annotations;
 - (NSSet *)annotationsInMapRect:(MKMapRect)mapRect;
-- (NSArray *)annotationsInMapRect2:(MKMapRect)mapRect;
-- (NSSet *)annotationsInMapRect3:(MKMapRect)mapRect;
-- (NSArray *)annotationsInMapRect4:(MKMapRect)mapRect;
 
 @end
