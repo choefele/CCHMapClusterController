@@ -118,12 +118,6 @@
     [self updateAnnotationsWithCompletionHandler:completionHandler];
 }
 
-- (NSUInteger)numberOfAnnotations
-{
-//    return self.allAnnotationsMapTree.count;
-    return 0;
-}
-
 - (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler
 {
     // Calculate cell size in map point units

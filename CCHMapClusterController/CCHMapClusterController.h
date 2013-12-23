@@ -37,8 +37,6 @@
 
 /** Map view to display clustered annotations. */
 @property (nonatomic, strong, readonly) MKMapView *mapView;
-/** Number of clustered annotations. */
-@property (nonatomic, assign, readonly) NSUInteger numberOfAnnotations;
 
 /** Multiplier to extend visible area that's included for clustering (default: 0.5). */
 @property (nonatomic, assign) double marginFactor;
