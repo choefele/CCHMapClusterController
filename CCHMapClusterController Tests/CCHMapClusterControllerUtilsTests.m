@@ -71,7 +71,7 @@
     
     // Cluster does contain annotation
     CCHMapClusterAnnotation *clusterAnnotationContains = [[CCHMapClusterAnnotation alloc] init];
-    clusterAnnotationContains.annotations = @[[[MKPointAnnotation alloc] init], pointAnnotation, [[MKPointAnnotation alloc] init], [[MKPointAnnotation alloc] init]];
+    clusterAnnotationContains.annotations = [NSSet setWithObjects:[[MKPointAnnotation alloc] init], pointAnnotation, [[MKPointAnnotation alloc] init], [[MKPointAnnotation alloc] init], nil];
     [visibleAnnotations addObject:clusterAnnotationContains];
     visibleAnnotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
     XCTAssertEqualObjects(clusterAnnotationContains, visibleAnnotation, @"Wrong visible annotation");
@@ -139,7 +139,7 @@
     XCTAssertNil(mapClusterAnnotationFound, @"Wrong cluster annotation");
     
     // Cluster annotation contains annotation
-    mapClusterAnnotation.annotations = @[annotation];
+    mapClusterAnnotation.annotations = [NSSet setWithObject:annotation];
     mapClusterAnnotationFound = CCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
     XCTAssertEqualObjects(mapClusterAnnotation, mapClusterAnnotationFound, @"Wrong cluster annotation");
 
@@ -159,17 +159,17 @@
     
     CCHMapClusterAnnotation *mapClusterAnnotation0 = [[CCHMapClusterAnnotation alloc] init];
     mapClusterAnnotation0.coordinate = coordinateRegion.center;
-    mapClusterAnnotation0.annotations = @[[[MKPointAnnotation alloc] init], annotation, [[MKPointAnnotation alloc] init]];
+    mapClusterAnnotation0.annotations = [NSSet setWithObjects:[[MKPointAnnotation alloc] init], annotation, [[MKPointAnnotation alloc] init], nil];
     [mapView addAnnotation:mapClusterAnnotation0];
 
     CCHMapClusterAnnotation *mapClusterAnnotation1 = [[CCHMapClusterAnnotation alloc] init];
     mapClusterAnnotation1.coordinate = CLLocationCoordinate2DMake(coordinateRegion.center.latitude + 0.5, coordinateRegion.center.longitude + 0.5);
-    mapClusterAnnotation1.annotations = @[[[MKPointAnnotation alloc] init], [[MKPointAnnotation alloc] init]];
+    mapClusterAnnotation1.annotations = [NSSet setWithObjects:[[MKPointAnnotation alloc] init], [[MKPointAnnotation alloc] init], nil];
     [mapView addAnnotation:mapClusterAnnotation1];
 
     CCHMapClusterAnnotation *mapClusterAnnotation2 = [[CCHMapClusterAnnotation alloc] init];
     mapClusterAnnotation2.coordinate = CLLocationCoordinate2DMake(coordinateRegion.center.latitude - 0.5, coordinateRegion.center.longitude - 0.5);
-    mapClusterAnnotation2.annotations = @[[[MKPointAnnotation alloc] init]];
+    mapClusterAnnotation2.annotations = [NSSet setWithObject:[[MKPointAnnotation alloc] init]];
     [mapView addAnnotation:mapClusterAnnotation2];
     
     CCHMapClusterAnnotation *mapClusterAnnotationFound = CCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);

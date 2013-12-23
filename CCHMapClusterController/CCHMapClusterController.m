@@ -35,11 +35,11 @@
 #import "CCHFadeInOutMapAnimator.h"
 #import "CCHMapTree.h"
 
-#define NODE_CAPACITY 50
-#define WORLD_MIN_LAT 45
-#define WORLD_MIN_LON 5
-#define WORLD_MAX_LAT 55
-#define WORLD_MAX_LON 15
+#define NODE_CAPACITY 10
+#define WORLD_MIN_LAT -85
+#define WORLD_MAX_LAT 85
+#define WORLD_MIN_LON -180
+#define WORLD_MAX_LON 180
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 
