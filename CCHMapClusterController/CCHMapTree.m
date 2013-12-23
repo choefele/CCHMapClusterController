@@ -24,9 +24,9 @@
 {
     self = [super init];
     if (self) {
-        _objects = (__unsafe_unretained id *)malloc(sizeof(id) * capacity);
+        _objects = (__unsafe_unretained id *)malloc(capacity * sizeof(id));
         _numObjects = 0;
-        _capacity = capacity;
+        _capacity = capacity ? capacity : 1;
     }
     return self;
 }
@@ -39,12 +39,8 @@
 - (void)addObject:(__unsafe_unretained id)object
 {
     if (_numObjects >= _capacity) {
-        NSUInteger newCapacity = 2 * _capacity;
-        if (newCapacity < _capacity + 4) {
-            newCapacity = _capacity + 4;
-        }
-        _objects = (__unsafe_unretained id *)realloc(_objects, newCapacity * sizeof(id));
-        _capacity = newCapacity;
+        _capacity *= 2;
+        _objects = (__unsafe_unretained id *)realloc(_objects, _capacity * sizeof(id));
     }
     _objects[_numObjects++] = object;
 }
