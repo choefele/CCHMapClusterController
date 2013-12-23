@@ -8,7 +8,44 @@
 
 #import "CCHMapTreeUtils.h"
 
-#import "CCHMapTree.h"
+#pragma mark - Unsafe Mutable Array
+
+@interface CCHMapTreeUnsafeMutableArray()
+
+@property (nonatomic, assign) id __unsafe_unretained *objects;
+@property (nonatomic, assign) NSUInteger numObjects;
+@property (nonatomic, assign) NSUInteger capacity;
+
+@end
+
+@implementation CCHMapTreeUnsafeMutableArray
+
+- (id)initWithCapacity:(NSUInteger)capacity
+{
+    self = [super init];
+    if (self) {
+        _objects = (__unsafe_unretained id *)malloc(capacity * sizeof(id));
+        _numObjects = 0;
+        _capacity = capacity ? capacity : 1;
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    free(_objects);
+}
+
+- (void)addObject:(__unsafe_unretained id)object
+{
+    if (_numObjects >= _capacity) {
+        _capacity *= 2;
+        _objects = (__unsafe_unretained id *)realloc(_objects, _capacity * sizeof(id));
+    }
+    _objects[_numObjects++] = object;
+}
+
+@end
 
 #pragma mark - Constructors
 
@@ -128,7 +165,7 @@ void CCHMapTreeGatherDataInRange2(CCHMapTreeNode* node, CCHMapTreeBoundingBox ra
     CCHMapTreeGatherDataInRange2(node->southEast, range, annotations);
 }
 
-void CCHMapTreeGatherDataInRange3(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, __unsafe_unretained UnsafeMutableArray *annotations)
+void CCHMapTreeGatherDataInRange3(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, __unsafe_unretained CCHMapTreeUnsafeMutableArray *annotations)
 {
     if (!CCHMapTreeBoundingBoxIntersectsBoundingBox(node->boundingBox, range)) {
         return;

@@ -12,7 +12,15 @@
 
 #import <Foundation/Foundation.h>
 
-@class UnsafeMutableArray;
+@interface CCHMapTreeUnsafeMutableArray : NSObject
+
+@property (nonatomic, assign, readonly) id __unsafe_unretained *objects;
+@property (nonatomic, assign, readonly) NSUInteger numObjects;
+
+- (id)initWithCapacity:(NSUInteger)capacity;
+- (void)addObject:(__unsafe_unretained id)object;
+
+@end
 
 typedef struct CCHMapTreeNodeData {
     double x, y;
@@ -47,7 +55,7 @@ void CCHMapTreeTraverse(CCHMapTreeNode *node, CCHMapTreeTraverseBlock block);
 typedef void(^TBDataReturnBlock)(CCHMapTreeNodeData data);
 void CCHMapTreeGatherDataInRange(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, TBDataReturnBlock block);
 void CCHMapTreeGatherDataInRange2(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, __unsafe_unretained NSMutableSet *annotations);
-void CCHMapTreeGatherDataInRange3(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, __unsafe_unretained UnsafeMutableArray *annotations);
+void CCHMapTreeGatherDataInRange3(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, __unsafe_unretained CCHMapTreeUnsafeMutableArray *annotations);
 
 bool CCHMapTreeNodeInsertData(CCHMapTreeNode* node, CCHMapTreeNodeData data, int bucketCapacity);
 CCHMapTreeNode *CCHMapTreeBuildWithData(CCHMapTreeNodeData *data, int count, CCHMapTreeBoundingBox boundingBox, int bucketCapacity);
