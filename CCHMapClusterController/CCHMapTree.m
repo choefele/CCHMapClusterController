@@ -46,7 +46,7 @@
 - (void)addAnnotations:(NSArray *)annotations
 {
     [self.annotations addObjectsFromArray:annotations];
-    for (id<MKAnnotation> annotation in _annotations) {
+    for (id<MKAnnotation> annotation in annotations) {
         CCHMapTreeNodeData data = CCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)annotation);
         CCHMapTreeNodeInsertData(_root, data, (int)_nodeCapacity);
     }
