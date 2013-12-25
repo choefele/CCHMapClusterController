@@ -31,7 +31,7 @@
 #import "CCHMapClusterAnnotation.h"
 #import "CCHMapClusterControllerDelegate.h"
 #import "CCHMapViewDelegateProxy.h"
-#import "CCHNearCenterMapClusterer.h"
+#import "CCHCenterOfMassMapClusterer.h"
 #import "CCHFadeInOutMapAnimator.h"
 #import "CCHMapTree.h"
 
@@ -76,7 +76,7 @@
         self.mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
         
         // Keep strong reference to default instance because public property is weak
-        id<CCHMapClusterer> clusterer = [[CCHNearCenterMapClusterer alloc] init];
+        id<CCHMapClusterer> clusterer = [[CCHCenterOfMassMapClusterer alloc] init];
         self.clusterer = clusterer;
         self.strongClusterer = clusterer;
         id<CCHMapAnimator> animator = [[CCHFadeInOutMapAnimator alloc] init];
