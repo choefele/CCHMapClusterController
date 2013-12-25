@@ -49,7 +49,7 @@
 
 #pragma mark - Constructors
 
-CCHMapTreeNode* CCHMapTreeNodeMake(CCHMapTreeBoundingBox boundary, int bucketCapacity)
+CCHMapTreeNode *CCHMapTreeNodeMake(CCHMapTreeBoundingBox boundary, int bucketCapacity)
 {
     CCHMapTreeNode* node = malloc(sizeof(CCHMapTreeNode));
     node->northWest = NULL;
@@ -78,7 +78,7 @@ static inline bool CCHMapTreeBoundingBoxIntersectsBoundingBox(CCHMapTreeBounding
 
 #pragma mark - Quad Tree Functions
 
-void CCHMapTreeNodeSubdivide(CCHMapTreeNode* node, int bucketCapacity)
+void CCHMapTreeNodeSubdivide(CCHMapTreeNode *node, int bucketCapacity)
 {
     CCHMapTreeBoundingBox box = node->boundingBox;
 
@@ -98,7 +98,7 @@ void CCHMapTreeNodeSubdivide(CCHMapTreeNode* node, int bucketCapacity)
     node->southEast = CCHMapTreeNodeMake(southEast, bucketCapacity);
 }
 
-bool CCHMapTreeNodeInsertData(CCHMapTreeNode* node, CCHMapTreeNodeData data, int bucketCapacity)
+bool CCHMapTreeNodeInsertData(CCHMapTreeNode *node, CCHMapTreeNodeData data, int bucketCapacity)
 {
     if (!CCHMapTreeBoundingBoxContainsData(node->boundingBox, data)) {
         return false;
@@ -121,7 +121,7 @@ bool CCHMapTreeNodeInsertData(CCHMapTreeNode* node, CCHMapTreeNodeData data, int
     return false;
 }
 
-void CCHMapTreeGatherDataInRange(CCHMapTreeNode* node, CCHMapTreeBoundingBox range, TBDataReturnBlock block)
+void CCHMapTreeGatherDataInRange(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, TBDataReturnBlock block)
 {
     if (!CCHMapTreeBoundingBoxIntersectsBoundingBox(node->boundingBox, range)) {
         return;
@@ -187,7 +187,7 @@ void CCHMapTreeGatherDataInRange3(CCHMapTreeNode *node, CCHMapTreeBoundingBox ra
     CCHMapTreeGatherDataInRange3(node->southEast, range, annotations);
 }
 
-void CCHMapTreeTraverse(CCHMapTreeNode* node, CCHMapTreeTraverseBlock block)
+void CCHMapTreeTraverse(CCHMapTreeNode *node, CCHMapTreeTraverseBlock block)
 {
     block(node);
 
@@ -201,9 +201,9 @@ void CCHMapTreeTraverse(CCHMapTreeNode* node, CCHMapTreeTraverseBlock block)
     CCHMapTreeTraverse(node->southEast, block);
 }
 
-CCHMapTreeNode* CCHMapTreeBuildWithData(CCHMapTreeNodeData *data, int count, CCHMapTreeBoundingBox boundingBox, int bucketCapacity)
+CCHMapTreeNode *CCHMapTreeBuildWithData(CCHMapTreeNodeData *data, int count, CCHMapTreeBoundingBox boundingBox, int bucketCapacity)
 {
-    CCHMapTreeNode* root = CCHMapTreeNodeMake(boundingBox, bucketCapacity);
+    CCHMapTreeNode *root = CCHMapTreeNodeMake(boundingBox, bucketCapacity);
     for (int i = 0; i < count; i++) {
         CCHMapTreeNodeInsertData(root, data[i], bucketCapacity);
     }
@@ -211,16 +211,13 @@ CCHMapTreeNode* CCHMapTreeBuildWithData(CCHMapTreeNodeData *data, int count, CCH
     return root;
 }
 
-void CCHMapTreeFreeQuadTreeNode(CCHMapTreeNode* node)
+void CCHMapTreeFreeQuadTreeNode(CCHMapTreeNode *node)
 {
     if (node->northWest != NULL) CCHMapTreeFreeQuadTreeNode(node->northWest);
     if (node->northEast != NULL) CCHMapTreeFreeQuadTreeNode(node->northEast);
     if (node->southWest != NULL) CCHMapTreeFreeQuadTreeNode(node->southWest);
     if (node->southEast != NULL) CCHMapTreeFreeQuadTreeNode(node->southEast);
 
-//    for (int i=0; i < node->count; i++) {
-//        free(node->points[i].data);
-//    }
     free(node->points);
     free(node);
 }
