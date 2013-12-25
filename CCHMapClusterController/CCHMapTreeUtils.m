@@ -98,6 +98,16 @@ void CCHMapTreeNodeSubdivide(CCHMapTreeNode *node, int bucketCapacity)
     node->southEast = CCHMapTreeNodeMake(southEast, bucketCapacity);
 }
 
+CCHMapTreeNode *CCHMapTreeBuildWithData(CCHMapTreeNodeData *data, int count, CCHMapTreeBoundingBox boundingBox, int bucketCapacity)
+{
+    CCHMapTreeNode *root = CCHMapTreeNodeMake(boundingBox, bucketCapacity);
+    for (int i = 0; i < count; i++) {
+        CCHMapTreeNodeInsertData(root, data[i], bucketCapacity);
+    }
+    
+    return root;
+}
+
 bool CCHMapTreeNodeInsertData(CCHMapTreeNode *node, CCHMapTreeNodeData data, int bucketCapacity)
 {
     if (!CCHMapTreeBoundingBoxContainsData(node->boundingBox, data)) {
@@ -118,6 +128,33 @@ bool CCHMapTreeNodeInsertData(CCHMapTreeNode *node, CCHMapTreeNodeData data, int
     if (CCHMapTreeNodeInsertData(node->southWest, data, bucketCapacity)) return true;
     if (CCHMapTreeNodeInsertData(node->southEast, data, bucketCapacity)) return true;
 
+    return false;
+}
+
+bool CCHMapTreeNodeRemoveData(CCHMapTreeNode *node, CCHMapTreeNodeData data)
+{
+    if (!CCHMapTreeBoundingBoxContainsData(node->boundingBox, data)) {
+        return false;
+    }
+    
+    for (int i = 0; i < node->count; i++) {
+        CCHMapTreeNodeData *nodeData = &node->points[i];
+        if (nodeData->data == data.data) {
+            node->points[i] = node->points[node->count - 1];
+            node->count--;
+            return true;
+        }
+    }
+    
+    if (node->northWest == NULL) {
+        return false;
+    }
+    
+    if (CCHMapTreeNodeRemoveData(node->northWest, data)) return true;
+    if (CCHMapTreeNodeRemoveData(node->northEast, data)) return true;
+    if (CCHMapTreeNodeRemoveData(node->southWest, data)) return true;
+    if (CCHMapTreeNodeRemoveData(node->southEast, data)) return true;
+    
     return false;
 }
 
@@ -143,7 +180,7 @@ void CCHMapTreeGatherDataInRange(CCHMapTreeNode *node, CCHMapTreeBoundingBox ran
     CCHMapTreeGatherDataInRange(node->southEast, range, block);
 }
 
-void CCHMapTreeGatherDataInRange2(CCHMapTreeNode* node, CCHMapTreeBoundingBox range, __unsafe_unretained NSMutableSet *annotations)
+void CCHMapTreeGatherDataInRange2(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, __unsafe_unretained NSMutableSet *annotations)
 {
     if (!CCHMapTreeBoundingBoxIntersectsBoundingBox(node->boundingBox, range)) {
         return;
@@ -199,16 +236,6 @@ void CCHMapTreeTraverse(CCHMapTreeNode *node, CCHMapTreeTraverseBlock block)
     CCHMapTreeTraverse(node->northEast, block);
     CCHMapTreeTraverse(node->southWest, block);
     CCHMapTreeTraverse(node->southEast, block);
-}
-
-CCHMapTreeNode *CCHMapTreeBuildWithData(CCHMapTreeNodeData *data, int count, CCHMapTreeBoundingBox boundingBox, int bucketCapacity)
-{
-    CCHMapTreeNode *root = CCHMapTreeNodeMake(boundingBox, bucketCapacity);
-    for (int i = 0; i < count; i++) {
-        CCHMapTreeNodeInsertData(root, data[i], bucketCapacity);
-    }
-
-    return root;
 }
 
 void CCHMapTreeFreeQuadTreeNode(CCHMapTreeNode *node)

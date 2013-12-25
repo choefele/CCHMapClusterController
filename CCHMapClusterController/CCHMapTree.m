@@ -12,7 +12,7 @@
 
 @interface CCHMapTree()
 
-@property (nonatomic, strong) NSMutableSet *annotations;
+@property (nonatomic, strong) NSMutableSet *mutableAnnotations;
 @property (nonatomic, assign) CCHMapTreeNode *root;
 @property (nonatomic, assign) NSUInteger nodeCapacity;
 
@@ -30,7 +30,7 @@
     self = [super init];
     if (self) {
         self.nodeCapacity = nodeCapacity;
-        self.annotations = [NSMutableSet set];
+        self.mutableAnnotations = [NSMutableSet set];
         CCHMapTreeBoundingBox world = CCHMapTreeBoundingBoxMake(minLatitude, minLongitude, maxLatitude, maxLongitude);
         self.root = CCHMapTreeBuildWithData(NULL, 0, world, nodeCapacity);
     }
@@ -43,12 +43,35 @@
     CCHMapTreeFreeQuadTreeNode(self.root);
 }
 
+- (NSSet *)annotations
+{
+    return self.mutableAnnotations;
+}
+
 - (void)addAnnotations:(NSArray *)annotations
 {
-    [self.annotations addObjectsFromArray:annotations];
+    NSMutableSet *set = self.mutableAnnotations;
     for (id<MKAnnotation> annotation in annotations) {
-        CCHMapTreeNodeData data = CCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)annotation);
-        CCHMapTreeNodeInsertData(_root, data, (int)_nodeCapacity);
+        if (![set containsObject:annotation]) {
+            CCHMapTreeNodeData data = CCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)annotation);
+            if (CCHMapTreeNodeInsertData(_root, data, (int)_nodeCapacity)) {
+                [set addObject:annotation];
+            }
+        }
+    }
+}
+
+- (void)removeAnnotations:(NSArray *)annotations
+{
+    NSMutableSet *set = self.mutableAnnotations;
+    for (id<MKAnnotation> annotation in annotations) {
+        id<MKAnnotation> member = [set member:annotation];
+        if (member) {
+            CCHMapTreeNodeData data = CCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)member);
+            if (CCHMapTreeNodeRemoveData(_root, data)) {
+                [self.mutableAnnotations removeObject:annotation];
+            }
+        }
     }
 }
 
@@ -73,5 +96,4 @@ CCHMapTreeBoundingBox CCHMapTreeBoundingBoxForMapRect(MKMapRect mapRect)
     
     return annotationsAsSet;
 }
-
 @end
