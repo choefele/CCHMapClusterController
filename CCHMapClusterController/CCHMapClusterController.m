@@ -23,7 +23,7 @@
 //  THE SOFTWARE.
 //
 
-// Based on https://github.com/MarcoSero/MSMapClustering by MarcoSero/WWDC 2010
+// Based on https://github.com/MarcoSero/MSMapClustering by MarcoSero/WWDC 2011
 
 #import "CCHMapClusterController.h"
 
@@ -51,6 +51,7 @@
 @interface CCHMapClusterController()<MKMapViewDelegate>
 
 @property (nonatomic, strong) CCHMapTree *allAnnotationsMapTree;
+@property (nonatomic, strong) CCHMapTree *visibleAnnotationsMapTree;
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) CCHMapViewDelegateProxy *mapViewDelegateProxy;
 @property (nonatomic, strong) id<MKAnnotation> annotationToSelect;
@@ -73,6 +74,7 @@
         self.cellSize = 60;
         self.mapView = mapView;
         self.allAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
+        self.visibleAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
         self.mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
         
         // Keep strong reference to default instance because public property is weak
@@ -129,14 +131,11 @@
     gridMapRect = CCHMapClusterControllerAlignToCellSize(gridMapRect, cellSize);
     
     // For each cell in the grid, pick one annotation to show
+    NSMutableSet *clusters = [NSMutableSet set];
     CCHMapClusterControllerEnumerateCells(gridMapRect, cellSize, ^(MKMapRect cellRect) {
         NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellRect];
         if (allAnnotationsInCell.count > 0) {
-            NSMutableSet *visibleAnnotationsInCell = [[_mapView annotationsInMapRect:cellRect] mutableCopy];
-            MKUserLocation *userLocation = _mapView.userLocation;
-            if (userLocation) {
-                [visibleAnnotationsInCell removeObject:userLocation];
-            }
+            NSMutableSet *visibleAnnotationsInCell = [[_visibleAnnotationsMapTree annotationsInMapRect:cellRect] mutableCopy];
             
             // Select cluster representation
             CCHMapClusterAnnotation *annotationForCell = _findVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
@@ -148,14 +147,31 @@
             annotationForCell.delegate = _delegate;
             annotationForCell.title = nil;
             annotationForCell.subtitle = nil;
-            
-            // Show cluster annotation on map
-            [visibleAnnotationsInCell removeObject:annotationForCell];
-            [_animator mapClusterController:self removeAnnotations:visibleAnnotationsInCell];
-            [_mapView addAnnotation:annotationForCell];
+
+            // Collect clusters
+            [clusters addObject:annotationForCell];
         }
     });
     
+    // Figure out difference between new and old clusters
+    NSMutableSet *annotationsBefore = [NSMutableSet setWithArray:_mapView.annotations];
+    [annotationsBefore removeObject:[_mapView userLocation]];
+    NSMutableSet *annotationsToKeep = [NSMutableSet setWithSet:annotationsBefore];
+    [annotationsToKeep intersectSet:clusters];
+    NSMutableSet *annotationsToAddAsSet = [NSMutableSet setWithSet:clusters];
+    [annotationsToAddAsSet minusSet:annotationsToKeep];
+    NSArray *annotationsToAdd = [annotationsToAddAsSet allObjects];
+    NSMutableSet *annotationsToRemoveAsSet = [NSMutableSet setWithSet:annotationsBefore];
+    [annotationsToRemoveAsSet minusSet:clusters];
+    NSArray *annotationsToRemove = [annotationsToRemoveAsSet allObjects];
+    
+    // Show cluster annotation on map
+    [self.mapView addAnnotations:annotationsToAdd];
+    [_animator mapClusterController:self removeAnnotations:annotationsToRemove];
+    [_visibleAnnotationsMapTree removeAnnotations:annotationsToRemove];
+    [_visibleAnnotationsMapTree addAnnotations:annotationsToAdd];
+    
+    // Debugging
     if (self.isDebuggingEnabled) {
         for (id<MKOverlay> overlay in _mapView.overlays) {
             if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {

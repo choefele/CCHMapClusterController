@@ -32,6 +32,6 @@
 @property (nonatomic, assign) NSTimeInterval duration;
 
 - (void)mapClusterController:(CCHMapClusterController *)mapClusterController didAddAnnotationViews:(NSArray *)annotationViews;
-- (void)mapClusterController:(CCHMapClusterController *)mapClusterController removeAnnotations:(NSSet *)annotations;
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController removeAnnotations:(NSArray *)annotations;
 
 @end
