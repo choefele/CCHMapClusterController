@@ -20,13 +20,13 @@
 		4889995F185D1D9300F3D6ED /* CCHMapTreeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4889995E185D1D9300F3D6ED /* CCHMapTreeTests.m */; };
 		48899966185E398700F3D6ED /* CCHMapTreeUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 48899965185E398700F3D6ED /* CCHMapTreeUtils.m */; };
 		48899968185F875600F3D6ED /* CCHMapClusterControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48899967185F875600F3D6ED /* CCHMapClusterControllerTests.m */; };
+		48C419A81873069D00AFA345 /* USA-HotelMotel.csv in Resources */ = {isa = PBXBuildFile; fileRef = 48C419A71873069D00AFA345 /* USA-HotelMotel.csv */; };
+		48C419AA187306D900AFA345 /* Berlin-Data.json in Resources */ = {isa = PBXBuildFile; fileRef = 48C419A9187306D900AFA345 /* Berlin-Data.json */; };
 		48D7B0C8185A679F0071636B /* KPAnnotationTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0C0185A679F0071636B /* KPAnnotationTree.m */; };
 		48D7B0CA185A679F0071636B /* KPTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0C4185A679F0071636B /* KPTreeNode.m */; };
 		48D7B0CF185BA3750071636B /* TBQuadTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0CE185BA3750071636B /* TBQuadTree.m */; };
 		626379F9184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */; };
 		62978DDF1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */; };
-		62978DE11859DAAB00748230 /* Data.json in Resources */ = {isa = PBXBuildFile; fileRef = 62978DE01859DAAB00748230 /* Data.json */; };
-		62978DE41859DAD600748230 /* Data.json in Resources */ = {isa = PBXBuildFile; fileRef = 62978DE01859DAAB00748230 /* Data.json */; };
 		62D667831845E0F20046D5D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667821845E0F20046D5D5 /* Foundation.framework */; };
 		62D667851845E0F20046D5D5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667841845E0F20046D5D5 /* CoreGraphics.framework */; };
 		62D667871845E0F20046D5D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667861845E0F20046D5D5 /* UIKit.framework */; };
@@ -84,6 +84,8 @@
 		48899964185E398700F3D6ED /* CCHMapTreeUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapTreeUtils.h; sourceTree = "<group>"; };
 		48899965185E398700F3D6ED /* CCHMapTreeUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapTreeUtils.m; sourceTree = "<group>"; };
 		48899967185F875600F3D6ED /* CCHMapClusterControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerTests.m"; sourceTree = "<group>"; };
+		48C419A71873069D00AFA345 /* USA-HotelMotel.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "USA-HotelMotel.csv"; path = "../../USA-HotelMotel.csv"; sourceTree = "<group>"; };
+		48C419A9187306D900AFA345 /* Berlin-Data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Berlin-Data.json"; path = "../../Berlin-Data.json"; sourceTree = "<group>"; };
 		48D7B0BF185A679F0071636B /* KPAnnotationTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPAnnotationTree.h; sourceTree = "<group>"; };
 		48D7B0C0185A679F0071636B /* KPAnnotationTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KPAnnotationTree.m; sourceTree = "<group>"; };
 		48D7B0C3185A679F0071636B /* KPTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPTreeNode.h; sourceTree = "<group>"; };
@@ -92,7 +94,6 @@
 		48D7B0CE185BA3750071636B /* TBQuadTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBQuadTree.m; sourceTree = "<group>"; };
 		626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerUtilsTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerUtilsTests.m"; sourceTree = "<group>"; };
 		62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerPerformanceTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerPerformanceTests.m"; sourceTree = "<group>"; };
-		62978DE01859DAAB00748230 /* Data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Data.json; path = ../../Data.json; sourceTree = "<group>"; };
 		62D6677F1845E0F20046D5D5 /* CCHMapClusterController Example iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CCHMapClusterController Example iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62D667821845E0F20046D5D5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		62D667841845E0F20046D5D5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -225,7 +226,8 @@
 		62D667881845E0F20046D5D5 /* CCHMapClusterController Example iOS */ = {
 			isa = PBXGroup;
 			children = (
-				62978DE01859DAAB00748230 /* Data.json */,
+				48C419A9187306D900AFA345 /* Berlin-Data.json */,
+				48C419A71873069D00AFA345 /* USA-HotelMotel.csv */,
 				62D667911845E0F20046D5D5 /* AppDelegate.h */,
 				62D667921845E0F20046D5D5 /* AppDelegate.m */,
 				62D667941845E0F20046D5D5 /* Main.storyboard */,
@@ -385,10 +387,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48C419A81873069D00AFA345 /* USA-HotelMotel.csv in Resources */,
 				62D6679B1845E0F20046D5D5 /* Images.xcassets in Resources */,
+				48C419AA187306D900AFA345 /* Berlin-Data.json in Resources */,
 				62D6678D1845E0F20046D5D5 /* InfoPlist.strings in Resources */,
 				62D667961845E0F20046D5D5 /* Main.storyboard in Resources */,
-				62978DE11859DAAB00748230 /* Data.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,7 +400,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				62D667AC1845E0F20046D5D5 /* InfoPlist.strings in Resources */,
-				62978DE41859DAD600748230 /* Data.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

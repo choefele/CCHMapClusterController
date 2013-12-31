@@ -49,7 +49,7 @@
     // Read annotations
     DataReader *dataReader = [[DataReader alloc] init];
     dataReader.delegate = self;
-    [dataReader startReading];
+    [dataReader startReadingJSON];
 }
 
 - (void)dataReader:(DataReader *)dataReader addAnnotations:(NSArray *)annotations

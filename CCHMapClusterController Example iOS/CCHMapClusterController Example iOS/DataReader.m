@@ -16,11 +16,11 @@
 
 @implementation DataReader
 
-- (void)startReading
+- (void)startReadingJSON
 {
     // Parse on background thread
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        NSString *file = [NSBundle.mainBundle pathForResource:@"Data" ofType:@"json"];
+        NSString *file = [NSBundle.mainBundle pathForResource:@"Berlin-Data" ofType:@"json"];
         NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:file];
         [inputStream open];
         NSArray *dataAsJson = [NSJSONSerialization JSONObjectWithStream:inputStream options:0 error:nil];
@@ -40,6 +40,38 @@
                 // Dispatch batch of annotations
                 [self dispatchAnnotations:annotations];
                 [annotations removeAllObjects];
+            }
+        }
+        
+        // Dispatch remaining annotations
+        [self dispatchAnnotations:annotations];
+    });
+}
+
+- (void)startReadingCSV
+{
+    // Parse on background thread
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        NSString *file = [NSBundle.mainBundle pathForResource:@"USA-HotelMotel" ofType:@"csv"];
+        NSArray *lines = [[NSString stringWithContentsOfFile:file encoding:NSASCIIStringEncoding error:nil] componentsSeparatedByString:@"\n"];
+        
+        NSMutableArray *annotations = [NSMutableArray arrayWithCapacity:BATCH_COUNT];
+        for (NSString *line in lines) {
+            NSString *trimmedLine = [line stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+            if (trimmedLine.length > 0) {
+                // Convert CSV into annotation object
+                MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+                NSArray *components = [line componentsSeparatedByString:@","];
+                annotation.coordinate = CLLocationCoordinate2DMake([components[1] doubleValue], [components[0] doubleValue]);
+                annotation.title = [components[2] stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+                
+                [annotations addObject:annotation];
+                
+                if (annotations.count == BATCH_COUNT) {
+                    // Dispatch batch of annotations
+                    [self dispatchAnnotations:annotations];
+                    [annotations removeAllObjects];
+                }
             }
         }
         

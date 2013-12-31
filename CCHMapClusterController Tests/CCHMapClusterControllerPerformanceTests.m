@@ -36,7 +36,7 @@
     [super setUp];
     
     // Read test data
-    NSString *file = [NSBundle.mainBundle pathForResource:@"Data" ofType:@"json"];
+    NSString *file = [NSBundle.mainBundle pathForResource:@"Berlin-Data" ofType:@"json"];
     NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:file];
     [inputStream open];
     NSArray *dataAsJson = [NSJSONSerialization JSONObjectWithStream:inputStream options:0 error:nil];

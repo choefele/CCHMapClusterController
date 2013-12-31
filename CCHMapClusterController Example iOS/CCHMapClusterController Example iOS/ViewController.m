@@ -35,11 +35,6 @@
         return;
     }
     
-    // Show Berlin
-    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
-    self.mapView.region = region;
-    
     // Set up map clustering
     self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.mapClusterController.delegate = self;
@@ -57,7 +52,18 @@
     // Read annotations
     DataReader *dataReader = [[DataReader alloc] init];
     dataReader.delegate = self;
-    [dataReader startReading];
+
+    // 5000+ items near Berlin in JSON format
+    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
+    [dataReader startReadingJSON];
+    
+    // 80000+ items in the US
+//    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.833333, -98.583333);
+//    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 7000000, 7000000);
+//    [dataReader startReadingCSV];
+    
+    self.mapView.region = region;
 }
 
 - (void)dataReader:(DataReader *)dataReader addAnnotations:(NSArray *)annotations
