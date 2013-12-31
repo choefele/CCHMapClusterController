@@ -57,6 +57,7 @@
 @property (nonatomic, strong) id<MKAnnotation> annotationToSelect;
 @property (nonatomic, strong) CCHMapClusterAnnotation *mapClusterAnnotationToSelect;
 @property (nonatomic, assign) MKCoordinateSpan regionSpanBeforeChange;
+@property (nonatomic, assign, getter = isUpdating) BOOL updating;
 @property (nonatomic, strong) id<CCHMapClusterer> strongClusterer;
 @property (nonatomic, strong) CCHMapClusterAnnotation *(^findVisibleAnnotation)(NSSet *annotations, NSSet *visibleAnnotations);
 @property (nonatomic, strong) id<CCHMapAnimator> strongAnimator;
@@ -117,7 +118,9 @@
 - (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
 {
     [self.allAnnotationsMapTree addAnnotations:annotations];
-    [self updateAnnotationsWithCompletionHandler:completionHandler];
+    if (!self.isUpdating) {
+        [self updateAnnotationsWithCompletionHandler:completionHandler];
+    }
 }
 
 - (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler
@@ -240,10 +243,13 @@
     }
     
     self.regionSpanBeforeChange = mapView.region.span;
+    self.updating = YES;
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
+    self.updating = NO;
+    
     // Forward to standard delegate
     if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:regionDidChangeAnimated:)]) {
         [self.mapViewDelegateProxy.target mapView:mapView regionDidChangeAnimated:animated];
