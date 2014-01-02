@@ -77,6 +77,21 @@
     XCTAssertEqualObjects(clusterAnnotationContains, visibleAnnotation, @"Wrong visible annotation");
 }
 
+- (void)testAlignMapLengthToWorldWidth
+{
+    double mapLength = 10000.1;
+    double alignedMapLength = CCHMapClusterControllerAlignMapLengthToWorldWidth(mapLength);
+    XCTAssertTrue(alignedMapLength > mapLength, @"Wrong aligned map length");
+    double factor = MKMapSizeWorld.width / alignedMapLength;
+    XCTAssertEqualWithAccuracy(factor, floor(factor), __FLT_EPSILON__, @"Wrong aligned map length");
+
+    mapLength = 123456789.0123;
+    alignedMapLength = CCHMapClusterControllerAlignMapLengthToWorldWidth(mapLength);
+    XCTAssertTrue(alignedMapLength > mapLength, @"Wrong aligned map length");
+    factor = MKMapSizeWorld.width / alignedMapLength;
+    XCTAssertEqualWithAccuracy(factor, floor(factor), __FLT_EPSILON__, @"Wrong aligned map length");
+}
+
 - (void)testCoordinateEqualToCoordinate
 {
     // Same struct
