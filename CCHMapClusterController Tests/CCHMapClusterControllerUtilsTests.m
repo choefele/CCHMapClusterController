@@ -37,14 +37,14 @@
 - (void)testAlignToCellSize
 {
     MKMapRect mapRect = MKMapRectMake(0, 0, 15, 20);
-    MKMapRect adjustedMapRect = CCHMapClusterControllerAlignToCellSize(mapRect, 5);
+    MKMapRect adjustedMapRect = CCHMapClusterControllerAlignMapRectToCellSize(mapRect, 5);
     XCTAssertEqual(adjustedMapRect.origin.x, 0.0, @"Wrong origin x");
     XCTAssertEqual(adjustedMapRect.origin.y, 0.0, @"Wrong origin y");
     XCTAssertEqual(adjustedMapRect.size.width, 15.0, @"Wrong size width");
     XCTAssertEqual(adjustedMapRect.size.height, 20.0, @"Wrong size height");
 
     mapRect = MKMapRectMake(8, 8, 15, 20);
-    adjustedMapRect = CCHMapClusterControllerAlignToCellSize(mapRect, 6);
+    adjustedMapRect = CCHMapClusterControllerAlignMapRectToCellSize(mapRect, 6);
     XCTAssertEqual(adjustedMapRect.origin.x, 6.0, @"Wrong origin x");
     XCTAssertEqual(adjustedMapRect.origin.y, 6.0, @"Wrong origin y");
     XCTAssertEqual(adjustedMapRect.size.width, 18.0, @"Wrong size width");

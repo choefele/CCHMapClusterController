@@ -31,14 +31,18 @@
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 
-MKMapRect CCHMapClusterControllerAlignToCellSize(MKMapRect mapRect, double cellSize)
+MKMapRect CCHMapClusterControllerAlignMapRectToCellSize(MKMapRect mapRect, double cellSize)
 {
-//    NSCAssert(cellSize != 0, @"Invalid cell size");
-    
+    NSCAssert(cellSize != 0, @"Invalid map length");
+    if (cellSize == 0) {
+        return MKMapRectNull;
+    }
+
     double startX = floor(MKMapRectGetMinX(mapRect) / cellSize) * cellSize;
     double startY = floor(MKMapRectGetMinY(mapRect) / cellSize) * cellSize;
     double endX = ceil(MKMapRectGetMaxX(mapRect) / cellSize) * cellSize;
     double endY = ceil(MKMapRectGetMaxY(mapRect) / cellSize) * cellSize;
+    
     return MKMapRectMake(startX, startY, endX - startX, endY - startY);
 }
 
@@ -70,8 +74,7 @@ double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, NSView *vie
     MKMapPoint rightMapPoint = MKMapPointForCoordinate(rightCoordinate);
 
     if (rightMapPoint.x < leftMapPoint.x) {
-        // Points span 180th meridian
-        rightMapPoint.x += + MKMapSizeWorld.width;
+        rightMapPoint.x += + MKMapSizeWorld.width;  // Points span 180th meridian
     }
     
     // Calculate distance between map points
@@ -79,6 +82,17 @@ double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, NSView *vie
     double yd = leftMapPoint.y - rightMapPoint.y;
     double mapLength = sqrt(xd*xd + yd*yd);
     
+    return mapLength;
+}
+
+double CCHMapClusterControllerAlignMapLengthToWorldWidth(double mapLength)
+{
+    NSCAssert(mapLength != 0, @"Invalid map length");
+    if (mapLength == 0) {
+        return 0;
+    }
+
+    mapLength = MKMapSizeWorld.width / floor(MKMapSizeWorld.width / mapLength);
     return mapLength;
 }
 
@@ -110,7 +124,7 @@ CCHMapClusterAnnotation *CCHMapClusterControllerClusterAnnotationForAnnotation(M
 
 void CCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, void (^block)(MKMapRect cellRect))
 {
-    NSCAssert(block != NULL, @"block argument can't be NULL");
+    NSCAssert(block != NULL, @"Block argument can't be NULL");
     if (block == nil) {
         return;
     }

@@ -126,12 +126,15 @@
 - (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler
 {
     // Calculate cell size in map point units
+    // Convert cell size to map units and make multiple of world size so that cells
+    // wrap around at the 180th merdian.
     double cellSize = CCHMapClusterControllerMapLengthForLength(_mapView, _mapView.superview, _cellSize);
+    cellSize = CCHMapClusterControllerAlignMapLengthToWorldWidth(cellSize);
     
     // Expand map rect and align to cell size to avoid popping when panning
     MKMapRect visibleMapRect = _mapView.visibleMapRect;
     MKMapRect gridMapRect = MKMapRectInset(visibleMapRect, -_marginFactor * visibleMapRect.size.width, -_marginFactor * visibleMapRect.size.height);
-    gridMapRect = CCHMapClusterControllerAlignToCellSize(gridMapRect, cellSize);
+    gridMapRect = CCHMapClusterControllerAlignMapRectToCellSize(gridMapRect, cellSize);
     
     // For each cell in the grid, pick one annotation to show
     NSMutableSet *clusters = [NSMutableSet set];
