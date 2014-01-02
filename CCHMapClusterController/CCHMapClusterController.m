@@ -181,8 +181,10 @@
                 [_mapView removeOverlay:overlay];
             }
         }
-
+        
         CCHMapClusterControllerEnumerateCells(gridMapRect, cellSize, ^(MKMapRect cellRect) {
+            cellRect.origin.x -= MKMapSizeWorld.width;  // fixes issue when view port spans 180th meridian
+
             MKMapPoint points[4];
             points[0] = MKMapPointMake(MKMapRectGetMinX(cellRect), MKMapRectGetMinY(cellRect));
             points[1] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMinY(cellRect));

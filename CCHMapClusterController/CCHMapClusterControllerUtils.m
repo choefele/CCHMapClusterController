@@ -120,7 +120,9 @@ void CCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, v
         cellRect.origin.x = MKMapRectGetMinX(mapRect);
         
         while (MKMapRectGetMinX(cellRect) < MKMapRectGetMaxX(mapRect)) {
-            block(cellRect);
+            // Wrap around the origin's longitude
+            MKMapRect rect = MKMapRectMake(fmod(cellRect.origin.x, MKMapSizeWorld.width), cellRect.origin.y, cellRect.size.width, cellRect.size.height);
+            block(rect);
             
             cellRect.origin.x += MKMapRectGetWidth(cellRect);
         }
