@@ -1,5 +1,10 @@
 Changes
 =======
+## 1.2.0
+
+- Switched to quad tree based on TBQuadTree to speed up performance
+- Clustering now happens on a background thread for improved responsiveness
+- Fixed issues when panning across the 180th meridian
 
 ## 1.1.0
 
