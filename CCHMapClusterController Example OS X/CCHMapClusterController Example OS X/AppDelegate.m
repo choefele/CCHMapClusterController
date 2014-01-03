@@ -68,7 +68,7 @@
 - (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
 {
     NSUInteger numAnnotations = MIN(mapClusterAnnotation.annotations.count, 5);
-    NSArray *annotations = [mapClusterAnnotation.annotations subarrayWithRange:NSMakeRange(0, numAnnotations)];
+    NSArray *annotations = [mapClusterAnnotation.annotations.allObjects subarrayWithRange:NSMakeRange(0, numAnnotations)];
     NSArray *titles = [annotations valueForKey:@"title"];
     return [titles componentsJoinedByString:@", "];
 }

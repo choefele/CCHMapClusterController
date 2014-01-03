@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		485EDCFD1876E929008F0323 /* CCHMapTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 485EDCFA1876E929008F0323 /* CCHMapTree.m */; };
+		485EDCFE1876E929008F0323 /* CCHMapTreeUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 485EDCFC1876E929008F0323 /* CCHMapTreeUtils.m */; };
+		485EDD001876E95B008F0323 /* Berlin-Data.json in Resources */ = {isa = PBXBuildFile; fileRef = 485EDCFF1876E95B008F0323 /* Berlin-Data.json */; };
 		4869F18C184FDC0800251ADC /* CCHNearCenterMapClusterer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F188184FDC0800251ADC /* CCHNearCenterMapClusterer.m */; };
 		4869F18D184FDC0800251ADC /* CCHCenterOfMassMapClusterer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F18A184FDC0800251ADC /* CCHCenterOfMassMapClusterer.m */; };
 		4869F1A41853D09800251ADC /* CCHFadeInOutMapAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4869F1A21853D09800251ADC /* CCHFadeInOutMapAnimator.m */; };
@@ -19,7 +22,6 @@
 		48D06BE11846732B005AC9C7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48D06BE01846732B005AC9C7 /* CoreLocation.framework */; };
 		48D06BEA184673E0005AC9C7 /* DataReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D06BE6184673E0005AC9C7 /* DataReader.m */; };
 		626379FC184CE5C30039F334 /* CCHMapClusterControllerUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 626379FB184CE5C30039F334 /* CCHMapClusterControllerUtilsTests.m */; };
-		62978DE31859DAC100748230 /* Data.json in Resources */ = {isa = PBXBuildFile; fileRef = 62978DE21859DAC100748230 /* Data.json */; };
 		62D667431845E0BA0046D5D5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667421845E0BA0046D5D5 /* Cocoa.framework */; };
 		62D6674D1845E0BA0046D5D5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62D6674B1845E0BA0046D5D5 /* InfoPlist.strings */; };
 		62D6674F1845E0BA0046D5D5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D6674E1845E0BA0046D5D5 /* main.m */; };
@@ -44,6 +46,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		485EDCF91876E929008F0323 /* CCHMapTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapTree.h; sourceTree = "<group>"; };
+		485EDCFA1876E929008F0323 /* CCHMapTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapTree.m; sourceTree = "<group>"; };
+		485EDCFB1876E929008F0323 /* CCHMapTreeUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapTreeUtils.h; sourceTree = "<group>"; };
+		485EDCFC1876E929008F0323 /* CCHMapTreeUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapTreeUtils.m; sourceTree = "<group>"; };
+		485EDCFF1876E95B008F0323 /* Berlin-Data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Berlin-Data.json"; path = "../../Berlin-Data.json"; sourceTree = "<group>"; };
 		4869F187184FDC0800251ADC /* CCHNearCenterMapClusterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHNearCenterMapClusterer.h; sourceTree = "<group>"; };
 		4869F188184FDC0800251ADC /* CCHNearCenterMapClusterer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHNearCenterMapClusterer.m; sourceTree = "<group>"; };
 		4869F189184FDC0800251ADC /* CCHCenterOfMassMapClusterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHCenterOfMassMapClusterer.h; sourceTree = "<group>"; };
@@ -67,7 +74,6 @@
 		48D06BE7184673E0005AC9C7 /* DataReaderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataReaderDelegate.h; path = "../../CCHMapClusterController Example iOS/CCHMapClusterController Example iOS/DataReaderDelegate.h"; sourceTree = "<group>"; };
 		626379FA184CE5C30039F334 /* CCHMapClusterControllerUtilsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCHMapClusterControllerUtilsTests.h; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerUtilsTests.h"; sourceTree = "<group>"; };
 		626379FB184CE5C30039F334 /* CCHMapClusterControllerUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerUtilsTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerUtilsTests.m"; sourceTree = "<group>"; };
-		62978DE21859DAC100748230 /* Data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Data.json; path = ../../Data.json; sourceTree = "<group>"; };
 		62D6673F1845E0BA0046D5D5 /* CCHMapClusterController Example OS X.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CCHMapClusterController Example OS X.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62D667421845E0BA0046D5D5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		62D667451845E0BA0046D5D5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -134,6 +140,10 @@
 				4869F1A21853D09800251ADC /* CCHFadeInOutMapAnimator.m */,
 				48D06BDA18466FF4005AC9C7 /* CCHMapViewDelegateProxy.h */,
 				48D06BDB18466FF4005AC9C7 /* CCHMapViewDelegateProxy.m */,
+				485EDCF91876E929008F0323 /* CCHMapTree.h */,
+				485EDCFA1876E929008F0323 /* CCHMapTree.m */,
+				485EDCFB1876E929008F0323 /* CCHMapTreeUtils.h */,
+				485EDCFC1876E929008F0323 /* CCHMapTreeUtils.m */,
 			);
 			name = CCHMapClusterController;
 			path = ../CCHMapClusterController;
@@ -184,7 +194,7 @@
 		62D667481845E0BA0046D5D5 /* CCHMapClusterController Example OS X */ = {
 			isa = PBXGroup;
 			children = (
-				62978DE21859DAC100748230 /* Data.json */,
+				485EDCFF1876E95B008F0323 /* Berlin-Data.json */,
 				62D667541845E0BA0046D5D5 /* AppDelegate.h */,
 				62D667551845E0BA0046D5D5 /* AppDelegate.m */,
 				62D667571845E0BA0046D5D5 /* MainMenu.xib */,
@@ -304,9 +314,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				62978DE31859DAC100748230 /* Data.json in Resources */,
 				62D6674D1845E0BA0046D5D5 /* InfoPlist.strings in Resources */,
 				62D6675B1845E0BA0046D5D5 /* Images.xcassets in Resources */,
+				485EDD001876E95B008F0323 /* Berlin-Data.json in Resources */,
 				62D667531845E0BA0046D5D5 /* Credits.rtf in Resources */,
 				62D667591845E0BA0046D5D5 /* MainMenu.xib in Resources */,
 			);
@@ -328,6 +338,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4869F18C184FDC0800251ADC /* CCHNearCenterMapClusterer.m in Sources */,
+				485EDCFD1876E929008F0323 /* CCHMapTree.m in Sources */,
 				62D667561845E0BA0046D5D5 /* AppDelegate.m in Sources */,
 				48D06BDE18466FF4005AC9C7 /* CCHMapClusterControllerUtils.m in Sources */,
 				48D06BDF18466FF4005AC9C7 /* CCHMapViewDelegateProxy.m in Sources */,
@@ -335,6 +346,7 @@
 				48D06BEA184673E0005AC9C7 /* DataReader.m in Sources */,
 				62D6674F1845E0BA0046D5D5 /* main.m in Sources */,
 				4869F18D184FDC0800251ADC /* CCHCenterOfMassMapClusterer.m in Sources */,
+				485EDCFE1876E929008F0323 /* CCHMapTreeUtils.m in Sources */,
 				48D06BDD18466FF4005AC9C7 /* CCHMapClusterController.m in Sources */,
 				48D06BDC18466FF4005AC9C7 /* CCHMapClusterAnnotation.m in Sources */,
 			);
