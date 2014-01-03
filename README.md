@@ -25,10 +25,12 @@ If you have your project set up with an `MKMapView`, integrating clustering will
 </pre>
 
 <p align="center" >
-  <img src="MapClustering.png" alt="AFNetworking" title="Map Clustering">
+  <img src="MapClustering.png" alt="Map Clustering" title="Map Clustering">
 </p>
 
-To try out the clustering, experiment with the examples included in this project or download the app “Stolpersteine in Berlin” [![Download on the App Store](https://linkmaker.itunes.apple.com/htmlResources/assets//images/web/linkmaker/badge_appstore-sm.png)](https://itunes.apple.com/de/app/stolpersteine-in-berlin/id640731757?mt=8&uo=4).
+Don't worry about manually updating the clusters; `CCHMapClusterController` automatically knows when changes have occurred that require the clusters to regroup.
+
+To try out the clustering, experiment with the examples included in this project, or download the app “Stolpersteine in Berlin” [![Download on the App Store](https://linkmaker.itunes.apple.com/htmlResources/assets//images/web/linkmaker/badge_appstore-sm.png)](https://itunes.apple.com/de/app/stolpersteine-in-berlin/id640731757?mt=8&uo=4).
 
 ## Installation
 
@@ -46,19 +48,25 @@ pod "CCHMapClusterController"
 
 See [Changes.md](https://github.com/choefele/CCHMapClusterController/blob/master/CHANGES.md) for a high-level overview of recent updates.
 
-## Cell size and margin factor
+## Performance
 
 The clustering algorithm splits a rectangular area of the map into a grid of square cells. For each cell, a representation for the annotations in this cell is selected and displayed. 
 
-`CCHMapClusterController` has a property `cellSize` to configure the size of the cell. The unit is points (1 point = 2 pixels on Retina displays). This way, you can select a cell size that is large enough to display map icons with minimal overlap. More likely, however, you will choose the cell size to optimize clustering performance (the larger the size, the better the performance).
+The quad tree implementation used to gather annotations for a cell is based on [TBQuadTree](https://github.com/thoughtbot/TBAnnotationClustering/blob/master/TBAnnotationClustering/TBQuadTree.h) and is very fast. For this reason, performance is less dependent on the number of clustered annotations, but rather on the number of visible clusters on the map. This number can be configured with the cell size and the margin factor (see below). Another factor is the density of the clustered annotations: annotations spread over a large area cluster faster.
 
-The `marginFactor` property configures the additional map area around the visible area that's included for clustering. This avoids sudden changes at the edges of the visible area when the user pans the map. Ideally, you would set this value to 1.0 (100% additional map area on each side), as this is the maximum scroll area a user can achieve with a panning gesture. However, this is affects performance as this will cover 9x the map area for clustering. The default is 0.5 (50% additional area on each side).
+The examples in this project contain two data sets for testing: 5000+ annotations in a small area around Berlin and 80000+ annotations spread over the entire US. Both data sets perform fine on an iPhone 4S.
 
-To debug these settings, set the `debugEnabled` property to `YES`. This will display the grid used for clustering overlayed onto the map.
+## Cell size and margin factor
+
+`CCHMapClusterController` has a property `cellSize` to configure the size of the cell in points (1 point = 2 pixels on Retina displays). This way, you can select a cell size that is large enough to display map icons with minimal overlap. More likely, however, you will choose the cell size to optimize clustering performance (the larger the size, the better the performance). The actual cell size used for clustering will be adjusted so that the map's width is a multiple of the cell size. This avoids realignment of cells when panning across the 180th meridian.
+
+The `marginFactor` property configures the additional map area around the visible area that's included for clustering. This avoids sudden changes at the edges of the visible area when the user pans the map. Ideally, you would set this value to 1.0 (100% additional map area on each side), as this is the maximum scroll area a user can achieve with a panning gesture. However, this affects performance as this will cover 9x the map area for clustering. The default is 0.5 (50% additional area on each side).
+
+To debug these settings, set the `debugEnabled` property to `YES`. This will display the clustering grid over the map.
 
 ## Customizing cluster annotations
 
-Cluster annotations are of type `CCHMapClusterAnnotation`. Your code can customize their titles and subtitles by registering as a `CCHMapClusterControllerDelegate` with `CCHMapClusterController` and implementing two delegate methods.
+Cluster annotations are of type `CCHMapClusterAnnotation`. You can customize their titles and subtitles by registering as a `CCHMapClusterControllerDelegate` with `CCHMapClusterController` and implementing two delegate methods.
 
 In these methods, `CCHMapClusterAnnotation` gives you access to the annotations contained in the cluster through the property `annotations`. An annotation in this array will always implement `MKAnnotation`, but is otherwise of same type as the instances you added to `CCHMapClusterController` when calling `addAnnotations:withCompletionHandler:`.
 
@@ -88,10 +96,10 @@ Customizing annotation views for clustered annotations is possible via the stand
 
 ## Positioning cluster annotations
 
-For aesthetic reasons, you don't want to line up cluster annotations evenly as this would make the underlying grid obvious. This library comes with two implementations to choose the position of cluster annotations:
+For aesthetic reasons, cluster annotations are not lined up evenly as this would make the underlying grid obvious. This library comes with two implementations to configure the position of cluster annotations:
 
-- `CCHNearCenterMapClusterer` (default): uses the position of the annotation in a cluster that's closest to the center
-- `CCHCenterOfMassMapClusterer`: computes the average of the coordinates of all annotations in a cluster
+- `CCHCenterOfMassMapClusterer` (default): computes the average of the coordinates of all annotations in a cluster
+- `CCHNearCenterMapClusterer`: uses the position of the annotation in a cluster that's closest to the center
 
 Instances of these classes can be assigned to `CCHMapClusterController`'s property `clusterer`. By implementing the protocol `CCHMapClusterer`, you can provide your own strategy for positioning cluster annotations.
 
