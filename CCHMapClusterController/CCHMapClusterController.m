@@ -93,6 +93,11 @@
     return self;
 }
 
+- (NSSet *)annotations
+{
+    return [self.allAnnotationsMapTree.annotations copy];
+}
+
 - (void)setClusterer:(id<CCHMapClusterer>)clusterer
 {
     _clusterer = clusterer;

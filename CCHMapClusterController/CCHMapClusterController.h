@@ -35,6 +35,8 @@
  */
 @interface CCHMapClusterController : NSObject
 
+/** Clustered annotations. */
+@property (nonatomic, copy, readonly) NSSet *annotations;
 /** Map view to display clustered annotations. */
 @property (nonatomic, strong, readonly) MKMapView *mapView;
 
