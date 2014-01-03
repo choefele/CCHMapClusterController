@@ -45,7 +45,7 @@
 //    self.mapClusterController.debuggingEnabled = YES;   // display grid
     
     // Positioning cluster representations
-//    self.mapClusterer = [[CCHCenterOfMassMapClusterer alloc] init];
+//    self.mapClusterer = [[CCHNearCenterMapClusterer alloc] init];
 //    self.mapClusterController.clusterer = self.mapClusterer;        // change default clusterer
 //    self.mapClusterController.reuseExistingClusterAnnotations = NO; // YES to avoid updating positions
     
