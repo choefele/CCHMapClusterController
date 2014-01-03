@@ -28,10 +28,25 @@
 @class CCHMapClusterController;
 @class CCHMapClusterAnnotation;
 
+/**
+ Protocol to configure custom titles and subtitles for cluster annotations.
+ */
 @protocol CCHMapClusterControllerDelegate <NSObject>
 
 @optional
+
+/**
+ Returns the title for a cluster annotation.
+ @param mapClusterController The cluster controller sending the message.
+ @param mapClusterAnnotation The cluster annotation.
+ */
 - (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController titleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation;
+
+/**
+ Returns the subtitle for a cluster annotation.
+ @param mapClusterController The cluster controller sending the message.
+ @param mapClusterAnnotation The cluster annotation.
+ */
 - (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation;
 
 @end

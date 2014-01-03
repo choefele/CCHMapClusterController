@@ -28,16 +28,27 @@
 
 @protocol CCHMapClusterControllerDelegate;
 
+/**
+ Container for clustered annotations.
+ */
 @interface CCHMapClusterAnnotation : NSObject<MKAnnotation>
 
+/** The string containing the annotation's title. */
 @property (nonatomic, copy) NSString *title;
+/** The string containing the annotation's subtitle. */
 @property (nonatomic, copy) NSString *subtitle;
+/** The center point of the annotation. */
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 
+/** Custom titles and subtitles are retrieved via this delegate. */
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
+
+/** Annotations contained in this cluster. */
 @property (nonatomic, copy) NSSet *annotations;
 
+/** Returns YES if this cluster contains more than one annotation. */
 - (BOOL)isCluster;
+/** Returns YES if all annotations in this cluster are at the same location. */
 - (BOOL)isOneLocation;
 
 @end
