@@ -98,6 +98,11 @@
     return [self.allAnnotationsMapTree.annotations copy];
 }
 
+- (NSSet *)clusters
+{
+    return self.visibleAnnotationsMapTree.annotations;
+}
+
 - (void)setClusterer:(id<CCHMapClusterer>)clusterer
 {
     _clusterer = clusterer;
