@@ -137,8 +137,9 @@
 {
     [self sync];
     
+    __weak CCHMapClusterController *weakSelf = self;
     [self.backgroundQueue addOperationWithBlock:^{
-        [self.allAnnotationsMapTree addAnnotations:annotations];
+        [weakSelf.allAnnotationsMapTree addAnnotations:annotations];
     }];
      
     if (!self.isRegionChanging) {
@@ -159,19 +160,20 @@
     MKMapRect gridMapRect = MKMapRectInset(visibleMapRect, -_marginFactor * visibleMapRect.size.width, -_marginFactor * visibleMapRect.size.height);
     gridMapRect = CCHMapClusterControllerAlignMapRectToCellSize(gridMapRect, cellSize);
     
+    __weak CCHMapClusterController *weakSelf = self;
     NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
         // For each cell in the grid, pick one annotation to show
         NSMutableSet *clusters = [NSMutableSet set];
         CCHMapClusterControllerEnumerateCells(gridMapRect, cellSize, ^(MKMapRect cellRect) {
-            NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellRect];
+            NSSet *allAnnotationsInCell = [weakSelf.allAnnotationsMapTree annotationsInMapRect:cellRect];
             if (allAnnotationsInCell.count > 0) {
                 // Select cluster representation
-                NSSet *visibleAnnotationsInCell = [_visibleAnnotationsMapTree annotationsInMapRect:cellRect];
-                CCHMapClusterAnnotation *annotationForCell = _findVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
+                NSSet *visibleAnnotationsInCell = [weakSelf.visibleAnnotationsMapTree annotationsInMapRect:cellRect];
+                CCHMapClusterAnnotation *annotationForCell = weakSelf.findVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
                 if (annotationForCell == nil) {
                     annotationForCell = [[CCHMapClusterAnnotation alloc] init];
-                    annotationForCell.coordinate = [_clusterer mapClusterController:self coordinateForAnnotations:allAnnotationsInCell inMapRect:cellRect];
-                    annotationForCell.delegate = _delegate;
+                    annotationForCell.coordinate = [weakSelf.clusterer mapClusterController:weakSelf coordinateForAnnotations:allAnnotationsInCell inMapRect:cellRect];
+                    annotationForCell.delegate = weakSelf.delegate;
                     annotationForCell.annotations = allAnnotationsInCell;
                 } else {
                     // For existing annotations, this will implicitly update annotation views
@@ -188,8 +190,8 @@
         });
         
         // Figure out difference between new and old clusters
-        NSMutableSet *annotationsBefore = [NSMutableSet setWithArray:_mapView.annotations];
-        [annotationsBefore removeObject:[_mapView userLocation]];
+        NSMutableSet *annotationsBefore = [NSMutableSet setWithArray:weakSelf.mapView.annotations];
+        [annotationsBefore removeObject:[weakSelf.mapView userLocation]];
         NSMutableSet *annotationsToKeep = [NSMutableSet setWithSet:annotationsBefore];
         [annotationsToKeep intersectSet:clusters];
         NSMutableSet *annotationsToAddAsSet = [NSMutableSet setWithSet:clusters];
@@ -200,11 +202,11 @@
         NSArray *annotationsToRemove = [annotationsToRemoveAsSet allObjects];
         
         // Show cluster annotations on map
-        [_visibleAnnotationsMapTree removeAnnotations:annotationsToRemove];
-        [_visibleAnnotationsMapTree addAnnotations:annotationsToAdd];
+        [weakSelf.visibleAnnotationsMapTree removeAnnotations:annotationsToRemove];
+        [weakSelf.visibleAnnotationsMapTree addAnnotations:annotationsToAdd];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.mapView addAnnotations:annotationsToAdd];
-            [self.animator mapClusterController:self removeAnnotations:annotationsToRemove];
+            [weakSelf.mapView addAnnotations:annotationsToAdd];
+            [weakSelf.animator mapClusterController:weakSelf removeAnnotations:annotationsToRemove];
             
             if (completionHandler) {
                 completionHandler();
