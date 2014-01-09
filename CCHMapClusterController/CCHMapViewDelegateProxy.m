@@ -47,6 +47,12 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self.mapView removeObserver:self forKeyPath:@"delegate"];
+    self.mapView.delegate = self.target;
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     [self.mapView removeObserver:self forKeyPath:@"delegate"];
