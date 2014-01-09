@@ -37,6 +37,10 @@
 
 /** Clustered annotations. */
 @property (nonatomic, copy, readonly) NSSet *annotations;
+
+/** Annotations representing Clusters. */
+@property (nonatomic, copy, readonly) NSSet *clusters;
+
 /** Map view to display clustered annotations. */
 @property (nonatomic, strong, readonly) MKMapView *mapView;
 
