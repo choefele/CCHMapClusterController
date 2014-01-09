@@ -10,13 +10,14 @@
 
 #import "DataReader.h"
 #import "DataReaderDelegate.h"
+#import "ClusterAnnotationView.h"
 
 #import "CCHMapClusterAnnotation.h"
 #import "CCHMapClusterController.h"
 #import "CCHMapClusterControllerDelegate.h"
 #import "CCHCenterOfMassMapClusterer.h"
 
-@interface ViewController()<DataReaderDelegate, CCHMapClusterControllerDelegate>
+@interface ViewController()<DataReaderDelegate, CCHMapClusterControllerDelegate, MKMapViewDelegate>
 
 @property (strong, nonatomic) CCHMapClusterController *mapClusterController;
 @property (strong, nonatomic) id<CCHMapClusterer> mapClusterer;
@@ -64,6 +65,7 @@
 //    [dataReader startReadingCSV];
     
     self.mapView.region = region;
+    self.mapView.delegate = self;
 }
 
 - (void)dataReader:(DataReader *)dataReader addAnnotations:(NSArray *)annotations
@@ -85,6 +87,35 @@
     NSArray *annotations = [mapClusterAnnotation.annotations.allObjects subarrayWithRange:NSMakeRange(0, numAnnotations)];
     NSArray *titles = [annotations valueForKey:@"title"];
     return [titles componentsJoinedByString:@", "];
+}
+
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+{
+    ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[self.mapClusterController.mapView viewForAnnotation:mapClusterAnnotation];
+    clusterAnnotationView.count = mapClusterAnnotation.annotations.count;
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    MKAnnotationView *annotationView;
+    
+    if ([annotation isKindOfClass:CCHMapClusterAnnotation.class]) {
+        static NSString *identifier = @"clusterAnnotation";
+        
+        ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+        if (clusterAnnotationView) {
+            clusterAnnotationView.annotation = annotation;
+        } else {
+            clusterAnnotationView = [[ClusterAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+            clusterAnnotationView.canShowCallout = YES;
+        }
+        
+        CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotation;
+        clusterAnnotationView.count = clusterAnnotation.annotations.count;
+        annotationView = clusterAnnotationView;
+    }
+    
+    return annotationView;
 }
 
 @end

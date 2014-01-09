@@ -1,5 +1,11 @@
 Changes
 =======
+## 1.2.1
+
+- Added new delegate method `mapClusterController:willReuseMapClusterAnnotation:` to `CCHMapClusterControllerDelegate` that's called when cluster annotations are reused
+- Example updated to demonstrate annotation views which adapt to current cluster size
+- Thanks to @onato for suggesting the change
+
 ## 1.2.0
 
 - Switched to quad tree based on TBQuadTree to speed up performance

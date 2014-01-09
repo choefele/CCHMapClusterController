@@ -49,4 +49,11 @@
  */
 - (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation;
 
+/**
+ Called before the given cluster annotation is reused for a cell.
+ @param mapClusterController The cluster controller sending the message.
+ @param mapClusterAnnotation The cluster annotation that's reused. Its properties are updated to reflect the current state.
+ */
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation;
+
 @end

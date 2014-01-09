@@ -46,6 +46,7 @@
 		62D667D01845F8A40046D5D5 /* CCHMapClusterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667C81845F8A40046D5D5 /* CCHMapClusterController.m */; };
 		62D667D21845F8A40046D5D5 /* CCHMapClusterControllerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667CB1845F8A40046D5D5 /* CCHMapClusterControllerUtils.m */; };
 		62D667D41845F8A40046D5D5 /* CCHMapViewDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */; };
+		62D71E11187EB45500E52EE3 /* ClusterAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D71E10187EB45500E52EE3 /* ClusterAnnotationView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,6 +126,8 @@
 		62D667CB1845F8A40046D5D5 /* CCHMapClusterControllerUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapClusterControllerUtils.m; sourceTree = "<group>"; };
 		62D667CC1845F8A40046D5D5 /* CCHMapViewDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapViewDelegateProxy.h; sourceTree = "<group>"; };
 		62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapViewDelegateProxy.m; sourceTree = "<group>"; };
+		62D71E0F187EB45500E52EE3 /* ClusterAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClusterAnnotationView.h; sourceTree = "<group>"; };
+		62D71E10187EB45500E52EE3 /* ClusterAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClusterAnnotationView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,6 +236,8 @@
 				62D667941845E0F20046D5D5 /* Main.storyboard */,
 				62D667971845E0F20046D5D5 /* ViewController.h */,
 				62D667981845E0F20046D5D5 /* ViewController.m */,
+				62D71E0F187EB45500E52EE3 /* ClusterAnnotationView.h */,
+				62D71E10187EB45500E52EE3 /* ClusterAnnotationView.m */,
 				62D667BC1845F76F0046D5D5 /* DataReader.h */,
 				62D667BD1845F76F0046D5D5 /* DataReader.m */,
 				62D667BE1845F76F0046D5D5 /* DataReaderDelegate.h */,
@@ -410,6 +415,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62D71E11187EB45500E52EE3 /* ClusterAnnotationView.m in Sources */,
 				48899966185E398700F3D6ED /* CCHMapTreeUtils.m in Sources */,
 				62D667991845E0F20046D5D5 /* ViewController.m in Sources */,
 				4869F19D1853AA6300251ADC /* CCHFadeInOutMapAnimator.m in Sources */,

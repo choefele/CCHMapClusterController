@@ -179,6 +179,9 @@
                         annotationForCell.annotations = allAnnotationsInCell;
                         annotationForCell.title = nil;
                         annotationForCell.subtitle = nil;
+                        if ([self.delegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)]) {
+                            [self.delegate mapClusterController:self willReuseMapClusterAnnotation:annotationForCell];
+                        }
                     });
                 }
                 

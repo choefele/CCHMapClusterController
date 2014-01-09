@@ -73,26 +73,23 @@ In these methods, `CCHMapClusterAnnotation` gives you access to the annotations 
 Here is an example:
 
 ```Objective-C
-- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController
-    titleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController titleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
 {
     NSUInteger numAnnotations = mapClusterAnnotation.annotations.count;
     NSString *unit = numAnnotations > 1 ? @"annotations" : @"annotation";
     return [NSString stringWithFormat:@"%tu %@", numAnnotations, unit];
 }
 
-- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController
-    subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
 {
     NSUInteger numAnnotations = MIN(mapClusterAnnotation.annotations.count, 5);
-    NSArray *annotations = [mapClusterAnnotation.annotations 
-        subarrayWithRange:NSMakeRange(0, numAnnotations)];
+    NSArray *annotations = [mapClusterAnnotation.annotations.allObjects subarrayWithRange:NSMakeRange(0, numAnnotations)];
     NSArray *titles = [annotations valueForKey:@"title"];
     return [titles componentsJoinedByString:@", "];
 }
 ```
 
-Customizing annotation views for clustered annotations is possible via the standard `mapView:viewForAnnotation:` method that's part of `MKMapViewDelegate`.
+Customizing the look of clustered annotations is possible via the standard `mapView:viewForAnnotation:` method that's part of `MKMapViewDelegate`. In addition, the delegate method `mapClusterController:willReuseMapClusterAnnotation:` is called when a cluster annotation is reused for a cell (see property `reuseExistingClusterAnnotations` below). The iOS example contains code that demonstrates how to display the current cluster size as part of the annotation view.
 
 ## Positioning cluster annotations
 
