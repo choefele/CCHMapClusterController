@@ -139,13 +139,13 @@
     
     [self.backgroundQueue addOperationWithBlock:^{
         BOOL updated = [self.allAnnotationsMapTree addAnnotations:annotations];
-        if (updated) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (!self.isRegionChanging) {
-                    [self updateAnnotationsWithCompletionHandler:completionHandler];
-                }
-            });
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (updated && !self.isRegionChanging) {
+                [self updateAnnotationsWithCompletionHandler:completionHandler];
+            } else if (completionHandler) {
+                completionHandler();
+            }
+        });
     }];
 }
 

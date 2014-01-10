@@ -58,6 +58,10 @@
 - (void)testAddAnnotationsSimple
 {
     MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    annotation.coordinate = CLLocationCoordinate2DMake(52.5, 13.5);
+    MKCoordinateRegion region = MKCoordinateRegionMake(annotation.coordinate, MKCoordinateSpanMake(3, 3));
+    self.mapView.region = region;
+    
     __weak CCHMapClusterControllerTests *weakSelf = self;
     [self.mapClusterController addAnnotations:@[annotation] withCompletionHandler:^{
         weakSelf.done = YES;
