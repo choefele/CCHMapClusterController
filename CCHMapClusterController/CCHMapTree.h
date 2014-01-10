@@ -33,8 +33,8 @@
 - (id)init;
 - (id)initWithNodeCapacity:(NSUInteger)nodeCapacity minLatitude:(double)minLatitude maxLatitude:(double)maxLatitude minLongitude:(double)minLongitude maxLongitude:(double)maxLongitude;
 
-- (void)addAnnotations:(NSArray *)annotations;
-- (void)removeAnnotations:(NSArray *)annotations;
+- (BOOL)addAnnotations:(NSArray *)annotations;
+- (BOOL)removeAnnotations:(NSArray *)annotations;
 - (NSSet *)annotationsInMapRect:(MKMapRect)mapRect;
 
 @end

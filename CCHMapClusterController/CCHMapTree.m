@@ -62,34 +62,44 @@
 
 - (NSSet *)annotations
 {
-    return self.mutableAnnotations;
+    return [self.mutableAnnotations copy];
 }
 
-- (void)addAnnotations:(NSArray *)annotations
+- (BOOL)addAnnotations:(NSArray *)annotations
 {
-    NSMutableSet *set = self.mutableAnnotations;
+    BOOL updated = NO;
+    
+    NSMutableSet *mutableAnnotations = self.mutableAnnotations;
     for (id<MKAnnotation> annotation in annotations) {
-        if (![set containsObject:annotation]) {
+        if (![mutableAnnotations containsObject:annotation]) {
             CCHMapTreeNodeData data = CCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)annotation);
             if (CCHMapTreeNodeInsertData(_root, data, (int)_nodeCapacity)) {
-                [set addObject:annotation];
+                updated = YES;
+                [mutableAnnotations addObject:annotation];
             }
         }
     }
+    
+    return updated;
 }
 
-- (void)removeAnnotations:(NSArray *)annotations
+- (BOOL)removeAnnotations:(NSArray *)annotations
 {
-    NSMutableSet *set = self.mutableAnnotations;
+    BOOL updated = NO;
+
+    NSMutableSet *mutableAnnotations = self.mutableAnnotations;
     for (id<MKAnnotation> annotation in annotations) {
-        id<MKAnnotation> member = [set member:annotation];
+        id<MKAnnotation> member = [mutableAnnotations member:annotation];
         if (member) {
             CCHMapTreeNodeData data = CCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)member);
             if (CCHMapTreeNodeRemoveData(_root, data)) {
-                [self.mutableAnnotations removeObject:annotation];
+                updated = YES;
+                [mutableAnnotations removeObject:annotation];
             }
         }
     }
+    
+    return updated;
 }
 
 CCHMapTreeBoundingBox CCHMapTreeBoundingBoxForMapRect(MKMapRect mapRect)

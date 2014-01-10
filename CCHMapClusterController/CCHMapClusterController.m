@@ -138,12 +138,15 @@
     [self sync];
     
     [self.backgroundQueue addOperationWithBlock:^{
-        [self.allAnnotationsMapTree addAnnotations:annotations];
+        BOOL updated = [self.allAnnotationsMapTree addAnnotations:annotations];
+        if (updated) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (!self.isRegionChanging) {
+                    [self updateAnnotationsWithCompletionHandler:completionHandler];
+                }
+            });
+        }
     }];
-     
-    if (!self.isRegionChanging) {
-        [self updateAnnotationsWithCompletionHandler:completionHandler];
-    }
 }
 
 - (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler

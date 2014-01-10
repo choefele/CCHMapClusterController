@@ -9,8 +9,38 @@
 #import <XCTest/XCTest.h>
 
 #import "CCHMapTree.h"
-
 #import "CCHMapClusterControllerUtils.h"
+
+@interface Annotation : MKPointAnnotation
+@property (nonatomic, copy) NSString *id;
+@end
+
+@implementation Annotation
+- (BOOL)isEqual:(id)other
+{
+    BOOL isEqual;
+    
+    if (other == self) {
+        isEqual = YES;
+    } else if (!other || ![other isKindOfClass:self.class]) {
+        isEqual = NO;
+    } else {
+        isEqual = [self isEqualToStolperstein:other];
+    }
+    
+    return isEqual;
+}
+
+- (BOOL)isEqualToStolperstein:(Annotation *)annotation
+{
+    return [self.id isEqualToString:annotation.id];
+}
+
+- (NSUInteger)hash
+{
+    return self.id.hash;
+}
+@end
 
 @interface CCHMapTreeTests : XCTestCase
 
@@ -176,6 +206,38 @@
     mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
     annotations = [self.mapTree annotationsInMapRect:mapRect];
     XCTAssertEqual(annotations.count, (NSUInteger)0, @"Wrong number of annotations");
+}
+
+- (void)testAddRemoveAnnotationsUpdated
+{
+    // Add once
+    Annotation *annotation0 = [[Annotation alloc] init];
+    annotation0.id = @"123";
+    BOOL updated = [self.mapTree addAnnotations:@[annotation0]];
+    XCTAssertTrue(updated, @"Wrong update");
+    XCTAssertEqual(self.mapTree.annotations.count, (NSUInteger)1, @"Wrong number of annotations");
+    
+    // Add again
+    updated = [self.mapTree addAnnotations:@[annotation0]];
+    XCTAssertFalse(updated, @"Wrong update");
+    XCTAssertEqual(self.mapTree.annotations.count, (NSUInteger)1, @"Wrong number of annotations");
+    
+    // Add equal
+    Annotation *annotation1 = [[Annotation alloc] init];
+    annotation1.id = annotation0.id;
+    updated = [self.mapTree addAnnotations:@[annotation1]];
+    XCTAssertFalse(updated, @"Wrong update");
+    XCTAssertEqual(self.mapTree.annotations.count, (NSUInteger)1, @"Wrong number of annotations");
+    
+    // Remove equal
+    updated = [self.mapTree removeAnnotations:@[annotation1]];
+    XCTAssertTrue(updated, @"Wrong update");
+    XCTAssertEqual(self.mapTree.annotations.count, (NSUInteger)0, @"Wrong number of annotations");
+    
+    // Remove again
+    updated = [self.mapTree removeAnnotations:@[annotation0]];
+    XCTAssertFalse(updated, @"Wrong update");
+    XCTAssertEqual(self.mapTree.annotations.count, (NSUInteger)0, @"Wrong number of annotations");
 }
 
 @end
