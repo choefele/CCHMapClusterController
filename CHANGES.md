@@ -1,10 +1,11 @@
 Changes
 =======
-## 1.2.1
+## Upcoming release
 
 - Added new delegate method `mapClusterController:willReuseMapClusterAnnotation:` to `CCHMapClusterControllerDelegate` that's called when cluster annotations are reused
 - Example updated to demonstrate annotation views which adapt to current cluster size
-- Thanks to @onato for suggesting the change
+- Bugfixes and performance improvements
+- Thanks to @onato for suggesting the changes
 
 ## 1.2.0
 
