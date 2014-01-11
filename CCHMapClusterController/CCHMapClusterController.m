@@ -219,7 +219,9 @@
     }];
     __weak NSOperation *weakOperation = operation;
     operation.completionBlock = ^{
-        [self.updateOperations removeObject:weakOperation]; // also prevents retain cycle
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.updateOperations removeObject:weakOperation]; // also prevents retain cycle
+        });
     };
     [self.updateOperations addObject:operation];
     [self.backgroundQueue addOperation:operation];
@@ -243,10 +245,6 @@
             MKPolygon *polygon = [CCHMapClusterControllerPolygon polygonWithPoints:points count:4];
             [_mapView addOverlay:polygon];
         });
-    }
-    
-    if (completionHandler) {
-        completionHandler();
     }
 }
 
