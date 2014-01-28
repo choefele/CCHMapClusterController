@@ -30,6 +30,6 @@
 @protocol CCHMapAnimator <NSObject>
 
 - (void)mapClusterController:(CCHMapClusterController *)mapClusterController didAddAnnotationViews:(NSArray *)annotationViews;
-- (void)mapClusterController:(CCHMapClusterController *)mapClusterController removeAnnotations:(NSArray *)annotations;
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
 
 @end

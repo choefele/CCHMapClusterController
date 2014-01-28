@@ -57,20 +57,24 @@
 #endif
 }
 
-- (void)mapClusterController:(CCHMapClusterController *)mapClusterController removeAnnotations:(NSArray *)annotations
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
 {
-    MKMapView *mapView = mapClusterController.mapView;
 #if TARGET_OS_IPHONE
+    MKMapView *mapView = mapClusterController.mapView;
     [UIView animateWithDuration:self.duration animations:^{
         for (id<MKAnnotation> annotation in annotations) {
             MKAnnotationView *annotationView = [mapView viewForAnnotation:annotation];
             annotationView.alpha = 0.0;
         }
     } completion:^(BOOL finished) {
-        [mapView removeAnnotations:annotations];
+        if (completionHandler) {
+            completionHandler();
+        }
     }];
 #else
-    [mapView removeAnnotations:annotations];
+    if (completionHandler) {
+        completionHandler();
+    }
 #endif
 }
 

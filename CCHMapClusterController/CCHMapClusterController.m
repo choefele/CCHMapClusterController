@@ -149,6 +149,22 @@
     }];
 }
 
+- (void)removeAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
+{
+    [self sync];
+    
+    [self.backgroundQueue addOperationWithBlock:^{
+        BOOL updated = [self.allAnnotationsMapTree removeAnnotations:annotations];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (updated && !self.isRegionChanging) {
+                [self updateAnnotationsWithCompletionHandler:completionHandler];
+            } else if (completionHandler) {
+                completionHandler();
+            }
+        });
+    }];
+}
+
 - (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler
 {
     [self sync];
@@ -210,11 +226,13 @@
         [_visibleAnnotationsMapTree addAnnotations:annotationsToAdd];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.mapView addAnnotations:annotationsToAdd];
-            [self.animator mapClusterController:self removeAnnotations:annotationsToRemove];
-            
-            if (completionHandler) {
-                completionHandler();
-            }
+            [self.animator mapClusterController:self willRemoveAnnotations:annotationsToRemove withCompletionHandler:^{
+                [self.mapView removeAnnotations:annotationsToRemove];
+                
+                if (completionHandler) {
+                    completionHandler();
+                }
+            }];
         });
     }];
     __weak NSOperation *weakOperation = operation;
