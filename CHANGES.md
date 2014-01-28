@@ -1,5 +1,11 @@
 Changes
 =======
+
+## Upcoming version
+
+- Added `removeAnnotations:withCompletionHandler:` to `CCHMapClusterController` to remove annotations from clustering
+- Thanks to zeyadsalloum for suggesting the feature
+
 ## 1.3.0
 
 - Added new delegate method `mapClusterController:willReuseMapClusterAnnotation:` to `CCHMapClusterControllerDelegate` that's called when cluster annotations are reused
