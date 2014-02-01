@@ -1,17 +1,17 @@
 Changes
 =======
 
-## Upcoming version
+## 1.4.0
 
-- Added `removeAnnotations:withCompletionHandler:` to `CCHMapClusterController` to remove annotations from clustering
-- Thanks to zeyadsalloum for suggesting the feature
+- Added `removeAnnotations:withCompletionHandler:` to `CCHMapClusterController` to remove annotations from clustering (thanks to zeyadsalloum for suggesting this feature)
+- Fixed bug when rotating map view
 
 ## 1.3.0
 
 - Added new delegate method `mapClusterController:willReuseMapClusterAnnotation:` to `CCHMapClusterControllerDelegate` that's called when cluster annotations are reused
 - Example updated to demonstrate annotation views which adapt to current cluster size
 - Bugfixes and performance improvements
-- Thanks to @onato for suggesting the changes
+- Thanks to @onato for suggesting these changes
 
 ## 1.2.0
 
