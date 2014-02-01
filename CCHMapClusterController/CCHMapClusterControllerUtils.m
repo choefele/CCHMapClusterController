@@ -73,14 +73,15 @@ double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, NSView *vie
     MKMapPoint leftMapPoint = MKMapPointForCoordinate(leftCoordinate);
     MKMapPoint rightMapPoint = MKMapPointForCoordinate(rightCoordinate);
 
-    if (rightMapPoint.x < leftMapPoint.x) {
-        rightMapPoint.x += + MKMapSizeWorld.width;  // Points span 180th meridian
-    }
-    
     // Calculate distance between map points
     double xd = leftMapPoint.x - rightMapPoint.x;
     double yd = leftMapPoint.y - rightMapPoint.y;
     double mapLength = sqrt(xd*xd + yd*yd);
+    
+    // For very large lengths, we assume that we measured the other way around the world
+    if (mapLength > (MKMapSizeWorld.width * 0.5)) {
+        mapLength = MKMapSizeWorld.width - mapLength;
+    }
     
     return mapLength;
 }

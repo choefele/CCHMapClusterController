@@ -77,6 +77,72 @@
     XCTAssertEqualObjects(clusterAnnotationContains, visibleAnnotation, @"Wrong visible annotation");
 }
 
+- (void)testMapLengthForLength
+{
+    CGRect rect = CGRectMake(0, 0, 200, 200);
+    MKMapView *mapView = [[MKMapView alloc] initWithFrame:rect];
+    mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 0);
+    double length = 100;
+    
+    // Heading north
+    double mapLengthNorth = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    MKMapRect visibleMapRect = mapView.visibleMapRect;
+    XCTAssert(mapLengthNorth > 0);
+    XCTAssertEqualWithAccuracy(mapLengthNorth, visibleMapRect.size.width / 2.0, __FLT_EPSILON__);
+    
+    // Heading east
+    MKMapCamera *camera = mapView.camera;
+    camera.heading = 90;
+    mapView.camera = camera;
+    double mapLengthEast = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    XCTAssertEqualWithAccuracy(mapLengthEast, mapLengthNorth, __FLT_EPSILON__);
+    
+    // Heading south
+    camera.heading = 180;
+    mapView.camera = camera;
+    double mapLengthSouth = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    XCTAssertEqualWithAccuracy(mapLengthSouth, mapLengthNorth, __FLT_EPSILON__);
+    
+    // Heading west
+    camera.heading = 270;
+    mapView.camera = camera;
+    double mapLengthWest = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    XCTAssertEqualWithAccuracy(mapLengthWest, mapLengthNorth, __FLT_EPSILON__);
+}
+
+- (void)testMapLengthForLength180thMeridian
+{
+    CGRect rect = CGRectMake(0, 0, 200, 200);
+    MKMapView *mapView = [[MKMapView alloc] initWithFrame:rect];
+    mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 180);
+    double length = 100;
+    
+    // Heading north
+    double mapLengthNorth = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    MKMapRect visibleMapRect = mapView.visibleMapRect;
+    XCTAssert(mapLengthNorth > 0);
+    XCTAssertEqualWithAccuracy(mapLengthNorth, visibleMapRect.size.width / 2.0, __FLT_EPSILON__);
+    
+    // Heading east
+    MKMapCamera *camera = mapView.camera;
+    camera.heading = 90;
+    mapView.camera = camera;
+    double mapLengthEast = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    XCTAssertEqualWithAccuracy(mapLengthEast, mapLengthNorth, __FLT_EPSILON__);
+    
+    // Heading south
+    camera.heading = 180;
+    mapView.camera = camera;
+    double mapLengthSouth = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    XCTAssertEqualWithAccuracy(mapLengthSouth, mapLengthNorth, __FLT_EPSILON__);
+    
+    // Heading west
+    camera.heading = 270;
+    mapView.camera = camera;
+    double mapLengthWest = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    XCTAssertEqualWithAccuracy(mapLengthWest, mapLengthNorth, __FLT_EPSILON__);
+}
+
 - (void)testAlignMapLengthToWorldWidth
 {
     double mapLength = 10000.1;
