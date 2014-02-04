@@ -1,6 +1,10 @@
 Changes
 =======
 
+## Upcoming release
+
+- Updated annotation view in example to use pre-rendered images instead of drawRect: for best performance
+
 ## 1.4.0
 
 - Added `removeAnnotations:withCompletionHandler:` to `CCHMapClusterController` to remove annotations from clustering (thanks to zeyadsalloum for suggesting this feature)
