@@ -377,7 +377,7 @@
 #if TARGET_OS_IPHONE
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
 {
-	MKOverlayView *view;
+    MKOverlayView *view;
 	
     // Forward to standard delegate
     if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:viewForOverlay:)]) {
@@ -397,7 +397,7 @@
 #else
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
 {
-	MKOverlayRenderer *renderer;
+    MKOverlayRenderer *renderer;
 	
     // Forward to standard delegate
     if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:rendererForOverlay:)]) {
