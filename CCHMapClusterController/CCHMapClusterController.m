@@ -361,13 +361,14 @@
 #if TARGET_OS_IPHONE
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
 {
+	MKOverlayView *view;
+	
     // Forward to standard delegate
     if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:viewForOverlay:)]) {
-        [self.mapViewDelegateProxy.target mapView:mapView viewForOverlay:overlay];
+        view = [self.mapViewDelegateProxy.target mapView:mapView viewForOverlay:overlay];
     }
 
     // Display debug polygons
-    MKOverlayView *view;
     if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
         MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon *)overlay];
         polygonView.strokeColor = [UIColor.blueColor colorWithAlphaComponent:0.7];
@@ -380,13 +381,14 @@
 #else
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
 {
+	MKOverlayRenderer *renderer;
+	
     // Forward to standard delegate
     if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:rendererForOverlay:)]) {
-        [self.mapViewDelegateProxy.target mapView:mapView rendererForOverlay:overlay];
+        renderer = [self.mapViewDelegateProxy.target mapView:mapView rendererForOverlay:overlay];
     }
     
     // Display debug polygons
-    MKOverlayRenderer *renderer;
     if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
         MKPolygonRenderer *polygonRenderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
         polygonRenderer.strokeColor = [NSColor.blueColor colorWithAlphaComponent:0.7];
