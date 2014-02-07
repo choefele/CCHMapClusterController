@@ -14,7 +14,7 @@
 
 @property (nonatomic, weak) id<DataReaderDelegate> delegate;
 
-- (void)startReadingJSON;   // 
-- (void)startReadingCSV;
+- (void)startReadingBerlinData;
+- (void)startReadingUSData;
 
 @end

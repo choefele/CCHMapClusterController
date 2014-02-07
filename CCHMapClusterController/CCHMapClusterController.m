@@ -98,6 +98,22 @@
     return [self.allAnnotationsMapTree.annotations copy];
 }
 
+- (void)setDebuggingEnabled:(BOOL)debuggingEnabled
+{
+    _debuggingEnabled = debuggingEnabled;
+    
+    if (debuggingEnabled) {
+        [self updateAnnotationsWithCompletionHandler:NULL];
+    } else {
+        // Remove debug overlays
+        for (id<MKOverlay> overlay in self.mapView.overlays) {
+            if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
+                [self.mapView removeOverlay:overlay];
+            }
+        }
+    }
+}
+
 - (void)setClusterer:(id<CCHMapClusterer>)clusterer
 {
     _clusterer = clusterer;

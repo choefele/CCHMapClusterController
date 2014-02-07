@@ -6,25 +6,26 @@
 //  Copyright (c) 2013 Claus Höfele. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "MapViewController.h"
 
 #import "DataReader.h"
 #import "DataReaderDelegate.h"
 #import "ClusterAnnotationView.h"
+#import "SettingsViewController.h"
 
 #import "CCHMapClusterAnnotation.h"
 #import "CCHMapClusterController.h"
 #import "CCHMapClusterControllerDelegate.h"
 #import "CCHCenterOfMassMapClusterer.h"
 
-@interface ViewController()<DataReaderDelegate, CCHMapClusterControllerDelegate, MKMapViewDelegate>
+@interface MapViewController()<DataReaderDelegate, CCHMapClusterControllerDelegate, MKMapViewDelegate>
 
 @property (strong, nonatomic) CCHMapClusterController *mapClusterController;
 @property (strong, nonatomic) id<CCHMapClusterer> mapClusterer;
 
 @end
 
-@implementation ViewController
+@implementation MapViewController
 
 - (void)viewDidLoad
 {
@@ -57,12 +58,12 @@
     // 5000+ items near Berlin in JSON format
     CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
-    [dataReader startReadingJSON];
+    [dataReader startReadingBerlinData];
     
     // 80000+ items in the US
 //    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.833333, -98.583333);
 //    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 7000000, 7000000);
-//    [dataReader startReadingCSV];
+//    [dataReader startReadingUSData];
     
     self.mapView.region = region;
     self.mapView.delegate = self;
@@ -116,6 +117,15 @@
     }
     
     return annotationView;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"mapToSettings"]) {
+        UINavigationController *navigationViewController = (UINavigationController *)segue.destinationViewController;
+        SettingsViewController *settingsViewController = (SettingsViewController *)navigationViewController.topViewController;
+        settingsViewController.mapClusterController = self.mapClusterController;
+    }
 }
 
 @end

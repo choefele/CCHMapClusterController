@@ -16,7 +16,7 @@
 
 @implementation DataReader
 
-- (void)startReadingJSON
+- (void)startReadingBerlinData
 {
     // Parse on background thread
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
@@ -48,7 +48,7 @@
     });
 }
 
-- (void)startReadingCSV
+- (void)startReadingUSData
 {
     // Parse on background thread
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
