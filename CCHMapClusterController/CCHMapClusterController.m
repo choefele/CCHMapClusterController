@@ -371,7 +371,7 @@
     }
 
     // Display debug polygons
-    if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
+    if (view == nil && [overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
         MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon *)overlay];
         polygonView.strokeColor = [UIColor.blueColor colorWithAlphaComponent:0.7];
         polygonView.lineWidth = 1;
@@ -391,7 +391,7 @@
     }
     
     // Display debug polygons
-    if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
+    if (renderer == nil && [overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
         MKPolygonRenderer *polygonRenderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
         polygonRenderer.strokeColor = [NSColor.blueColor colorWithAlphaComponent:0.7];
         polygonRenderer.lineWidth = 1;
