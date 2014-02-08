@@ -38,17 +38,17 @@
 {
     MKMapRect mapRect = MKMapRectMake(0, 0, 15, 20);
     MKMapRect adjustedMapRect = CCHMapClusterControllerAlignMapRectToCellSize(mapRect, 5);
-    XCTAssertEqual(adjustedMapRect.origin.x, 0.0, @"Wrong origin x");
-    XCTAssertEqual(adjustedMapRect.origin.y, 0.0, @"Wrong origin y");
-    XCTAssertEqual(adjustedMapRect.size.width, 15.0, @"Wrong size width");
-    XCTAssertEqual(adjustedMapRect.size.height, 20.0, @"Wrong size height");
+    XCTAssertEqual(adjustedMapRect.origin.x, 0.0);
+    XCTAssertEqual(adjustedMapRect.origin.y, 0.0);
+    XCTAssertEqual(adjustedMapRect.size.width, 15.0);
+    XCTAssertEqual(adjustedMapRect.size.height, 20.0);
 
     mapRect = MKMapRectMake(8, 8, 15, 20);
     adjustedMapRect = CCHMapClusterControllerAlignMapRectToCellSize(mapRect, 6);
-    XCTAssertEqual(adjustedMapRect.origin.x, 6.0, @"Wrong origin x");
-    XCTAssertEqual(adjustedMapRect.origin.y, 6.0, @"Wrong origin y");
-    XCTAssertEqual(adjustedMapRect.size.width, 18.0, @"Wrong size width");
-    XCTAssertEqual(adjustedMapRect.size.height, 24.0, @"Wrong size height");
+    XCTAssertEqual(adjustedMapRect.origin.x, 6.0);
+    XCTAssertEqual(adjustedMapRect.origin.y, 6.0);
+    XCTAssertEqual(adjustedMapRect.size.width, 18.0);
+    XCTAssertEqual(adjustedMapRect.size.height, 24.0);
 }
 
 - (void)testFindVisibleAnnotation
@@ -61,20 +61,20 @@
     CCHMapClusterAnnotation *clusterAnnotationEmpty = [[CCHMapClusterAnnotation alloc] init];
     [visibleAnnotations addObject:clusterAnnotationEmpty];
     CCHMapClusterAnnotation *visibleAnnotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
-    XCTAssertNil(visibleAnnotation, @"Wrong visible annotation");
+    XCTAssertNil(visibleAnnotation);
     
     // Cluster does not contain annotation
     CCHMapClusterAnnotation *clusterAnnotationDoesNotContain = [[CCHMapClusterAnnotation alloc] init];
     [visibleAnnotations addObject:clusterAnnotationDoesNotContain];
     visibleAnnotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
-    XCTAssertNil(visibleAnnotation, @"Wrong visible annotation");
+    XCTAssertNil(visibleAnnotation);
     
     // Cluster does contain annotation
     CCHMapClusterAnnotation *clusterAnnotationContains = [[CCHMapClusterAnnotation alloc] init];
     clusterAnnotationContains.annotations = [NSSet setWithObjects:[[MKPointAnnotation alloc] init], pointAnnotation, [[MKPointAnnotation alloc] init], [[MKPointAnnotation alloc] init], nil];
     [visibleAnnotations addObject:clusterAnnotationContains];
     visibleAnnotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
-    XCTAssertEqualObjects(clusterAnnotationContains, visibleAnnotation, @"Wrong visible annotation");
+    XCTAssertEqualObjects(clusterAnnotationContains, visibleAnnotation);
 }
 
 - (void)testMapLengthForLength
@@ -147,34 +147,34 @@
 {
     double mapLength = 10000.1;
     double alignedMapLength = CCHMapClusterControllerAlignMapLengthToWorldWidth(mapLength);
-    XCTAssertTrue(alignedMapLength > mapLength, @"Wrong aligned map length");
+    XCTAssertTrue(alignedMapLength > mapLength);
     double factor = MKMapSizeWorld.width / alignedMapLength;
-    XCTAssertEqualWithAccuracy(factor, floor(factor), __FLT_EPSILON__, @"Wrong aligned map length");
+    XCTAssertEqualWithAccuracy(factor, floor(factor), __FLT_EPSILON__);
 
     mapLength = 123456789.0123;
     alignedMapLength = CCHMapClusterControllerAlignMapLengthToWorldWidth(mapLength);
     XCTAssertTrue(alignedMapLength > mapLength, @"Wrong aligned map length");
     factor = MKMapSizeWorld.width / alignedMapLength;
-    XCTAssertEqualWithAccuracy(factor, floor(factor), __FLT_EPSILON__, @"Wrong aligned map length");
+    XCTAssertEqualWithAccuracy(factor, floor(factor), __FLT_EPSILON__);
 }
 
 - (void)testCoordinateEqualToCoordinate
 {
     // Same struct
     CLLocationCoordinate2D coordinate0 = CLLocationCoordinate2DMake(5.12, -0.72);
-    XCTAssertTrue(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate0, coordinate0), @"Wrong coordinate");
+    XCTAssertTrue(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate0, coordinate0));
     
     // Equal struct
     CLLocationCoordinate2D coordinate1 = CLLocationCoordinate2DMake(5.12, -0.72);
-    XCTAssertTrue(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate0, coordinate1), @"Wrong coordinate");
+    XCTAssertTrue(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate0, coordinate1));
 
     // Longitude different
     CLLocationCoordinate2D coordinate2 = CLLocationCoordinate2DMake(5.12, -0.73);
-    XCTAssertFalse(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate1, coordinate2), @"Wrong coordinate");
+    XCTAssertFalse(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate1, coordinate2));
 
     // Latitude different
     CLLocationCoordinate2D coordinate3 = CLLocationCoordinate2DMake(5.11, -0.72);
-    XCTAssertFalse(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate1, coordinate3), @"Wrong coordinate");
+    XCTAssertFalse(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate1, coordinate3));
 }
 
 - (MKMapRect)mapRectForCoordinateRegion:(MKCoordinateRegion)coordinateRegion
@@ -217,17 +217,17 @@
     
     // Cluster annotation doesn't contain annotation
     CCHMapClusterAnnotation *mapClusterAnnotationFound = CCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
-    XCTAssertNil(mapClusterAnnotationFound, @"Wrong cluster annotation");
+    XCTAssertNil(mapClusterAnnotationFound);
     
     // Cluster annotation contains annotation
     mapClusterAnnotation.annotations = [NSSet setWithObject:annotation];
     mapClusterAnnotationFound = CCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
-    XCTAssertEqualObjects(mapClusterAnnotation, mapClusterAnnotationFound, @"Wrong cluster annotation");
+    XCTAssertEqualObjects(mapClusterAnnotation, mapClusterAnnotationFound);
 
     // Cluster annotation outside map rect
     mapClusterAnnotation.coordinate = CLLocationCoordinate2DMake(coordinateRegion.center.latitude + 1.2 * coordinateRegion.span.latitudeDelta, coordinateRegion.center.longitude);
     mapClusterAnnotationFound = CCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
-    XCTAssertNil(mapClusterAnnotationFound, @"Wrong cluster annotation");
+    XCTAssertNil(mapClusterAnnotationFound);
 }
 
 - (void)testClusterAnnotationForAnnotationMultiple
@@ -254,7 +254,7 @@
     [mapView addAnnotation:mapClusterAnnotation2];
     
     CCHMapClusterAnnotation *mapClusterAnnotationFound = CCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
-    XCTAssertEqualObjects(mapClusterAnnotation0, mapClusterAnnotationFound, @"Wrong cluster annotation");
+    XCTAssertEqualObjects(mapClusterAnnotation0, mapClusterAnnotationFound);
 }
 
 - (void)testEnumerateCells
@@ -264,8 +264,8 @@
     CCHMapClusterControllerEnumerateCells(mapRect, 10, ^(MKMapRect cellRect) {
         numCalls++;
         
-        XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__, @"Wrong size");
-        XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__, @"Wrong size");
+        XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__);
+        XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__);
     });
     XCTAssertEqual(numCalls, (NSUInteger)100, @"Wrong number of calls");
 }
@@ -277,8 +277,8 @@
     CCHMapClusterControllerEnumerateCells(mapRect, 10, ^(MKMapRect cellRect) {
         numCalls++;
         
-        XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__, @"Wrong size");
-        XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__, @"Wrong size");
+        XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__);
+        XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__);
     });
     XCTAssertEqual(numCalls, (NSUInteger)100, @"Wrong number of calls");
 }
@@ -293,10 +293,10 @@
     MKCoordinateRegion regionConverted = MKCoordinateRegionForMapRect(mapRect);
     
     // Pretty inaccurate
-    XCTAssertEqualWithAccuracy(regionConverted.center.latitude, region.center.latitude, 1000000 * __FLT_EPSILON__, @"Wrong region");
-    XCTAssertEqualWithAccuracy(regionConverted.center.longitude, region.center.longitude, __FLT_EPSILON__, @"Wrong region");
-    XCTAssertEqualWithAccuracy(regionConverted.span.latitudeDelta, region.span.latitudeDelta, __FLT_EPSILON__, @"Wrong region");
-    XCTAssertEqualWithAccuracy(regionConverted.span.longitudeDelta, region.span.longitudeDelta, __FLT_EPSILON__, @"Wrong region");
+    XCTAssertEqualWithAccuracy(regionConverted.center.latitude, region.center.latitude, 1000000 * __FLT_EPSILON__);
+    XCTAssertEqualWithAccuracy(regionConverted.center.longitude, region.center.longitude, __FLT_EPSILON__);
+    XCTAssertEqualWithAccuracy(regionConverted.span.latitudeDelta, region.span.latitudeDelta, __FLT_EPSILON__);
+    XCTAssertEqualWithAccuracy(regionConverted.span.longitudeDelta, region.span.longitudeDelta, __FLT_EPSILON__);
 }
 
 @end

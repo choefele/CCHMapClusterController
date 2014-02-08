@@ -52,7 +52,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)0, @"Wrong number of annotations");
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)0);
 }
 
 - (void)testAddAnnotationsSimple
@@ -67,7 +67,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1, @"Wrong number of annotations");
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
 }
 
 - (void)testAddAnnotations
@@ -104,8 +104,8 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)6, @"Wrong number of annotations");
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2, @"Wrong number of annotations");
+    XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)6);
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
 
     // Origin MKCoordinateRegion -> bottom left, MKMapRect -> top left
     double cellWidth = visibleMapRect.size.width / 3;
@@ -115,21 +115,21 @@
     // Check bottom left
     MKMapRect bottomLeftMapRect = MKMapRectMake(cellOrigin.x, cellOrigin.y + 2 * cellHeight, cellWidth, cellHeight);
     NSSet *annotationsInMapRect = [self.mapView annotationsInMapRect:bottomLeftMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)1, @"Wrong number of annotations");
+    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)1);
     CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
-    XCTAssertEqual(clusterAnnotation.annotations.count, (NSUInteger)1, @"Wrong number of annotations");
+    XCTAssertEqual(clusterAnnotation.annotations.count, (NSUInteger)1);
 
     // Check top right
     MKMapRect topRightMapRect = MKMapRectMake(cellOrigin.x + 2 * cellWidth, cellOrigin.y, cellWidth, cellHeight);
     annotationsInMapRect = [self.mapView annotationsInMapRect:topRightMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)1, @"Wrong number of annotations");
+    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)1);
     clusterAnnotation = (CCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
-    XCTAssertEqual(clusterAnnotation.annotations.count, (NSUInteger)5, @"Wrong number of annotations");
+    XCTAssertEqual(clusterAnnotation.annotations.count, (NSUInteger)5);
 
     // Check center
     MKMapRect middleMapRect = MKMapRectMake(cellOrigin.x + cellWidth, cellOrigin.y + cellHeight, cellWidth, cellHeight);
     annotationsInMapRect = [self.mapView annotationsInMapRect:middleMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0, @"Wrong number of annotations");
+    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0);
 }
 
 - (void)testRemoveAnnotations
@@ -166,8 +166,8 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)6, @"Wrong number of annotations");
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2, @"Wrong number of annotations");
+    XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)6);
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
 
     // Origin MKCoordinateRegion -> bottom left, MKMapRect -> top left
     double cellWidth = visibleMapRect.size.width / 3;
@@ -180,18 +180,18 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)5, @"Wrong number of annotations");
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1, @"Wrong number of annotations");
+    XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)5);
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
 
     // Check bottom left
     MKMapRect bottomLeftMapRect = MKMapRectMake(cellOrigin.x, cellOrigin.y + 2 * cellHeight, cellWidth, cellHeight);
     NSSet *annotationsInMapRect = [self.mapView annotationsInMapRect:bottomLeftMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0, @"Wrong number of annotations");
+    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0);
     
     // Check center
     MKMapRect middleMapRect = MKMapRectMake(cellOrigin.x + cellWidth, cellOrigin.y + cellHeight, cellWidth, cellHeight);
     annotationsInMapRect = [self.mapView annotationsInMapRect:middleMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0, @"Wrong number of annotations");
+    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0);
 
     // Remove remaining annotations
     self.done = NO;
@@ -199,11 +199,11 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)0, @"Wrong number of annotations");
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)0);
     
     // Check visible region
     annotationsInMapRect = [self.mapView annotationsInMapRect:visibleMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0, @"Wrong number of annotations");
+    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0);
 }
 
 @end

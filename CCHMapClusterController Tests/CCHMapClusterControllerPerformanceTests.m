@@ -98,8 +98,8 @@ double performAndTrackTime(int numPasses, dispatch_block_t block)
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
-        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198, @"Wrong number of cells");
-        XCTAssertEqualObjects(clusterCounts, self.clusterCounts, @"Wrong cell counts");
+        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198);
+        XCTAssertEqualObjects(clusterCounts, self.clusterCounts);
     });
 
     NSLog(@"Duration %@: %f ms", NSStringFromSelector(_cmd), duration / 1E6);
@@ -119,8 +119,8 @@ double performAndTrackTime(int numPasses, dispatch_block_t block)
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
-        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198, @"Wrong number of cells");
-        XCTAssertEqualObjects(clusterCounts, self.clusterCounts, @"Wrong cell counts");
+        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198);
+        XCTAssertEqualObjects(clusterCounts, self.clusterCounts);
     });
     
     NSLog(@"Duration %@: %f ms", NSStringFromSelector(_cmd), duration / 1E6);
@@ -166,8 +166,8 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
-        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198, @"Wrong number of cells");
-        XCTAssertEqualObjects(clusterCounts, self.clusterCounts, @"Wrong cell counts");
+        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198);
+        XCTAssertEqualObjects(clusterCounts, self.clusterCounts);
     });
     
 //    // Will also free data - bug?
@@ -195,8 +195,8 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
-        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198, @"Wrong number of cells");
-        XCTAssertEqualObjects(clusterCounts, self.clusterCounts, @"Wrong cell counts");
+        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198);
+        XCTAssertEqualObjects(clusterCounts, self.clusterCounts);
     });
     
     NSLog(@"Duration %@: %f ms", NSStringFromSelector(_cmd), duration / 1E6);

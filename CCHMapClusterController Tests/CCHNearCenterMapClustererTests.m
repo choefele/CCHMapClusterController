@@ -28,16 +28,16 @@
 - (void)testCoordinateForAnnotationsNil
 {
     CLLocationCoordinate2D coordinate = [self.mapClusterer mapClusterController:nil coordinateForAnnotations:nil inMapRect:MKMapRectNull];
-    XCTAssertEqual(coordinate.latitude, 0.0, @"Wrong coordinate");
-    XCTAssertEqual(coordinate.longitude, 0.0, @"Wrong coordinate");
+    XCTAssertEqual(coordinate.latitude, 0.0);
+    XCTAssertEqual(coordinate.longitude, 0.0);
 }
 
 - (void)testCoordinateForAnnotationsEmpty
 {
     NSMutableSet *annotations = [[NSMutableSet alloc] init];
     CLLocationCoordinate2D coordinate = [self.mapClusterer mapClusterController:nil coordinateForAnnotations:annotations inMapRect:MKMapRectNull];
-    XCTAssertEqual(coordinate.latitude, 0.0, @"Wrong coordinate");
-    XCTAssertEqual(coordinate.longitude, 0.0, @"Wrong coordinate");
+    XCTAssertEqual(coordinate.latitude, 0.0);
+    XCTAssertEqual(coordinate.longitude, 0.0);
 }
 
 - (void)testCoordinateForAnnotations
@@ -61,8 +61,8 @@
     [annotations addObject:annotation3];
 
     CLLocationCoordinate2D coordinate = [self.mapClusterer mapClusterController:nil coordinateForAnnotations:annotations inMapRect:mapRect];
-    XCTAssertEqualWithAccuracy(annotation2.coordinate.latitude, coordinate.latitude, __FLT_EPSILON__, @"Wrong coordinate");
-    XCTAssertEqualWithAccuracy(annotation2.coordinate.longitude, coordinate.longitude, __FLT_EPSILON__, @"Wrong coordinate");
+    XCTAssertEqualWithAccuracy(annotation2.coordinate.latitude, coordinate.latitude, __FLT_EPSILON__);
+    XCTAssertEqualWithAccuracy(annotation2.coordinate.longitude, coordinate.longitude, __FLT_EPSILON__);
 }
 
 @end
