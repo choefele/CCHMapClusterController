@@ -13,16 +13,36 @@
 #define SECTION_CLUSTERER 1
 #define SECTION_ANIMATOR 2
 
+@interface SettingsViewController()
+
+@property (nonatomic, strong) UISwitch *debuggingEnabledSwitch;
+@property (nonatomic, strong) UISlider *cellSizeSlider;
+@property (nonatomic, strong) UISlider *marginFactorSlider;
+
+@end
+
 @implementation SettingsViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    UISwitch *debuggingEnabledSwitch = [[UISwitch alloc] init];
-    debuggingEnabledSwitch.on = self.settings.isDebuggingEnabled;
-    self.debugTableViewCell.accessoryView = debuggingEnabledSwitch;
+    self.debuggingEnabledSwitch = [[UISwitch alloc] init];
+    self.debuggingEnabledSwitch.on = self.settings.isDebuggingEnabled;
+    self.debuggingEnabledTableViewCell.accessoryView = self.debuggingEnabledSwitch;
     
+    self.cellSizeSlider = [[UISlider alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    self.cellSizeSlider.minimumValue = 20;
+    self.cellSizeSlider.maximumValue = 200;
+    self.cellSizeSlider.value = MIN(MAX(self.settings.cellSize, self.cellSizeSlider.minimumValue), self.cellSizeSlider.maximumValue);
+    self.cellSizeTableViewCell.accessoryView = self.cellSizeSlider;
+
+    self.marginFactorSlider = [[UISlider alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    self.marginFactorSlider.minimumValue = 0;
+    self.marginFactorSlider.maximumValue = 1.5;
+    self.marginFactorSlider.value = MIN(MAX(self.settings.marginFactor, self.marginFactorSlider.minimumValue), self.marginFactorSlider.maximumValue);
+    self.marginFactorTableViewCell.accessoryView = self.marginFactorSlider;
+
     NSIndexPath *clustererIndexPath = [NSIndexPath indexPathForItem:(NSInteger)self.settings.clusterer inSection:SECTION_CLUSTERER];
     [self selectIndexPath:clustererIndexPath];
 
@@ -77,10 +97,11 @@
 
 - (IBAction)done:(UIBarButtonItem *)sender
 {
-    UISwitch *debuggingEnabledSwitch = (UISwitch *)self.debugTableViewCell.accessoryView;
-    self.settings.debuggingEnabled = debuggingEnabledSwitch.on;
+    self.settings.debuggingEnabled = self.debuggingEnabledSwitch.on;
     self.settings.clusterer = (SettingsClusterer)[self selectedRowForSection:SECTION_CLUSTERER];
     self.settings.animator = (SettingsAnimator)[self selectedRowForSection:SECTION_ANIMATOR];
+    self.settings.cellSize = self.cellSizeSlider.value;
+    self.settings.marginFactor = self.marginFactorSlider.value;
 
     if (self.completionBlock) {
         self.completionBlock([self.settings copy]);
