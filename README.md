@@ -32,6 +32,11 @@ Don't worry about manually updating the clusters; `CCHMapClusterController` auto
 
 To try out the clustering, experiment with the examples included in this project, or download the app “Stolpersteine in Berlin” [![Download on the App Store](https://linkmaker.itunes.apple.com/htmlResources/assets//images/web/linkmaker/badge_appstore-sm.png)](https://itunes.apple.com/de/app/stolpersteine-in-berlin/id640731757?mt=8&uo=4).
 
+Additional materials:
+- [Theodore Calmes' in-depth explanation](http://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps) of how to implement a clustering algorithm
+- [Video of Claus' presentation at Macoun 2013](http://www.macoun.de/video2013tsso1.php) that explains some of the techniques used to implement `CCHMapClusterController` (German)
+- [Blog article](http://www.technology-ebay.de/the-teams/ebay-kleinanzeigen/blog/ios-mapkit-clustering.html) covering Claus' Macoun presentation
+
 ## Installation
 
 Use [CocoaPods](http://cocoapods.org) to easily integrate `CCHMapClusterController` into your project. Minimum deployment targets are 6.0 for iOS and 10.9 for OS X.
