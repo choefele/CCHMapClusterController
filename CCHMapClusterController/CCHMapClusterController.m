@@ -365,17 +365,17 @@
 {
     MKOverlayView *view;
 	
-    // Forward to standard delegate
-    if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:viewForOverlay:)]) {
-        view = [self.mapViewDelegateProxy.target mapView:mapView viewForOverlay:overlay];
-    }
-
-    // Display debug polygons
     if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
+        // Display debug polygons
         MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon *)overlay];
         polygonView.strokeColor = [UIColor.blueColor colorWithAlphaComponent:0.7];
         polygonView.lineWidth = 1;
         view = polygonView;
+    } else {
+        // Forward to standard delegate
+        if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:viewForOverlay:)]) {
+            view = [self.mapViewDelegateProxy.target mapView:mapView viewForOverlay:overlay];
+        }
     }
     
     return view;
@@ -385,17 +385,17 @@
 {
     MKOverlayRenderer *renderer;
 	
-    // Forward to standard delegate
-    if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:rendererForOverlay:)]) {
-        renderer = [self.mapViewDelegateProxy.target mapView:mapView rendererForOverlay:overlay];
-    }
-    
-    // Display debug polygons
     if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
+        // Display debug polygons
         MKPolygonRenderer *polygonRenderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
         polygonRenderer.strokeColor = [NSColor.blueColor colorWithAlphaComponent:0.7];
         polygonRenderer.lineWidth = 1;
         renderer = polygonRenderer;
+    } else {
+        // Forward to standard delegate
+        if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:rendererForOverlay:)]) {
+            renderer = [self.mapViewDelegateProxy.target mapView:mapView rendererForOverlay:overlay];
+        }
     }
     
     return renderer;
