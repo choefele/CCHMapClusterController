@@ -12,16 +12,22 @@
 #import "DataReaderDelegate.h"
 #import "ClusterAnnotationView.h"
 #import "SettingsViewController.h"
+#import "Settings.h"
 
 #import "CCHMapClusterAnnotation.h"
 #import "CCHMapClusterController.h"
 #import "CCHMapClusterControllerDelegate.h"
 #import "CCHCenterOfMassMapClusterer.h"
+#import "CCHNearCenterMapClusterer.h"
+#import "CCHFadeInOutMapAnimator.h"
 
 @interface MapViewController()<DataReaderDelegate, CCHMapClusterControllerDelegate, MKMapViewDelegate>
 
+@property (strong, nonatomic) DataReader *dataReader;
+@property (strong, nonatomic) Settings *settings;
 @property (strong, nonatomic) CCHMapClusterController *mapClusterController;
 @property (strong, nonatomic) id<CCHMapClusterer> mapClusterer;
+@property (strong, nonatomic) id<CCHMapAnimator> mapAnimator;
 
 @end
 
@@ -41,37 +47,55 @@
     self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.mapClusterController.delegate = self;
     
-    // Cell size and margin factor
-//    self.mapClusterController.cellSize = 100;           // [points]
-//    self.mapClusterController.marginFactor = 0;         // 0 = no additional margin
-//    self.mapClusterController.debuggingEnabled = YES;   // display grid
-    
-    // Positioning cluster representations
-//    self.mapClusterer = [[CCHNearCenterMapClusterer alloc] init];
-//    self.mapClusterController.clusterer = self.mapClusterer;        // change default clusterer
-//    self.mapClusterController.reuseExistingClusterAnnotations = NO; // YES to avoid updating positions
-    
     // Read annotations
-    DataReader *dataReader = [[DataReader alloc] init];
-    dataReader.delegate = self;
+    self.dataReader = [[DataReader alloc] init];
+    self.dataReader.delegate = self;
 
-    // 5000+ items near Berlin in JSON format
-    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
-    [dataReader startReadingBerlinData];
+    // Settings
+    Settings *settings = [[Settings alloc] init];
+    [self updateWithSettings:settings];
+}
+
+- (void)updateWithSettings:(Settings *)settings
+{
+    self.settings = settings;
     
-    // 80000+ items in the US
-//    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.833333, -98.583333);
-//    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 7000000, 7000000);
-//    [dataReader startReadingUSData];
+    // Map cluster controller settings
+    self.mapClusterController.debuggingEnabled = settings.isDebuggingEnabled;
+    self.mapClusterController.cellSize = settings.cellSize;
+    self.mapClusterController.marginFactor = settings.marginFactor;
     
+    if (settings.clusterer == SettingsClustererCenterOfMass) {
+        self.mapClusterer = [[CCHCenterOfMassMapClusterer alloc] init];
+    } else if (settings.clusterer == SettingsClustererNearCenter) {
+        self.mapClusterer = [[CCHNearCenterMapClusterer alloc] init];
+    }
+    self.mapClusterController.clusterer = self.mapClusterer;
+
+    if (settings.animator == SettingsAnimatorFadeInOut) {
+        self.mapAnimator = [[CCHFadeInOutMapAnimator alloc] init];
+    }
+    self.mapClusterController.animator = self.mapAnimator;
+
+    // Region and data
+    MKCoordinateRegion region;
+    if (self.settings.region == SettingsRegionBerlin) {
+        // 5000+ items near Berlin
+        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
+        region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
+        [self.dataReader startReadingBerlinData];
+    } else {
+        // 80000+ items in the US
+        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.833333, -98.583333);
+        region = MKCoordinateRegionMakeWithDistance(location, 7000000, 7000000);
+        [self.dataReader startReadingUSData];
+    }
+
     self.mapView.region = region;
-    self.mapView.delegate = self;
 }
 
 - (void)dataReader:(DataReader *)dataReader addAnnotations:(NSArray *)annotations
 {
-//    [self.mapView addAnnotations:annotations];
     [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];
 }
 
@@ -124,7 +148,18 @@
     if ([segue.identifier isEqualToString:@"mapToSettings"]) {
         UINavigationController *navigationViewController = (UINavigationController *)segue.destinationViewController;
         SettingsViewController *settingsViewController = (SettingsViewController *)navigationViewController.topViewController;
-        settingsViewController.mapClusterController = self.mapClusterController;
+        settingsViewController.settings = self.settings;
+        settingsViewController.completionBlock = ^(Settings *settings) {
+            [self.dataReader stopReadingData];
+            [self.mapClusterController removeAnnotations:self.mapClusterController.annotations.allObjects withCompletionHandler:NULL];
+
+            // Remove debug overlays
+            for (id<MKOverlay> overlay in self.mapView.overlays) {
+                [self.mapView removeOverlay:overlay];
+            }
+
+            [self updateWithSettings:settings];
+        };
     }
 }
 

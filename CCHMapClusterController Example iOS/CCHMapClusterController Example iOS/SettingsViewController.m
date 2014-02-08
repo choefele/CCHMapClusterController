@@ -8,14 +8,10 @@
 
 #import "SettingsViewController.h"
 
-#import "CCHMapClusterController.h"
+#import "Settings.h"
 
 #define SECTION_CLUSTERER 1
 #define SECTION_ANIMATOR 2
-
-@interface SettingsViewController ()
-
-@end
 
 @implementation SettingsViewController
 
@@ -23,22 +19,15 @@
 {
     [super viewDidLoad];
 
-    self.debugTableViewCell.accessoryView = [[UISwitch alloc] init];
-    [self updateSettings];
-}
+    UISwitch *debuggingEnabledSwitch = [[UISwitch alloc] init];
+    debuggingEnabledSwitch.on = self.settings.isDebuggingEnabled;
+    self.debugTableViewCell.accessoryView = debuggingEnabledSwitch;
+    
+    NSIndexPath *clustererIndexPath = [NSIndexPath indexPathForItem:(NSInteger)self.settings.clusterer inSection:SECTION_CLUSTERER];
+    [self selectIndexPath:clustererIndexPath];
 
-- (void)updateSettings
-{
-    // General
-    UISwitch *debugSwitch = (UISwitch *)self.debugTableViewCell.accessoryView;
-    debugSwitch.on = self.mapClusterController.isDebuggingEnabled;
-}
-
-- (void)updateClusterController
-{
-    // General
-    UISwitch *debugSwitch = (UISwitch *)self.debugTableViewCell.accessoryView;
-    self.mapClusterController.debuggingEnabled = debugSwitch.on;
+    NSIndexPath *animatorIndexPath = [NSIndexPath indexPathForItem:(NSInteger)self.settings.clusterer inSection:SECTION_ANIMATOR];
+    [self selectIndexPath:animatorIndexPath];
 }
 
 - (void)selectIndexPath:(NSIndexPath *)indexPath
@@ -53,6 +42,23 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
     }
+}
+
+- (NSInteger)selectedRowForSection:(NSInteger)section
+{
+    NSInteger selectedRow = 0;
+    
+    NSInteger numberOfRows = [self.tableView numberOfRowsInSection:section];
+    for (NSInteger i = 0; i < numberOfRows; i++) {
+        NSIndexPath *rowIndexPath = [NSIndexPath indexPathForItem:i inSection:section];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:rowIndexPath];
+        if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
+            selectedRow = i;
+            break;
+        }
+    }
+    
+    return selectedRow;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -71,7 +77,14 @@
 
 - (IBAction)done:(UIBarButtonItem *)sender
 {
-    [self updateClusterController];
+    UISwitch *debuggingEnabledSwitch = (UISwitch *)self.debugTableViewCell.accessoryView;
+    self.settings.debuggingEnabled = debuggingEnabledSwitch.on;
+    self.settings.clusterer = (SettingsClusterer)[self selectedRowForSection:SECTION_CLUSTERER];
+    self.settings.animator = (SettingsAnimator)[self selectedRowForSection:SECTION_ANIMATOR];
+
+    if (self.completionBlock) {
+        self.completionBlock([self.settings copy]);
+    }
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 

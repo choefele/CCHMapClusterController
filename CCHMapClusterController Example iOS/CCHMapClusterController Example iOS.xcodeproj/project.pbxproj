@@ -26,6 +26,7 @@
 		48D7B0CA185A679F0071636B /* KPTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0C4185A679F0071636B /* KPTreeNode.m */; };
 		48D7B0CF185BA3750071636B /* TBQuadTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D7B0CE185BA3750071636B /* TBQuadTree.m */; };
 		621834EA18A576C5000210AF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 621834E918A576C5000210AF /* SettingsViewController.m */; };
+		621834ED18A6AD25000210AF /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 621834EC18A6AD25000210AF /* Settings.m */; };
 		626379F9184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */; };
 		62978DDF1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */; };
 		62D667831845E0F20046D5D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667821845E0F20046D5D5 /* Foundation.framework */; };
@@ -96,6 +97,8 @@
 		48D7B0CE185BA3750071636B /* TBQuadTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBQuadTree.m; sourceTree = "<group>"; };
 		621834E818A576C5000210AF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		621834E918A576C5000210AF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		621834EB18A6AD25000210AF /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		621834EC18A6AD25000210AF /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerUtilsTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerUtilsTests.m"; sourceTree = "<group>"; };
 		62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerPerformanceTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerPerformanceTests.m"; sourceTree = "<group>"; };
 		62D6677F1845E0F20046D5D5 /* CCHMapClusterController Example iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CCHMapClusterController Example iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -241,6 +244,8 @@
 				62D667981845E0F20046D5D5 /* MapViewController.m */,
 				621834E818A576C5000210AF /* SettingsViewController.h */,
 				621834E918A576C5000210AF /* SettingsViewController.m */,
+				621834EB18A6AD25000210AF /* Settings.h */,
+				621834EC18A6AD25000210AF /* Settings.m */,
 				62D71E0F187EB45500E52EE3 /* ClusterAnnotationView.h */,
 				62D71E10187EB45500E52EE3 /* ClusterAnnotationView.m */,
 				62D667BC1845F76F0046D5D5 /* DataReader.h */,
@@ -426,6 +431,7 @@
 				4869F19D1853AA6300251ADC /* CCHFadeInOutMapAnimator.m in Sources */,
 				62D667931845E0F20046D5D5 /* AppDelegate.m in Sources */,
 				62D667D41845F8A40046D5D5 /* CCHMapViewDelegateProxy.m in Sources */,
+				621834ED18A6AD25000210AF /* Settings.m in Sources */,
 				62D667C11845F76F0046D5D5 /* DataReader.m in Sources */,
 				62D667D21845F8A40046D5D5 /* CCHMapClusterControllerUtils.m in Sources */,
 				4869F186184FD5F100251ADC /* CCHCenterOfMassMapClusterer.m in Sources */,
