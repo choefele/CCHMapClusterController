@@ -16,5 +16,6 @@
 
 - (void)startReadingBerlinData;
 - (void)startReadingUSData;
+- (void)stopReadingData;
 
 @end

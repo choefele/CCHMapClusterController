@@ -13,8 +13,26 @@
 #import <MapKit/MapKit.h>
 
 #define BATCH_COUNT 500
+#define DELAY_BETWEEN_BATCHES 0.3
+
+@interface DataReader()
+
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
+
+@end
 
 @implementation DataReader
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _operationQueue = [[NSOperationQueue alloc] init];
+        _operationQueue.maxConcurrentOperationCount = 1;
+    }
+    
+    return self;
+}
 
 - (void)startReadingBerlinData
 {
@@ -79,17 +97,22 @@
         [self dispatchAnnotations:annotations];
     });
 }
+
+- (void)stopReadingData
+{
+    [self.operationQueue cancelAllOperations];
+}
         
 - (void)dispatchAnnotations:(NSArray *)annotations
 {
     // Dispatch on main thread with some delay to simulate network requests
     NSArray *annotationsToDispatch = [annotations copy];
-    static int counter = 0;
-    double delayInSeconds = counter++ * 0.5;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self.delegate dataReader:self addAnnotations:annotationsToDispatch];
-    });
+    [self.operationQueue addOperationWithBlock:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.delegate dataReader:self addAnnotations:annotationsToDispatch];
+        });
+        [NSThread sleepForTimeInterval:DELAY_BETWEEN_BATCHES];
+    }];
 }
 
 @end
