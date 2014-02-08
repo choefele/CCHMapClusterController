@@ -2,7 +2,8 @@ Changes
 =======
 
 ## Upcoming release
-
+- Fixed bug that was causing `MKOverlayView`s/`MKOverlayRenderer`s to not show up (thanks to rosskines for the pull request)
+- Settings UI in example to configure clustering
 - Updated annotation view in example to use pre-rendered images instead of drawRect: for best performance
 
 ## 1.4.0
@@ -15,7 +16,7 @@ Changes
 - Added new delegate method `mapClusterController:willReuseMapClusterAnnotation:` to `CCHMapClusterControllerDelegate` that's called when cluster annotations are reused
 - Example updated to demonstrate annotation views which adapt to current cluster size
 - Bugfixes and performance improvements
-- Thanks to @onato for suggesting these changes
+- Thanks to onato for suggesting these changes
 
 ## 1.2.0
 
