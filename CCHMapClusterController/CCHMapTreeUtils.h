@@ -58,9 +58,9 @@ typedef struct CCHMapTreeNode {
     struct CCHMapTreeNode *southWest;
     struct CCHMapTreeNode *southEast;
     CCHMapTreeNodeData *points;
-    int count;
+    unsigned long count;
 } CCHMapTreeNode;
-CCHMapTreeNode *CCHMapTreeNodeMake(CCHMapTreeBoundingBox boundary, int bucketCapacity);
+CCHMapTreeNode *CCHMapTreeNodeMake(CCHMapTreeBoundingBox boundary, unsigned long bucketCapacity);
 void CCHMapTreeFreeQuadTreeNode(CCHMapTreeNode *node);
 
 typedef void(^CCHMapTreeTraverseBlock)(CCHMapTreeNode *currentNode);
@@ -71,6 +71,6 @@ void CCHMapTreeGatherDataInRange(CCHMapTreeNode *node, CCHMapTreeBoundingBox ran
 void CCHMapTreeGatherDataInRange2(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, __unsafe_unretained NSMutableSet *annotations);
 void CCHMapTreeGatherDataInRange3(CCHMapTreeNode *node, CCHMapTreeBoundingBox range, __unsafe_unretained CCHMapTreeUnsafeMutableArray *annotations);
 
-CCHMapTreeNode *CCHMapTreeBuildWithData(CCHMapTreeNodeData *data, int count, CCHMapTreeBoundingBox boundingBox, int bucketCapacity);
-bool CCHMapTreeNodeInsertData(CCHMapTreeNode* node, CCHMapTreeNodeData data, int bucketCapacity);
+CCHMapTreeNode *CCHMapTreeBuildWithData(CCHMapTreeNodeData *data, unsigned long count, CCHMapTreeBoundingBox boundingBox, unsigned long bucketCapacity);
+bool CCHMapTreeNodeInsertData(CCHMapTreeNode* node, CCHMapTreeNodeData data, unsigned long bucketCapacity);
 bool CCHMapTreeNodeRemoveData(CCHMapTreeNode* node, CCHMapTreeNodeData data); // only removes first matching item
