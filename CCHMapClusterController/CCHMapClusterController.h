@@ -50,12 +50,12 @@
 /** Delegate to configure cluster annotations. */
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
 
-/** Delegate to define strategy for positioning cluster annotations. */
+/** Delegate to define strategy for positioning cluster annotations (default: `CCHCenterOfMassMapClusterer`). */
 @property (nonatomic, weak) id<CCHMapClusterer> clusterer;
 /** Reuse existing cluster annotations for a cell (default: `YES`). */
 @property (nonatomic, assign) BOOL reuseExistingClusterAnnotations;
 
-/** Delegate to define strategy for animating cluster annotations in and out. */
+/** Delegate to define strategy for animating cluster annotations in and out (default: `CCHFadeInOutMapAnimator`). */
 @property (nonatomic, weak) id<CCHMapAnimator> animator;
 
 /**
