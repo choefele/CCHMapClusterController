@@ -46,10 +46,10 @@
 {
     self = [super init];
     if (self) {
-        self.nodeCapacity = nodeCapacity;
-        self.mutableAnnotations = [NSMutableSet set];
+        _nodeCapacity = nodeCapacity;
+        _mutableAnnotations = [NSMutableSet set];
         CCHMapTreeBoundingBox world = CCHMapTreeBoundingBoxMake(minLatitude, minLongitude, maxLatitude, maxLongitude);
-        self.root = CCHMapTreeBuildWithData(NULL, 0, world, nodeCapacity);
+        _root = CCHMapTreeBuildWithData(NULL, 0, world, nodeCapacity);
     }
     
     return self;

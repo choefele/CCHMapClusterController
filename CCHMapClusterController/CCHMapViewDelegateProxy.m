@@ -39,9 +39,9 @@
 {
     self = [super init];
     if (self) {
-        self.delegate = delegate;   // must be set before swapDelegates
-        self.mapView = mapView;
-        self.target = mapView.delegate;
+        _delegate = delegate;   // must be set before swapDelegates
+        _mapView = mapView;
+        _target = mapView.delegate;
         [self swapDelegates];
     }
     return self;

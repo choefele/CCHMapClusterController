@@ -35,7 +35,7 @@
 {
     self = [super init];
     if (self) {
-        self.duration = 0.2;
+        _duration = 0.2;
     }
     return self;
 }

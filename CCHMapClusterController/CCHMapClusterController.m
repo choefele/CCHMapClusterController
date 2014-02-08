@@ -72,24 +72,26 @@
 {
     self = [super init];
     if (self) {
-        self.reuseExistingClusterAnnotations = YES;
-        self.marginFactor = 0.5;
-        self.cellSize = 60;
-        self.mapView = mapView;
-        self.allAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
-        self.visibleAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
-        self.backgroundQueue = [[NSOperationQueue alloc] init];
-        self.updateOperations = [NSMutableArray array];
-        self.mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
+        _marginFactor = 0.5;
+        _cellSize = 60;
+        _mapView = mapView;
+        _allAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
+        _visibleAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
+        _backgroundQueue = [[NSOperationQueue alloc] init];
+        _updateOperations = [NSMutableArray array];
+        _mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
         
         // Keep strong reference to default instance because public property is weak
         id<CCHMapClusterer> clusterer = [[CCHCenterOfMassMapClusterer alloc] init];
-        self.clusterer = clusterer;
-        self.strongClusterer = clusterer;
+        _clusterer = clusterer;
+        _strongClusterer = clusterer;
         id<CCHMapAnimator> animator = [[CCHFadeInOutMapAnimator alloc] init];
-        self.animator = animator;
-        self.strongAnimator = animator;
+        _animator = animator;
+        _strongAnimator = animator;
+        
+        [self setReuseExistingClusterAnnotations:YES];
     }
+    
     return self;
 }
 
