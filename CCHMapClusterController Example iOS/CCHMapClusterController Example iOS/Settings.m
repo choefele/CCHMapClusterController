@@ -27,7 +27,7 @@
     settings.debuggingEnabled = self.isDebuggingEnabled;
     settings.cellSize = self.cellSize;
     settings.marginFactor = self.marginFactor;
-    settings.region = self.region;
+    settings.dataSet = self.dataSet;
     settings.clusterer = self.clusterer;
     settings.animator = self.animator;
     

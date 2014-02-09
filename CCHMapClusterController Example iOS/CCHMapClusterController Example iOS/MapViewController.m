@@ -79,7 +79,7 @@
 
     // Region and data
     MKCoordinateRegion region;
-    if (self.settings.region == SettingsRegionBerlin) {
+    if (self.settings.dataSet == SettingsDataSetBerlin) {
         // 5000+ items near Berlin
         CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
         region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);

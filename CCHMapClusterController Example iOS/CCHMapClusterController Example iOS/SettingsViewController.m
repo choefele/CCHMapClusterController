@@ -10,8 +10,9 @@
 
 #import "Settings.h"
 
-#define SECTION_CLUSTERER 1
-#define SECTION_ANIMATOR 2
+#define SECTION_DATA_SET 1
+#define SECTION_CLUSTERER 2
+#define SECTION_ANIMATOR 3
 
 @interface SettingsViewController()
 
@@ -42,6 +43,9 @@
     self.marginFactorSlider.maximumValue = 1.5;
     self.marginFactorSlider.value = MIN(MAX(self.settings.marginFactor, self.marginFactorSlider.minimumValue), self.marginFactorSlider.maximumValue);
     self.marginFactorTableViewCell.accessoryView = self.marginFactorSlider;
+
+    NSIndexPath *dataSetIndexPath = [NSIndexPath indexPathForItem:(NSInteger)self.settings.dataSet inSection:SECTION_DATA_SET];
+    [self selectIndexPath:dataSetIndexPath];
 
     NSIndexPath *clustererIndexPath = [NSIndexPath indexPathForItem:(NSInteger)self.settings.clusterer inSection:SECTION_CLUSTERER];
     [self selectIndexPath:clustererIndexPath];
@@ -83,7 +87,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == SECTION_CLUSTERER) {
+    if (indexPath.section == SECTION_DATA_SET) {
+        [self selectIndexPath:indexPath];
+    } else if (indexPath.section == SECTION_CLUSTERER) {
         [self selectIndexPath:indexPath];
     } else if (indexPath.section == SECTION_ANIMATOR) {
         [self selectIndexPath:indexPath];
@@ -98,10 +104,11 @@
 - (IBAction)done:(UIBarButtonItem *)sender
 {
     self.settings.debuggingEnabled = self.debuggingEnabledSwitch.on;
-    self.settings.clusterer = (SettingsClusterer)[self selectedRowForSection:SECTION_CLUSTERER];
-    self.settings.animator = (SettingsAnimator)[self selectedRowForSection:SECTION_ANIMATOR];
     self.settings.cellSize = self.cellSizeSlider.value;
     self.settings.marginFactor = self.marginFactorSlider.value;
+    self.settings.dataSet = (SettingsDataSet)[self selectedRowForSection:SECTION_DATA_SET];
+    self.settings.clusterer = (SettingsClusterer)[self selectedRowForSection:SECTION_CLUSTERER];
+    self.settings.animator = (SettingsAnimator)[self selectedRowForSection:SECTION_ANIMATOR];
 
     if (self.completionBlock) {
         self.completionBlock([self.settings copy]);
