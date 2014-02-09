@@ -52,6 +52,11 @@
     self.dataReader.delegate = self;
 
     // Settings
+    [self resetSettings];
+}
+
+- (IBAction)resetSettings
+{
     Settings *settings = [[Settings alloc] init];
     [self updateWithSettings:settings];
 }
@@ -59,6 +64,13 @@
 - (void)updateWithSettings:(Settings *)settings
 {
     self.settings = settings;
+    
+    // Reset
+    [self.dataReader stopReadingData];
+    [self.mapClusterController removeAnnotations:self.mapClusterController.annotations.allObjects withCompletionHandler:NULL];
+    for (id<MKOverlay> overlay in self.mapView.overlays) {
+        [self.mapView removeOverlay:overlay];
+    }
     
     // Map cluster controller settings
     self.mapClusterController.debuggingEnabled = settings.isDebuggingEnabled;
@@ -90,7 +102,6 @@
         region = MKCoordinateRegionMakeWithDistance(location, 7000000, 7000000);
         [self.dataReader startReadingUSData];
     }
-
     self.mapView.region = region;
 }
 
@@ -150,14 +161,6 @@
         SettingsViewController *settingsViewController = (SettingsViewController *)navigationViewController.topViewController;
         settingsViewController.settings = self.settings;
         settingsViewController.completionBlock = ^(Settings *settings) {
-            [self.dataReader stopReadingData];
-            [self.mapClusterController removeAnnotations:self.mapClusterController.annotations.allObjects withCompletionHandler:NULL];
-
-            // Remove debug overlays
-            for (id<MKOverlay> overlay in self.mapView.overlays) {
-                [self.mapView removeOverlay:overlay];
-            }
-
             [self updateWithSettings:settings];
         };
     }
