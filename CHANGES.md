@@ -4,7 +4,7 @@ Changes
 ## Upcoming release
 - Fixed bug that was causing `MKOverlayView`s/`MKOverlayRenderer`s to not show up (thanks to rosskines for the pull request)
 - Settings UI in example to configure clustering
-- Updated annotation view in example to use pre-rendered images instead of drawRect: for best performance
+- Updated annotation view in example to use pre-rendered images instead of `drawRect:` for best performance
 
 ## 1.4.0
 
@@ -20,7 +20,7 @@ Changes
 
 ## 1.2.0
 
-- Switched to quad tree based on TBQuadTree to speed up performance
+- Switched to quad tree based on `TBQuadTree` to speed up performance
 - Clustering now happens on a background thread for improved responsiveness
 - Fixed issues when panning across the 180th meridian
 
