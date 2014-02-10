@@ -102,20 +102,20 @@
     return self;
 }
 
-- (NSSet *)annotations
-{
-#warning annotations
-    return [[NSSet alloc] init];//[self.allAnnotationsMapTree.annotations copy];
+-(NSSet*)annotationsWithIdentifier:(id)identifier{
+    CCHMapTree * tree = (CCHMapTree*)[self.allAnnotationsMapTrees objectForKey:identifier];
+    if (tree) {
+        return [tree.annotations copy];
+    }
+    return [NSSet new];
 }
 
--(NSArray*)annotationsWithIdentifier:(id)identifier{
+-(NSArray *)mapAnnotationsWithIdentifier:(id)identifier{
     NSMutableArray * annos = [[NSMutableArray alloc] init];
-    
-    for (CCHMapClusterAnnotation * anno in _mapView.annotations) {
-        if ([anno isKindOfClass:[CCHMapClusterAnnotation class]]) {
-            if (anno.identifier == identifier) {
-                [annos addObject:anno];
-            }
+    for (CCHMapClusterAnnotation* anno in _mapView.annotations) {
+        if ((MKUserLocation*)anno == _mapView.userLocation) continue;
+        if (anno.identifier == identifier) {
+            [annos addObject:anno];
         }
     }
     return annos;
@@ -270,7 +270,7 @@
             });
             
             // Figure out difference between new and old clusters
-            NSMutableSet *annotationsBefore = [NSMutableSet setWithArray:[self annotationsWithIdentifier:[allKeys objectAtIndex:i]]];
+            NSMutableSet *annotationsBefore = [NSMutableSet setWithArray:[self mapAnnotationsWithIdentifier:[allKeys objectAtIndex:i]]];
             [annotationsBefore removeObject:[_mapView userLocation]];
             NSMutableSet *annotationsToKeep = [NSMutableSet setWithSet:annotationsBefore];
             [annotationsToKeep intersectSet:clusters];

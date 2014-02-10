@@ -36,7 +36,7 @@
 @interface CCHMapClusterController : NSObject
 
 /** Clustered annotations. */
-@property (nonatomic, copy, readonly) NSSet *annotations;
+@property (nonatomic, copy, readonly) NSSet *annotations __attribute__((deprecated));
 /** Map view to display clustered annotations. */
 @property (nonatomic, strong, readonly) MKMapView *mapView;
 
@@ -105,6 +105,16 @@
 
 - (void)selectAnnotation:(id<MKAnnotation>)annotation andZoomToRegionWithLatitudinalMeters:(CLLocationDistance)latitudinalMeters longitudinalMeters:(CLLocationDistance)longitudinalMeters;
 
--(NSArray*)annotationsWithIdentifier:(id)identifier;
+/**
+ Clustered annotations with identifier
+ @param identifier Annotation identifier.
+ */
+-(NSSet*)annotationsWithIdentifier:(id)identifier;
+
+/**
+ annotations on map with identifier
+ @param identifier Annotation identifier.
+ */
+-(NSArray *)mapAnnotationsWithIdentifier:(id)identifier;
 
 @end
