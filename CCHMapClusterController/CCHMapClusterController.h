@@ -36,7 +36,7 @@
 @interface CCHMapClusterController : NSObject
 
 /** Clustered annotations. */
-@property (nonatomic, copy, readonly) NSSet *annotations;
+@property (nonatomic, copy, readonly) NSSet *annotations __attribute__((deprecated));
 /** Map view to display clustered annotations. */
 @property (nonatomic, strong, readonly) MKMapView *mapView;
 
@@ -64,12 +64,21 @@
  */
 - (id)initWithMapView:(MKMapView *)mapView;
 
-/** 
+/**
  Adds annotations and immediately updates clustering.
  @param annotations Annotations to add.
  @param completionHandler Called when the clustering finished updating.
  */
 - (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
+
+
+/**
+ Adds annotations and immediately updates clustering.
+ @param annotations Annotations to add.
+ @param identifier  identifier to group Annotations to add.
+ @param completionHandler Called when the clustering finished updating.
+ */
+- (void)addAnnotations:(NSArray *)annotations withIdentifier:(id)identifier withCompletionHandler:(void (^)())completionHandler;
 
 /**
  Removes annotations and immediately updates clustering.
@@ -78,12 +87,34 @@
  */
 - (void)removeAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
 
-/** 
+
+/**
+ Removes annotations and immediately updates clustering.
+ @param annotations Annotations to add.
+ @param identifier  Identifier to group Annotations to remove.
+ @param completionHandler Called when the clustering finished updating.
+ */
+- (void)removeAnnotations:(NSArray *)annotations withIdentifier:(id)identifier withCompletionHandler:(void (^)())completionHandler;
+
+/**
  Zooms to the position of the cluster that contains the given annotation and selects the cluster's annotation view.
  @param annotation The annotation to look for. Uses `isEqual:` to check for a matching annotation previously added with `addAnnotations:withCompletionHandler:`.
  @param latitudinalMeters North-to-south distance used for zooming.
  @param longitudinalMeters East-to-west distance used for zooming.
  */
+
 - (void)selectAnnotation:(id<MKAnnotation>)annotation andZoomToRegionWithLatitudinalMeters:(CLLocationDistance)latitudinalMeters longitudinalMeters:(CLLocationDistance)longitudinalMeters;
+
+/**
+ Clustered annotations with identifier
+ @param identifier Annotation identifier.
+ */
+-(NSSet*)annotationsWithIdentifier:(id)identifier;
+
+/**
+ annotations on map with identifier
+ @param identifier Annotation identifier.
+ */
+-(NSArray *)mapAnnotationsWithIdentifier:(id)identifier;
 
 @end
