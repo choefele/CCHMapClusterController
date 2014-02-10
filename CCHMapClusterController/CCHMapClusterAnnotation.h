@@ -46,9 +46,13 @@
 /** Annotations contained in this cluster. */
 @property (nonatomic, copy) NSSet *annotations;
 
+/** Identifier to detect different kinds of Annotations. */
+@property(nonatomic,strong) id identifier;
+
 /** Returns YES if this cluster contains more than one annotation. */
 - (BOOL)isCluster;
 /** Returns YES if all annotations in this cluster are at the same location. */
 - (BOOL)isOneLocation;
+
 
 @end

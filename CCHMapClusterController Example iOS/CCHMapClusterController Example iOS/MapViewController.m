@@ -47,10 +47,14 @@
     self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.mapClusterController.delegate = self;
     
+    // Set up map clustering
+    //self.mapClusterController2 = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+    // self.mapClusterController2.delegate = self;
+    
     // Read annotations
     self.dataReader = [[DataReader alloc] init];
     self.dataReader.delegate = self;
-
+    
     // Settings
     [self resetSettings];
 }
@@ -72,10 +76,25 @@
         [self.mapView removeOverlay:overlay];
     }
     
+    [self.mapClusterController removeAnnotations:[self.mapClusterController annotationsWithIdentifier:[NSNumber numberWithInt:0]]
+                                  withIdentifier:[NSNumber numberWithInt:0]
+                           withCompletionHandler:NULL];
+
+    [self.mapClusterController removeAnnotations:[self.mapClusterController annotationsWithIdentifier:[NSNumber numberWithInt:1]]
+                                  withIdentifier:[NSNumber numberWithInt:0]
+                           withCompletionHandler:NULL];
+    
+    for (id<MKOverlay> overlay in self.mapView.overlays) {
+        [self.mapView removeOverlay:overlay];
+    }
+    
+    
+    
     // Map cluster controller settings
     self.mapClusterController.debuggingEnabled = settings.isDebuggingEnabled;
     self.mapClusterController.cellSize = settings.cellSize;
     self.mapClusterController.marginFactor = settings.marginFactor;
+    
     
     if (settings.clusterer == SettingsClustererCenterOfMass) {
         self.mapClusterer = [[CCHCenterOfMassMapClusterer alloc] init];
@@ -83,12 +102,14 @@
         self.mapClusterer = [[CCHNearCenterMapClusterer alloc] init];
     }
     self.mapClusterController.clusterer = self.mapClusterer;
-
+    
+    
     if (settings.animator == SettingsAnimatorFadeInOut) {
         self.mapAnimator = [[CCHFadeInOutMapAnimator alloc] init];
     }
     self.mapClusterController.animator = self.mapAnimator;
-
+    
+    
     // Region and data
     MKCoordinateRegion region;
     if (self.settings.dataSet == SettingsDataSetBerlin) {
@@ -107,7 +128,30 @@
 
 - (void)dataReader:(DataReader *)dataReader addAnnotations:(NSArray *)annotations
 {
-    [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];
+    //    [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];
+    
+
+    NSMutableArray * annotationTypeOne = [[NSMutableArray alloc] init];
+    NSMutableArray * annotationTypeTow = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < [annotations count]; i++) {
+        if (i % 2 == 0) {
+            [annotationTypeTow addObject:[annotations objectAtIndex:i]];
+        }else{
+            [annotationTypeOne addObject:[annotations objectAtIndex:i]];
+        }
+    }
+    
+    [self.mapClusterController addAnnotations:annotationTypeOne withIdentifier:[NSNumber numberWithInt:0]
+                        withCompletionHandler:NULL];
+    
+    [self.mapClusterController addAnnotations:annotationTypeTow withIdentifier:[NSNumber numberWithInt:1]
+                        withCompletionHandler:NULL];
+    
+    // [self.mapClusterController addAnnotations:annotations withIdentifier:[NSNumber numberWithInt:1]
+    //                     withCompletionHandler:NULL];
+    
+    //[self.mapClusterController2 addAnnotations:annotations withCompletionHandler:NULL];
 }
 
 - (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController titleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation

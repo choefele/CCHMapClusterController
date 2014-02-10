@@ -35,6 +35,7 @@
 #import "CCHFadeInOutMapAnimator.h"
 #import "CCHMapTree.h"
 
+
 #define NODE_CAPACITY 10
 #define WORLD_MIN_LAT -85
 #define WORLD_MAX_LAT 85
@@ -50,8 +51,11 @@
 
 @interface CCHMapClusterController()<MKMapViewDelegate>
 
-@property (nonatomic, strong) CCHMapTree *allAnnotationsMapTree;
-@property (nonatomic, strong) CCHMapTree *visibleAnnotationsMapTree;
+@property (nonatomic, strong) NSMutableDictionary * allAnnotationsMapTrees;
+@property (nonatomic, strong) NSMutableDictionary * visibleAnnotationsMapTrees;
+
+//@property (nonatomic, strong) CCHMapTree *allAnnotationsMapTree;
+//@property (nonatomic, strong) CCHMapTree *visibleAnnotationsMapTree;
 @property (nonatomic, strong) NSOperationQueue *backgroundQueue;
 @property (nonatomic, strong) NSMutableArray *updateOperations;
 @property (nonatomic, strong) MKMapView *mapView;
@@ -75,8 +79,11 @@
         _marginFactor = 0.5;
         _cellSize = 60;
         _mapView = mapView;
-        _allAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
-        _visibleAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
+        
+        _allAnnotationsMapTrees = [[NSMutableDictionary alloc] init];
+        _visibleAnnotationsMapTrees = [[NSMutableDictionary alloc] init];
+        
+        
         _backgroundQueue = [[NSOperationQueue alloc] init];
         _updateOperations = [NSMutableArray array];
         _mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
@@ -97,7 +104,21 @@
 
 - (NSSet *)annotations
 {
-    return [self.allAnnotationsMapTree.annotations copy];
+#warning annotations
+    return [[NSSet alloc] init];//[self.allAnnotationsMapTree.annotations copy];
+}
+
+-(NSArray*)annotationsWithIdentifier:(id)identifier{
+    NSMutableArray * annos = [[NSMutableArray alloc] init];
+    
+    for (CCHMapClusterAnnotation * anno in _mapView.annotations) {
+        if ([anno isKindOfClass:[CCHMapClusterAnnotation class]]) {
+            if (anno.identifier == identifier) {
+                [annos addObject:anno];
+            }
+        }
+    }
+    return annos;
 }
 
 - (void)setClusterer:(id<CCHMapClusterer>)clusterer
@@ -135,12 +156,22 @@
     [self.backgroundQueue waitUntilAllOperationsAreFinished];
 }
 
-- (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
-{
+- (void)addAnnotations:(NSArray *)annotations withIdentifier:(id)identifier withCompletionHandler:(void (^)())completionHandler{
+    
+    
     [self sync];
+    if (![self.allAnnotationsMapTrees objectForKey:identifier]) {
+        CCHMapTree * tree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
+        
+        [self.allAnnotationsMapTrees setObject:tree forKey:identifier];
+    }
+    
     
     [self.backgroundQueue addOperationWithBlock:^{
-        BOOL updated = [self.allAnnotationsMapTree addAnnotations:annotations];
+        
+        CCHMapTree * tree = (CCHMapTree*)[self.allAnnotationsMapTrees objectForKey:identifier];
+        
+        BOOL updated = [tree addAnnotations:annotations];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (updated && !self.isRegionChanging) {
                 [self updateAnnotationsWithCompletionHandler:completionHandler];
@@ -149,22 +180,35 @@
             }
         });
     }];
+    
+    
+}
+
+- (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
+{
+    [self addAnnotations:annotations withIdentifier:[NSNumber numberWithInt:0] withCompletionHandler:completionHandler];
+}
+
+- (void)removeAnnotations:(NSArray *)annotations withIdentifier:(id)identifier withCompletionHandler:(void (^)())completionHandler{
+    [self sync];
+    
+    [self.backgroundQueue addOperationWithBlock:^{
+        CCHMapTree * tree = (CCHMapTree*)[self.allAnnotationsMapTrees objectForKey:identifier];
+        BOOL updated = [tree removeAnnotations:annotations];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (updated && !self.isRegionChanging) {
+                [self updateAnnotationsWithCompletionHandler:completionHandler];
+            } else if (completionHandler) {
+                completionHandler();
+            }
+        });
+    }];
+    
 }
 
 - (void)removeAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
 {
-    [self sync];
-    
-    [self.backgroundQueue addOperationWithBlock:^{
-        BOOL updated = [self.allAnnotationsMapTree removeAnnotations:annotations];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (updated && !self.isRegionChanging) {
-                [self updateAnnotationsWithCompletionHandler:completionHandler];
-            } else if (completionHandler) {
-                completionHandler();
-            }
-        });
-    }];
+    [self removeAnnotations:annotations withIdentifier:[NSNumber numberWithInt:0] withCompletionHandler:completionHandler];
 }
 
 - (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler
@@ -181,61 +225,76 @@
     gridMapRect = CCHMapClusterControllerAlignMapRectToCellSize(gridMapRect, cellSize);
     
     NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-        // For each cell in the grid, pick one annotation to show
-        NSMutableSet *clusters = [NSMutableSet set];
-        CCHMapClusterControllerEnumerateCells(gridMapRect, cellSize, ^(MKMapRect cellRect) {
-            NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellRect];
-            if (allAnnotationsInCell.count > 0) {
-                // Select cluster representation
-                NSSet *visibleAnnotationsInCell = [_visibleAnnotationsMapTree annotationsInMapRect:cellRect];
-                CCHMapClusterAnnotation *annotationForCell = _findVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
-                if (annotationForCell == nil) {
-                    annotationForCell = [[CCHMapClusterAnnotation alloc] init];
-                    annotationForCell.coordinate = [_clusterer mapClusterController:self coordinateForAnnotations:allAnnotationsInCell inMapRect:cellRect];
-                    annotationForCell.delegate = _delegate;
-                    annotationForCell.annotations = allAnnotationsInCell;
-                } else {
-                    // For existing annotations, this will implicitly update annotation views
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        annotationForCell.annotations = allAnnotationsInCell;
-                        annotationForCell.title = nil;
-                        annotationForCell.subtitle = nil;
-                        if ([self.delegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)]) {
-                            [self.delegate mapClusterController:self willReuseMapClusterAnnotation:annotationForCell];
-                        }
-                    });
-                }
-                
-                // Collect clusters
-                [clusters addObject:annotationForCell];
+        NSArray * allKeys = [self.allAnnotationsMapTrees allKeys];
+        for (int i = 0; i < [allKeys count]; i++) {
+            CCHMapTree * tree = [self.allAnnotationsMapTrees objectForKey:[allKeys objectAtIndex:i]];
+            
+            CCHMapTree * visibleTree = [self.visibleAnnotationsMapTrees objectForKey:[allKeys objectAtIndex:i]];
+            if (!visibleTree) {
+                visibleTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];;
             }
-        });
-        
-        // Figure out difference between new and old clusters
-        NSMutableSet *annotationsBefore = [NSMutableSet setWithArray:_mapView.annotations];
-        [annotationsBefore removeObject:[_mapView userLocation]];
-        NSMutableSet *annotationsToKeep = [NSMutableSet setWithSet:annotationsBefore];
-        [annotationsToKeep intersectSet:clusters];
-        NSMutableSet *annotationsToAddAsSet = [NSMutableSet setWithSet:clusters];
-        [annotationsToAddAsSet minusSet:annotationsToKeep];
-        NSArray *annotationsToAdd = [annotationsToAddAsSet allObjects];
-        NSMutableSet *annotationsToRemoveAsSet = [NSMutableSet setWithSet:annotationsBefore];
-        [annotationsToRemoveAsSet minusSet:clusters];
-        NSArray *annotationsToRemove = [annotationsToRemoveAsSet allObjects];
-        
-        // Show cluster annotations on map
-        [_visibleAnnotationsMapTree removeAnnotations:annotationsToRemove];
-        [_visibleAnnotationsMapTree addAnnotations:annotationsToAdd];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.mapView addAnnotations:annotationsToAdd];
-            [self.animator mapClusterController:self willRemoveAnnotations:annotationsToRemove withCompletionHandler:^{
-                [self.mapView removeAnnotations:annotationsToRemove];
+            
+            // For each cell in the grid, pick one annotation to show
+            NSMutableSet *clusters = [NSMutableSet set];
+            CCHMapClusterControllerEnumerateCells(gridMapRect, cellSize, ^(MKMapRect cellRect) {
                 
-                if (completionHandler) {
-                    completionHandler();
+                NSSet *allAnnotationsInCell = [tree annotationsInMapRect:cellRect];
+                if (allAnnotationsInCell.count > 0) {
+                    // Select cluster representation
+                    NSSet *visibleAnnotationsInCell = [visibleTree annotationsInMapRect:cellRect];
+                    CCHMapClusterAnnotation *annotationForCell = _findVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
+                    if (annotationForCell == nil) {
+                        annotationForCell = [[CCHMapClusterAnnotation alloc] init];
+                        annotationForCell.coordinate = [_clusterer mapClusterController:self coordinateForAnnotations:allAnnotationsInCell inMapRect:cellRect];
+                        annotationForCell.delegate = _delegate;
+                        annotationForCell.annotations = allAnnotationsInCell;
+                        annotationForCell.identifier = [allKeys objectAtIndex:i];
+                        
+                    } else {
+                        // For existing annotations, this will implicitly update annotation views
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            annotationForCell.annotations = allAnnotationsInCell;
+                            annotationForCell.title = nil;
+                            annotationForCell.subtitle = nil;
+                            if ([self.delegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)]) {
+                                [self.delegate mapClusterController:self willReuseMapClusterAnnotation:annotationForCell];
+                            }
+                        });
+                    }
+                    
+                    // Collect clusters
+                    [clusters addObject:annotationForCell];
                 }
-            }];
-        });
+                
+                
+            });
+            
+            // Figure out difference between new and old clusters
+            NSMutableSet *annotationsBefore = [NSMutableSet setWithArray:[self annotationsWithIdentifier:[allKeys objectAtIndex:i]]];
+            [annotationsBefore removeObject:[_mapView userLocation]];
+            NSMutableSet *annotationsToKeep = [NSMutableSet setWithSet:annotationsBefore];
+            [annotationsToKeep intersectSet:clusters];
+            NSMutableSet *annotationsToAddAsSet = [NSMutableSet setWithSet:clusters];
+            [annotationsToAddAsSet minusSet:annotationsToKeep];
+            NSArray *annotationsToAdd = [annotationsToAddAsSet allObjects];
+            NSMutableSet *annotationsToRemoveAsSet = [NSMutableSet setWithSet:annotationsBefore];
+            [annotationsToRemoveAsSet minusSet:clusters];
+            NSArray *annotationsToRemove = [annotationsToRemoveAsSet allObjects];
+            
+            // Show cluster annotations on map
+            [visibleTree removeAnnotations:annotationsToRemove];
+            [visibleTree addAnnotations:annotationsToAdd];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.mapView addAnnotations:annotationsToAdd];
+                [self.animator mapClusterController:self willRemoveAnnotations:annotationsToRemove withCompletionHandler:^{
+                    [self.mapView removeAnnotations:annotationsToRemove];
+                    
+                    if (completionHandler) {
+                        completionHandler();
+                    }
+                }];
+            });
+        }
     }];
     __weak NSOperation *weakOperation = operation;
     operation.completionBlock = ^{
@@ -245,7 +304,7 @@
     };
     [self.updateOperations addObject:operation];
     [self.backgroundQueue addOperation:operation];
-
+    
     // Debugging
     if (self.isDebuggingEnabled) {
         for (id<MKOverlay> overlay in _mapView.overlays) {
@@ -256,7 +315,7 @@
         
         CCHMapClusterControllerEnumerateCells(gridMapRect, cellSize, ^(MKMapRect cellRect) {
             cellRect.origin.x -= MKMapSizeWorld.width;  // fixes issue when view port spans 180th meridian
-
+            
             MKMapPoint points[4];
             points[0] = MKMapPointMake(MKMapRectGetMinX(cellRect), MKMapRectGetMinY(cellRect));
             points[1] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMinY(cellRect));
@@ -292,6 +351,8 @@
     }
 }
 
+
+
 #pragma mark - Map view proxied delegate methods
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)annotationViews
@@ -300,7 +361,7 @@
     if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:didAddAnnotationViews:)]) {
         [self.mapViewDelegateProxy.target mapView:mapView didAddAnnotationViews:annotationViews];
     }
-
+    
     // Animate annotations that get added
     [self.animator mapClusterController:self didAddAnnotationViews:annotationViews];
 }
@@ -369,7 +430,7 @@
     if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:viewForOverlay:)]) {
         view = [self.mapViewDelegateProxy.target mapView:mapView viewForOverlay:overlay];
     }
-
+    
     // Display debug polygons
     if (view == nil && [overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
         MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon *)overlay];
