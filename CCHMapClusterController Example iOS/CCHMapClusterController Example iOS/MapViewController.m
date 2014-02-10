@@ -71,10 +71,6 @@
     
     // Reset
     [self.dataReader stopReadingData];
-    [self.mapClusterController removeAnnotations:self.mapClusterController.annotations.allObjects withCompletionHandler:NULL];
-    for (id<MKOverlay> overlay in self.mapView.overlays) {
-        [self.mapView removeOverlay:overlay];
-    }
     
     [self.mapClusterController removeAnnotations:[self.mapClusterController annotationsWithIdentifier:[NSNumber numberWithInt:0]]
                                   withIdentifier:[NSNumber numberWithInt:0]
