@@ -2,7 +2,8 @@ Changes
 =======
 
 ## Upcoming release
-- Fixed bug that was causing `MKOverlayView`s/`MKOverlayRenderer`s to not show up (thanks to rosskines for the pull request)
+- Fixed issue where non-clustered `MKAnnotations` would be removed from the map view (thanks to rosskimes for the pull request)
+- Fixed bug that was causing `MKOverlayView`s/`MKOverlayRenderer`s to not show up (thanks to rosskimes for the pull request)
 - Settings UI in example to configure clustering
 - Updated annotation view in example to use pre-rendered images instead of `drawRect:` for best performance
 
