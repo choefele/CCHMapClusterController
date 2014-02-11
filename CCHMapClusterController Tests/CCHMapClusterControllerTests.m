@@ -206,4 +206,36 @@
     XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0);
 }
 
+- (void)testAddNonClusteredAnnotations
+{
+	CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(52.5, 13.5);
+	
+	MKPointAnnotation *nonClusteredAnnotation = [[MKPointAnnotation alloc] init];
+	nonClusteredAnnotation.coordinate = coordinate;
+	[self.mapView addAnnotation:nonClusteredAnnotation];
+	
+    MKPointAnnotation *clusteredAnnotation = [[MKPointAnnotation alloc] init];
+    clusteredAnnotation.coordinate = coordinate;
+    MKCoordinateRegion region = MKCoordinateRegionMake(clusteredAnnotation.coordinate, MKCoordinateSpanMake(3, 3));
+    self.mapView.region = region;
+    
+    __weak CCHMapClusterControllerTests *weakSelf = self;
+    [self.mapClusterController addAnnotations:@[clusteredAnnotation] withCompletionHandler:^{
+        weakSelf.done = YES;
+    }];
+	
+    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
+	
+	NSArray *clusteredAnnotations = [self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+		return [evaluatedObject isMemberOfClass:[CCHMapClusterAnnotation class]];
+	}]];
+	XCTAssertEqual([clusteredAnnotations count], (NSUInteger)1);
+	
+	NSArray *pointAnnotations = [self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+		return [evaluatedObject isMemberOfClass:[MKPointAnnotation class]];
+	}]];
+	XCTAssertEqual([pointAnnotations count], (NSUInteger)1);
+}
+
 @end
