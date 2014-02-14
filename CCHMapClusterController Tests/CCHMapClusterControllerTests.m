@@ -48,6 +48,7 @@
 - (void)testAddAnnotationsNil
 {
     __weak CCHMapClusterControllerTests *weakSelf = self;
+    
     [self.mapClusterController addAnnotations:nil withCompletionHandler:^{
         weakSelf.done = YES;
     }];
@@ -104,7 +105,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)6);
+    XCTAssertEqual([self.mapClusterController annotationsWithIdentifier:nil].count, (NSUInteger)6);
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
 
     // Origin MKCoordinateRegion -> bottom left, MKMapRect -> top left
@@ -166,7 +167,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)6);
+    XCTAssertEqual([self.mapClusterController annotationsWithIdentifier:nil].count, (NSUInteger)6);
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
 
     // Origin MKCoordinateRegion -> bottom left, MKMapRect -> top left
@@ -180,7 +181,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)5);
+    XCTAssertEqual([self.mapClusterController annotationsWithIdentifier:nil].count, (NSUInteger)5);
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
 
     // Check bottom left
