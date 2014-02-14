@@ -107,7 +107,7 @@
 
 /**
  Clustered annotations with identifier
- @param identifier Annotation identifier.
+ @param identifier Annotation identifier. nil = default 
  */
 -(NSSet*)annotationsWithIdentifier:(id)identifier;
 

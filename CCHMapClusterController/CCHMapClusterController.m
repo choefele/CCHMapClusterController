@@ -103,6 +103,9 @@
 }
 
 -(NSSet*)annotationsWithIdentifier:(id)identifier{
+    if (!identifier) {
+        identifier = [NSNumber numberWithInt:0];
+    }
     CCHMapTree * tree = (CCHMapTree*)[self.allAnnotationsMapTrees objectForKey:identifier];
     if (tree) {
         return [tree.annotations copy];
