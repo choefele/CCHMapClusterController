@@ -49,6 +49,7 @@
 		62D667D21845F8A40046D5D5 /* CCHMapClusterControllerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667CB1845F8A40046D5D5 /* CCHMapClusterControllerUtils.m */; };
 		62D667D41845F8A40046D5D5 /* CCHMapViewDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */; };
 		62D71E11187EB45500E52EE3 /* ClusterAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D71E10187EB45500E52EE3 /* ClusterAnnotationView.m */; };
+		8A3EB24E18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A3EB24D18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +135,7 @@
 		62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapViewDelegateProxy.m; sourceTree = "<group>"; };
 		62D71E0F187EB45500E52EE3 /* ClusterAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClusterAnnotationView.h; sourceTree = "<group>"; };
 		62D71E10187EB45500E52EE3 /* ClusterAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClusterAnnotationView.m; sourceTree = "<group>"; };
+		8A3EB24D18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHFadeInOutMapAnimatorTests.m; path = "../../CCHMapClusterController Tests/CCHFadeInOutMapAnimatorTests.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,6 +282,7 @@
 				48899967185F875600F3D6ED /* CCHMapClusterControllerTests.m */,
 				62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */,
 				4889995E185D1D9300F3D6ED /* CCHMapTreeTests.m */,
+				8A3EB24D18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m */,
 				62D667A81845E0F20046D5D5 /* Supporting Files */,
 			);
 			path = "CCHMapClusterController Example iOSTests";
@@ -448,6 +451,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A3EB24E18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m in Sources */,
 				48D7B0CF185BA3750071636B /* TBQuadTree.m in Sources */,
 				48899957185CE2B000F3D6ED /* QTreeGeometryUtils.m in Sources */,
 				4889995A185D175000F3D6ED /* QCluster.m in Sources */,
