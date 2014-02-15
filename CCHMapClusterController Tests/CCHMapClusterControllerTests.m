@@ -51,7 +51,7 @@
     [self.mapClusterController addAnnotations:nil withCompletionHandler:^{
         weakSelf.done = YES;
     }];
-    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
+    XCTAssertTrue([self waitForCompletion:1.0]);
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)0);
 }
 
@@ -66,7 +66,7 @@
     [self.mapClusterController addAnnotations:@[annotation] withCompletionHandler:^{
         weakSelf.done = YES;
     }];
-    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
+    XCTAssertTrue([self waitForCompletion:1.0]);
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
 }
 
@@ -103,7 +103,7 @@
     [self.mapClusterController addAnnotations:annotations withCompletionHandler:^{
         weakSelf.done = YES;
     }];
-    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
+    XCTAssertTrue([self waitForCompletion:1.0]);
     XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)6);
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
 
@@ -165,7 +165,7 @@
     [self.mapClusterController addAnnotations:annotations withCompletionHandler:^{
         weakSelf.done = YES;
     }];
-    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
+    XCTAssertTrue([self waitForCompletion:1.0]);
     XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)6);
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
 
@@ -179,7 +179,7 @@
     [self.mapClusterController removeAnnotations:@[annotation0] withCompletionHandler:^{
         weakSelf.done = YES;
     }];
-    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
+    XCTAssertTrue([self waitForCompletion:1.0]);
     XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)5);
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
 
@@ -198,7 +198,7 @@
     [self.mapClusterController removeAnnotations:annotations withCompletionHandler:^{
         weakSelf.done = YES;
     }];
-    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
+    XCTAssertTrue([self waitForCompletion:1.0]);
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)0);
     
     // Check visible region
@@ -224,7 +224,7 @@
         weakSelf.done = YES;
     }];
 
-    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
+    XCTAssertTrue([self waitForCompletion:1.0]);
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
 
     NSArray *clusteredAnnotations = [self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
