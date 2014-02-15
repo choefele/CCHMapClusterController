@@ -279,10 +279,10 @@
 				626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */,
 				4869F1901851105A00251ADC /* CCHNearCenterMapClustererTests.m */,
 				4869F19718511B6D00251ADC /* CCHCenterOfMassMapClustererTests.m */,
+				8A3EB24D18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m */,
 				48899967185F875600F3D6ED /* CCHMapClusterControllerTests.m */,
 				62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */,
 				4889995E185D1D9300F3D6ED /* CCHMapTreeTests.m */,
-				8A3EB24D18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m */,
 				62D667A81845E0F20046D5D5 /* Supporting Files */,
 			);
 			path = "CCHMapClusterController Example iOSTests";

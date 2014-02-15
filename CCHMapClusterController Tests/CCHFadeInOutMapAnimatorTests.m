@@ -7,16 +7,12 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <MapKit/MapKit.h>
 
-#import "CCHMapClusterController.h"
-#import "CCHMapClusterAnnotation.h"
-#import "CCHMapClusterControllerUtils.h"
 #import "CCHFadeInOutMapAnimator.h"
 
 @interface CCHFadeInOutMapAnimatorTests : XCTestCase
 
-@property (nonatomic, strong) MKMapView *mapView;
-@property (nonatomic, strong) CCHMapClusterController *mapClusterController;
 @property (nonatomic, strong) CCHFadeInOutMapAnimator *animator;
 @property (nonatomic, assign) BOOL done;
 
@@ -28,10 +24,7 @@
 {
     [super setUp];
 
-    self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, 300, 300)];
-    self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.animator = [[CCHFadeInOutMapAnimator alloc] init];
-    self.mapClusterController.animator = _animator;
     self.done = NO;
 }
 
@@ -49,46 +42,20 @@
     return self.done;
 }
 
-- (void)testFadeInOut
+- (void)testFadeIn
 {
-    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-    annotation.coordinate = CLLocationCoordinate2DMake(52.5, 13.5);
-    MKCoordinateRegion region = MKCoordinateRegionMake(annotation.coordinate, MKCoordinateSpanMake(3, 3));
-    self.mapView.region = region;
-    
-    __weak CCHFadeInOutMapAnimatorTests *weakSelf = self;
-    [self.mapClusterController addAnnotations:@[annotation] withCompletionHandler:^{
-        weakSelf.done = YES;
-    }];
-    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1, @"Wrong number of annotations");
+    MKPinAnnotationView *annotationView = [[MKPinAnnotationView alloc] init];
+    annotationView.alpha = 0;
+    [self.animator mapClusterController:nil didAddAnnotationViews:@[annotationView]];
+    XCTAssertEqualWithAccuracy(annotationView.alpha, 1.0, __FLT_EPSILON__);
+}
 
-    // Get the cluster UIView
-    NSSet *annotationsInMapRect = [self.mapView annotationsInMapRect:self.mapView.visibleMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)1, @"Wrong number of annotations");
-
-    CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
-    UIView *clusterView = [self.mapView viewForAnnotation:clusterAnnotation];
-    
-    XCTAssert(clusterAnnotation, @"Expected a cluster");
-    XCTAssert(clusterView, @"Expected a view");
-    XCTAssertEqualWithAccuracy(clusterView.alpha, 1.0, __FLT_EPSILON__, @"Wrong alpha");
-    
-    // Fade Out
-    self.done = NO;
-    [self.mapClusterController removeAnnotations:@[annotation] withCompletionHandler:^{
-        weakSelf.done = YES;
+- (void)testFadeOutCompletionBlock
+{
+    [self.animator mapClusterController:nil willRemoveAnnotations:nil withCompletionHandler:^{
+        self.done = YES;
     }];
-    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqualWithAccuracy(clusterView.alpha, 0.0, __FLT_EPSILON__, @"Wrong alpha");
-
-    // Fade In
-    self.done = NO;
-    [self.mapClusterController addAnnotations:@[annotation] withCompletionHandler:^{
-        weakSelf.done = YES;
-    }];
-    XCTAssertTrue([self waitForCompletion:1.0], @"Time out");
-    XCTAssertEqualWithAccuracy(clusterView.alpha, 1.0, __FLT_EPSILON__, @"Wrong alpha");
+    XCTAssertTrue([self waitForCompletion:1.0]);
 }
 
 @end
