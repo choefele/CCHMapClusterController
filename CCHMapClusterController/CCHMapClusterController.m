@@ -171,7 +171,7 @@
 {
     [self sync];
     
-    // World size is multiple of cell size so that cells wrap around at the 180th merdian
+    // World size is multiple of cell size so that cells wrap around at the 180th meridian
     double cellSize = CCHMapClusterControllerMapLengthForLength(_mapView, _mapView.superview, _cellSize);
     cellSize = CCHMapClusterControllerAlignMapLengthToWorldWidth(cellSize);
     
@@ -213,11 +213,11 @@
         
         // Figure out difference between new and old clusters
         NSMutableSet *annotationsBefore = [NSMutableSet setWithArray:_mapView.annotations];
-		[annotationsBefore filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-			// Remove every annotation that is not a CCHMapClusterAnnotation (including [_mapView userLocation]).
-			// This allows non-clustered MKAnnotations to be used alongside clusters.
-			return [evaluatedObject isKindOfClass:[CCHMapClusterAnnotation class]];
-		}]];
+        [annotationsBefore filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            // Remove every annotation that is not a CCHMapClusterAnnotation (including
+            // MKUserLocation). This allows non-clustered MKAnnotations to be used alongside clusters.
+            return [evaluatedObject isKindOfClass:CCHMapClusterAnnotation.class];
+        }]];
         NSMutableSet *annotationsToKeep = [NSMutableSet setWithSet:annotationsBefore];
         [annotationsToKeep intersectSet:clusters];
         NSMutableSet *annotationsToAddAsSet = [NSMutableSet setWithSet:clusters];
