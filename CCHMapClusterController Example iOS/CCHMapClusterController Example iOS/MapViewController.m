@@ -25,7 +25,8 @@
 
 @property (strong, nonatomic) DataReader *dataReader;
 @property (strong, nonatomic) Settings *settings;
-@property (strong, nonatomic) CCHMapClusterController *mapClusterController;
+@property (strong, nonatomic) CCHMapClusterController *mapClusterControllerRed;
+@property (strong, nonatomic) CCHMapClusterController *mapClusterControllerBlue;
 @property (strong, nonatomic) id<CCHMapClusterer> mapClusterer;
 @property (strong, nonatomic) id<CCHMapAnimator> mapAnimator;
 
@@ -44,8 +45,11 @@
     }
     
     // Set up map clustering
-    self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
-    self.mapClusterController.delegate = self;
+    self.mapClusterControllerRed = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+    self.mapClusterControllerRed.delegate = self;
+    
+    self.mapClusterControllerBlue = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+    self.mapClusterControllerBlue.delegate = self;
     
     // Read annotations
     self.dataReader = [[DataReader alloc] init];
@@ -67,27 +71,27 @@
     
     // Reset
     [self.dataReader stopReadingData];
-    [self.mapClusterController removeAnnotations:self.mapClusterController.annotations.allObjects withCompletionHandler:NULL];
+    [self.mapClusterControllerRed removeAnnotations:self.mapClusterControllerRed.annotations.allObjects withCompletionHandler:NULL];
     for (id<MKOverlay> overlay in self.mapView.overlays) {
         [self.mapView removeOverlay:overlay];
     }
     
     // Map cluster controller settings
-    self.mapClusterController.debuggingEnabled = settings.isDebuggingEnabled;
-    self.mapClusterController.cellSize = settings.cellSize;
-    self.mapClusterController.marginFactor = settings.marginFactor;
+    self.mapClusterControllerRed.debuggingEnabled = settings.isDebuggingEnabled;
+    self.mapClusterControllerRed.cellSize = settings.cellSize;
+    self.mapClusterControllerRed.marginFactor = settings.marginFactor;
     
     if (settings.clusterer == SettingsClustererCenterOfMass) {
         self.mapClusterer = [[CCHCenterOfMassMapClusterer alloc] init];
     } else if (settings.clusterer == SettingsClustererNearCenter) {
         self.mapClusterer = [[CCHNearCenterMapClusterer alloc] init];
     }
-    self.mapClusterController.clusterer = self.mapClusterer;
+    self.mapClusterControllerRed.clusterer = self.mapClusterer;
 
     if (settings.animator == SettingsAnimatorFadeInOut) {
         self.mapAnimator = [[CCHFadeInOutMapAnimator alloc] init];
     }
-    self.mapClusterController.animator = self.mapAnimator;
+    self.mapClusterControllerRed.animator = self.mapAnimator;
 
     // Region and data
     MKCoordinateRegion region;
@@ -107,7 +111,12 @@
 
 - (void)dataReader:(DataReader *)dataReader addAnnotations:(NSArray *)annotations
 {
-    [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];
+    static NSUInteger count = 0;
+    if (count++ % 2 == 0) {
+        [self.mapClusterControllerRed addAnnotations:annotations withCompletionHandler:NULL];
+    } else {
+        [self.mapClusterControllerBlue addAnnotations:annotations withCompletionHandler:NULL];
+    }
 }
 
 - (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController titleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
@@ -127,8 +136,13 @@
 
 - (void)mapClusterController:(CCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
 {
-    ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[self.mapClusterController.mapView viewForAnnotation:mapClusterAnnotation];
+    ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[self.mapClusterControllerRed.mapView viewForAnnotation:mapClusterAnnotation];
     clusterAnnotationView.count = mapClusterAnnotation.annotations.count;
+}
+
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
+{
+    NSLog(@"");
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
@@ -148,6 +162,7 @@
         
         CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotation;
         clusterAnnotationView.count = clusterAnnotation.annotations.count;
+        clusterAnnotationView.blue = (clusterAnnotation.mapClusterController == self.mapClusterControllerBlue);
         annotationView = clusterAnnotationView;
     }
     

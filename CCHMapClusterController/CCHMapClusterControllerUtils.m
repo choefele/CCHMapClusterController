@@ -158,11 +158,16 @@ MKMapRect CCHMapClusterControllerMapRectForCoordinateRegion(MKCoordinateRegion c
     return mapRect;
 }
 
-NSSet *CCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotations)
+NSSet *CCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotations, CCHMapClusterController *mapClusterController)
 {
     NSSet *filteredAnnotations = [NSMutableSet setWithArray:annotations];
     filteredAnnotations = [filteredAnnotations filteredSetUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        return [evaluatedObject isKindOfClass:CCHMapClusterAnnotation.class];
+        BOOL evaluation = NO;
+        if ([evaluatedObject isKindOfClass:CCHMapClusterAnnotation.class]) {
+            CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)evaluatedObject;
+            evaluation = (clusterAnnotation.mapClusterController == mapClusterController);
+        }
+        return evaluation;
     }]];
     
     return filteredAnnotations;

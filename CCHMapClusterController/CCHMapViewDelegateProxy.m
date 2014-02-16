@@ -27,7 +27,7 @@
 
 @interface CCHMapViewDelegateProxy()
 
-@property (nonatomic, weak) NSObject<MKMapViewDelegate> *delegate;
+@property (nonatomic, strong) NSHashTable *delegates;
 @property (nonatomic, weak) NSObject<MKMapViewDelegate> *target;
 @property (nonatomic, weak) MKMapView *mapView;
 
@@ -39,12 +39,18 @@
 {
     self = [super init];
     if (self) {
-        _delegate = delegate;   // must be set before swapDelegates
-        _mapView = mapView;
+        _delegates = [[NSHashTable alloc] initWithOptions:NSPointerFunctionsWeakMemory capacity:1];
+        [_delegates addObject:delegate];
         _target = mapView.delegate;
+        _mapView = mapView;
         [self swapDelegates];
     }
     return self;
+}
+
+- (void)addDelegate:(NSObject<MKMapViewDelegate> *)delegate
+{
+    [self.delegates addObject:delegate];
 }
 
 - (void)dealloc
@@ -66,34 +72,53 @@
     [self.mapView addObserver:self forKeyPath:@"delegate" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
-- (id)forwardingTargetForSelector:(SEL)selector
-{
-    id forwardingTarget;
-    
-    if ([self.delegate respondsToSelector:selector]) {
-        forwardingTarget = self.delegate;
-    } else if ([self.target respondsToSelector:selector]) {
-        forwardingTarget = self.target;
-    } else {
-        forwardingTarget = [super forwardingTargetForSelector:selector];
-    }
-    
-    return forwardingTarget;
-}
-
 - (BOOL)respondsToSelector:(SEL)selector
 {
-    BOOL respondsToSelector;
+    if ([super respondsToSelector:selector])
+        return YES;
     
-    if ([self.delegate respondsToSelector:selector]) {
-        respondsToSelector = YES;
-    } else if ([self.target respondsToSelector:selector]) {
-        respondsToSelector = YES;
-    } else {
-        respondsToSelector = [super respondsToSelector:selector];
+    for (id delegate in self.delegates)
+    {
+        if ([delegate respondsToSelector:selector])
+        {
+            return YES;
+        }
     }
     
-    return respondsToSelector;
+    return [self.target respondsToSelector:selector];
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
+{
+    NSMethodSignature* signature = [super methodSignatureForSelector:selector];
+    
+    if (!signature)
+    {
+        for(id delegate in self.delegates)
+        {
+            if ([delegate respondsToSelector:selector])
+            {
+                return [delegate methodSignatureForSelector:selector];
+            }
+        }
+    }
+    return [self.target methodSignatureForSelector:selector];
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation
+{
+    if ([self.target respondsToSelector:[invocation selector]])
+    {
+        [invocation invokeWithTarget:self.target];
+    }
+    
+    for (id delegate in self.delegates)
+    {
+        if ([delegate respondsToSelector:[invocation selector]])
+        {
+            [invocation invokeWithTarget:delegate];
+        }
+    }
 }
 
 @end

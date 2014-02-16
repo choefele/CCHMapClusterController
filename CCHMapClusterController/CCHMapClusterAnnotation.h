@@ -27,11 +27,14 @@
 #import <MapKit/MapKit.h>
 
 @protocol CCHMapClusterControllerDelegate;
+@class CCHMapClusterController;
 
 /**
  Container for clustered annotations.
  */
 @interface CCHMapClusterAnnotation : NSObject<MKAnnotation>
+
+@property (nonatomic, weak) CCHMapClusterController *mapClusterController;
 
 /** The string containing the annotation's title. */
 @property (nonatomic, copy) NSString *title;
