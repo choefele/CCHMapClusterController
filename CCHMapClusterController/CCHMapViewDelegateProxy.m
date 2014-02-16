@@ -74,9 +74,6 @@
 
 - (BOOL)respondsToSelector:(SEL)selector
 {
-    if ([super respondsToSelector:selector])
-        return YES;
-    
     for (id delegate in self.delegates)
     {
         if ([delegate respondsToSelector:selector])
@@ -90,18 +87,14 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
-    NSMethodSignature* signature = [super methodSignatureForSelector:selector];
-    
-    if (!signature)
+    for(id delegate in self.delegates)
     {
-        for(id delegate in self.delegates)
+        if ([delegate respondsToSelector:selector])
         {
-            if ([delegate respondsToSelector:selector])
-            {
-                return [delegate methodSignatureForSelector:selector];
-            }
+            return [delegate methodSignatureForSelector:selector];
         }
     }
+
     return [self.target methodSignatureForSelector:selector];
 }
 
