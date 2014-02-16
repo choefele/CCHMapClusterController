@@ -212,18 +212,13 @@
         });
         
         // Figure out difference between new and old clusters
-        NSMutableSet *annotationsBefore = [NSMutableSet setWithArray:_mapView.annotations];
-        [annotationsBefore filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-            // Remove every annotation that is not a CCHMapClusterAnnotation (including
-            // MKUserLocation). This allows non-clustered MKAnnotations to be used alongside clusters.
-            return [evaluatedObject isKindOfClass:CCHMapClusterAnnotation.class];
-        }]];
-        NSMutableSet *annotationsToKeep = [NSMutableSet setWithSet:annotationsBefore];
+        NSSet *annotationsBeforeAsSet = CCHMapClusterControllerClusterAnnotationsForAnnotations(self.mapView.annotations);
+        NSMutableSet *annotationsToKeep = [NSMutableSet setWithSet:annotationsBeforeAsSet];
         [annotationsToKeep intersectSet:clusters];
         NSMutableSet *annotationsToAddAsSet = [NSMutableSet setWithSet:clusters];
         [annotationsToAddAsSet minusSet:annotationsToKeep];
         NSArray *annotationsToAdd = [annotationsToAddAsSet allObjects];
-        NSMutableSet *annotationsToRemoveAsSet = [NSMutableSet setWithSet:annotationsBefore];
+        NSMutableSet *annotationsToRemoveAsSet = [NSMutableSet setWithSet:annotationsBeforeAsSet];
         [annotationsToRemoveAsSet minusSet:clusters];
         NSArray *annotationsToRemove = [annotationsToRemoveAsSet allObjects];
         

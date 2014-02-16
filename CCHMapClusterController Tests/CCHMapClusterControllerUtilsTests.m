@@ -267,7 +267,7 @@
         XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__);
         XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__);
     });
-    XCTAssertEqual(numCalls, (NSUInteger)100, @"Wrong number of calls");
+    XCTAssertEqual(numCalls, (NSUInteger)100);
 }
 
 - (void)testEnumerateCellsAlign
@@ -280,7 +280,7 @@
         XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__);
         XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__);
     });
-    XCTAssertEqual(numCalls, (NSUInteger)100, @"Wrong number of calls");
+    XCTAssertEqual(numCalls, (NSUInteger)100);
 }
 
 - (void)testMapRectForCoordinateRegion
@@ -297,6 +297,22 @@
     XCTAssertEqualWithAccuracy(regionConverted.center.longitude, region.center.longitude, __FLT_EPSILON__);
     XCTAssertEqualWithAccuracy(regionConverted.span.latitudeDelta, region.span.latitudeDelta, __FLT_EPSILON__);
     XCTAssertEqualWithAccuracy(regionConverted.span.longitudeDelta, region.span.longitudeDelta, __FLT_EPSILON__);
+}
+
+- (void)testFilterAnnotationsNil
+{
+    NSSet *filteredAnnotations = CCHMapClusterControllerClusterAnnotationsForAnnotations(nil);
+    XCTAssertEqual(filteredAnnotations.count, (NSUInteger)0);
+}
+
+- (void)testFilterAnnotations
+{
+    MKPointAnnotation *pointAnnotation = [[MKPointAnnotation alloc] init];
+    CCHMapClusterAnnotation *clusterAnnotation = [[CCHMapClusterAnnotation alloc] init];
+    NSArray *annotations = @[pointAnnotation, clusterAnnotation];
+    NSSet *filteredAnnotations = CCHMapClusterControllerClusterAnnotationsForAnnotations(annotations);
+    XCTAssertEqual(filteredAnnotations.count, (NSUInteger)1);
+    XCTAssertEqualObjects(filteredAnnotations.anyObject, clusterAnnotation);
 }
 
 @end
