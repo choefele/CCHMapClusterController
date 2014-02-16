@@ -54,32 +54,40 @@
     [self update];
 }
 
+- (void)setBlue:(BOOL)blue
+{
+    _blue = blue;
+    [self update];
+}
+
 - (void)update
 {
     self.countLabel.frame = self.bounds;
     
     // Images are faster than using drawRect:
-    UIImage *image;
+    NSString *suffix;
     if (self.count > 1000) {
-        image = [UIImage imageNamed:@"Circle39"];
+        suffix = @"39";
     } else if (self.count > 500) {
-        image = [UIImage imageNamed:@"Circle38"];
+        suffix = @"38";
     } else if (self.count > 200) {
-        image = [UIImage imageNamed:@"Circle36"];
+        suffix = @"36";
     } else if (self.count > 100) {
-        image = [UIImage imageNamed:@"Circle34"];
+        suffix = @"34";
     } else if (self.count > 50) {
-        image = [UIImage imageNamed:@"Circle31"];
+        suffix = @"31";
     } else if (self.count > 20) {
-        image = [UIImage imageNamed:@"Circle28"];
+        suffix = @"28";
     } else if (self.count > 10) {
-        image = [UIImage imageNamed:@"Circle25"];
+        suffix = @"25";
     } else if (self.count > 5) {
-        image = [UIImage imageNamed:@"Circle24"];
+        suffix = @"24";
     } else {
-        image = [UIImage imageNamed:@"Circle21"];
+        suffix = @"21";
     }
-    self.image = image;
+
+    NSString *prefix = self.isBlue ? @"CircleBlue" : @"CircleRed";
+    self.image = [UIImage imageNamed:[prefix stringByAppendingString:suffix]];
 }
 
 @end
