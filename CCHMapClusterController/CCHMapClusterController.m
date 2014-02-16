@@ -247,24 +247,33 @@
 
     // Debugging
     if (self.isDebuggingEnabled) {
-        for (id<MKOverlay> overlay in _mapView.overlays) {
-            if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
-                [_mapView removeOverlay:overlay];
-            }
-        }
-        
-        CCHMapClusterControllerEnumerateCells(gridMapRect, cellSize, ^(MKMapRect cellRect) {
-            cellRect.origin.x -= MKMapSizeWorld.width;  // fixes issue when view port spans 180th meridian
-
-            MKMapPoint points[4];
-            points[0] = MKMapPointMake(MKMapRectGetMinX(cellRect), MKMapRectGetMinY(cellRect));
-            points[1] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMinY(cellRect));
-            points[2] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMaxY(cellRect));
-            points[3] = MKMapPointMake(MKMapRectGetMinX(cellRect), MKMapRectGetMaxY(cellRect));
-            MKPolygon *polygon = [CCHMapClusterControllerPolygon polygonWithPoints:points count:4];
-            [_mapView addOverlay:polygon];
-        });
+        [self updateDebugPolygonsInMapRect:gridMapRect withCellSize:cellSize];
     }
+}
+
+- (void)updateDebugPolygonsInMapRect:(MKMapRect)mapRect withCellSize:(double)cellSize
+{
+    MKMapView *mapView = self.mapView;
+    
+    // Remove old polygons
+    for (id<MKOverlay> overlay in mapView.overlays) {
+        if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
+            [mapView removeOverlay:overlay];
+        }
+    }
+    
+    // Add polygons outlining each cell
+    CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
+        cellRect.origin.x -= MKMapSizeWorld.width;  // fixes issue when view port spans 180th meridian
+        
+        MKMapPoint points[4];
+        points[0] = MKMapPointMake(MKMapRectGetMinX(cellRect), MKMapRectGetMinY(cellRect));
+        points[1] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMinY(cellRect));
+        points[2] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMaxY(cellRect));
+        points[3] = MKMapPointMake(MKMapRectGetMinX(cellRect), MKMapRectGetMaxY(cellRect));
+        MKPolygon *polygon = [CCHMapClusterControllerPolygon polygonWithPoints:points count:4];
+        [mapView addOverlay:polygon];
+    });
 }
 
 - (void)deselectAllAnnotations
