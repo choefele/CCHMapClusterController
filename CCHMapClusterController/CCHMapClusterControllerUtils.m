@@ -184,7 +184,7 @@ NS_INLINE double originXForLongitudeAtZoomLevel22(CLLocationDegrees longitude)
 double CCHMapClusterControllerZoomLevelForRegion(CLLocationDegrees longitudeCenter, CLLocationDegrees longitudeDelta, CGFloat width)
 {
     // Based on http://troybrant.net/blog/2010/01/mkmapview-and-zoom-levels-a-visual-guide/
-    // Adjusted so that at zoom level 0, the entire world fits on the screen.
+    // Adjusted so that at zoom level 0, the entire world fits into a single 256 point tile.
     const double LOG_2 = 0.69314718055994529;  // log(2)
     
     double centerPointX = originXForLongitudeAtZoomLevel22(longitudeCenter);
@@ -196,4 +196,103 @@ double CCHMapClusterControllerZoomLevelForRegion(CLLocationDegrees longitudeCent
     double zoomLevel = 22 - zoomExponent;
     
     return zoomLevel;
+}
+
+#define MAX_HASH_LENGTH 22
+
+#define SET_BIT(bits, mid, range, value, offset) \
+    mid = ((range)->max + (range)->min) / 2.0; \
+    if ((value) >= mid) { \
+        (range)->min = mid; \
+        (bits) |= (0x1 << (offset)); \
+    } else { \
+        (range)->max = mid; \
+        (bits) |= (0x0 << (offset)); \
+    }
+
+static const char BASE32_ENCODE_TABLE[33] = "0123456789bcdefghjkmnpqrstuvwxyz";
+
+typedef struct {
+    double max;
+    double min;
+} GEOHASH_range;
+
+static char *GEOHASH_encode(double lat, double lon, unsigned int len)
+{
+    int i;
+    char *hash;
+    unsigned char bits = 0;
+    double mid;
+    GEOHASH_range lat_range = {  90,  -90 };
+    GEOHASH_range lon_range = { 180, -180 };
+    
+    double val1, val2, val_tmp;
+    GEOHASH_range *range1, *range2, *range_tmp;
+    
+    assert(lat >= -90.0);
+    assert(lat <= 90.0);
+    assert(lon >= -180.0);
+    assert(lon <= 180.0);
+    assert(len <= MAX_HASH_LENGTH);
+    
+    hash = (char *)malloc(sizeof(char) * (len + 1));
+    if (hash == NULL)
+        return NULL;
+    
+    val1 = lon; range1 = &lon_range;
+    val2 = lat; range2 = &lat_range;
+    
+    for (i=0; i < len; i++) {
+        
+        bits = 0;
+        
+        SET_BIT(bits, mid, range1, val1, 4);
+        SET_BIT(bits, mid, range2, val2, 3);
+        SET_BIT(bits, mid, range1, val1, 2);
+        SET_BIT(bits, mid, range2, val2, 1);
+        SET_BIT(bits, mid, range1, val1, 0);
+        
+        hash[i] = BASE32_ENCODE_TABLE[bits];
+        
+        val_tmp   = val1;
+        val1      = val2;
+        val2      = val_tmp;
+        range_tmp = range1;
+        range1    = range2;
+        range2    = range_tmp;
+    }
+    
+    hash[len] = '\0';
+    return hash;
+}
+
+static NSString *hashForCoordinate(CLLocationCoordinate2D coordinate, NSUInteger length)
+{
+    // Based on https://github.com/lyokato/objc-geohash
+    NSString *geohashAsString;
+    
+    char *geohash = GEOHASH_encode(coordinate.latitude, coordinate.longitude, length);
+    if (geohash) {
+        geohashAsString = [NSString stringWithCString:geohash encoding:NSASCIIStringEncoding];
+    }
+    free(geohash);
+    
+    return geohashAsString;
+}
+
+NSArray *CCHMapClusterControllerAnnotationsByUniqueLocations(NSSet *annotations)
+{
+    NSMutableDictionary *annotationsByGeohash = [NSMutableDictionary dictionary];
+    
+    for (id <MKAnnotation>annotation in annotations) {
+        NSString *geohash = hashForCoordinate(annotation.coordinate, 9);
+        NSMutableArray *annotationsAtLocation = [annotationsByGeohash objectForKey:geohash];
+        if (!annotationsAtLocation) {
+            annotationsAtLocation = [NSMutableArray array];
+        }
+        [annotationsAtLocation addObject:annotation];
+        [annotationsByGeohash setObject:annotationsAtLocation forKey:geohash];
+    }
+    
+    return [annotationsByGeohash allValues];
 }

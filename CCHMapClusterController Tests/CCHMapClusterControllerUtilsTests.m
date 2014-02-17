@@ -325,4 +325,41 @@
     XCTAssertEqualWithAccuracy(zoomLevel, 1, __FLT_EPSILON__);
 }
 
+- (void)testAnnotationsByUniqueLocations
+{
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(51.0, 13.0);
+
+    NSSet *annotations = [NSSet setWithArray:@[annotation0]];
+    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
+    
+    XCTAssertEqual(uniqueAnnotations.count, 1u);
+}
+
+- (void)testAnnotationsByUniqueLocationsSameLocation
+{
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(52.0, 13.0);
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = annotation0.coordinate;
+
+    NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
+    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
+    
+    XCTAssertEqual(uniqueAnnotations.count, 1u);
+}
+
+- (void)testAnnotationsByUniqueLocationsClose
+{
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(53.0, 14.0);
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = CLLocationCoordinate2DMake(annotation0.coordinate.latitude + __FLT_EPSILON__, annotation0.coordinate.longitude + __FLT_EPSILON__);
+    
+    NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
+    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
+    
+    XCTAssertEqual(uniqueAnnotations.count, 1u);
+}
+
 @end
