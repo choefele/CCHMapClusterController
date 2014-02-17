@@ -74,10 +74,8 @@
 
 - (BOOL)respondsToSelector:(SEL)selector
 {
-    for (id delegate in self.delegates)
-    {
-        if ([delegate respondsToSelector:selector])
-        {
+    for (id delegate in self.delegates) {
+        if ([delegate respondsToSelector:selector]) {
             return YES;
         }
     }
@@ -87,10 +85,8 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
-    for(id delegate in self.delegates)
-    {
-        if ([delegate respondsToSelector:selector])
-        {
+    for (id delegate in self.delegates) {
+        if ([delegate respondsToSelector:selector]) {
             return [delegate methodSignatureForSelector:selector];
         }
     }
@@ -100,17 +96,16 @@
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-    if ([self.target respondsToSelector:[invocation selector]])
-    {
+    for (id delegate in self.delegates) {
+        if ([delegate respondsToSelector:invocation.selector]) {
+            [invocation invokeWithTarget:delegate];
+        }
+    }
+    
+    if ([self.target respondsToSelector:invocation.selector]) {
         [invocation invokeWithTarget:self.target];
     }
     
-    for (id delegate in self.delegates)
-    {
-        if ([delegate respondsToSelector:[invocation selector]])
-        {
-            [invocation invokeWithTarget:delegate];
-        }
     }
 }
 
