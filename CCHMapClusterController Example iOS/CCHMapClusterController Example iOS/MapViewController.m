@@ -27,6 +27,7 @@
 @property (strong, nonatomic) Settings *settings;
 @property (strong, nonatomic) CCHMapClusterController *mapClusterControllerRed;
 @property (strong, nonatomic) CCHMapClusterController *mapClusterControllerBlue;
+@property (assign, nonatomic) NSUInteger count;
 @property (strong, nonatomic) id<CCHMapClusterer> mapClusterer;
 @property (strong, nonatomic) id<CCHMapAnimator> mapAnimator;
 
@@ -61,17 +62,20 @@
 
 - (IBAction)resetSettings
 {
+    self.count = 0;
     Settings *settings = [[Settings alloc] init];
     [self updateWithSettings:settings];
 }
 
 - (void)updateWithSettings:(Settings *)settings
 {
+    self.count = 0;
     self.settings = settings;
     
     // Reset
     [self.dataReader stopReadingData];
     [self.mapClusterControllerRed removeAnnotations:self.mapClusterControllerRed.annotations.allObjects withCompletionHandler:NULL];
+    [self.mapClusterControllerBlue removeAnnotations:self.mapClusterControllerBlue.annotations.allObjects withCompletionHandler:NULL];
     for (id<MKOverlay> overlay in self.mapView.overlays) {
         [self.mapView removeOverlay:overlay];
     }
@@ -111,8 +115,7 @@
 
 - (void)dataReader:(DataReader *)dataReader addAnnotations:(NSArray *)annotations
 {
-    static NSUInteger count = 0;
-    if (count++ % 2 == 0) {
+    if (self.count++ % 2 == 0) {
         [self.mapClusterControllerRed addAnnotations:annotations withCompletionHandler:NULL];
     } else {
         [self.mapClusterControllerBlue addAnnotations:annotations withCompletionHandler:NULL];
@@ -138,11 +141,6 @@
 {
     ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[self.mapClusterControllerRed.mapView viewForAnnotation:mapClusterAnnotation];
     clusterAnnotationView.count = mapClusterAnnotation.annotations.count;
-}
-
-- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
-{
-    NSLog(@"");
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
