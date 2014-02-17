@@ -74,6 +74,18 @@
 
 - (BOOL)respondsToSelector:(SEL)selector
 {
+    // Special case for direct implementation in this class
+#if TARGET_OS_IPHONE
+    if (selector == @selector(mapView:viewForOverlay:)) {
+        return YES;
+    }
+#else
+    if (selector == @selector(mapView:rendererForOverlay:)) {
+        return YES;
+    }
+#endif
+    
+    // Otherwise, use forwardInvocation: on delegates and target
     for (id delegate in self.delegates) {
         if ([delegate respondsToSelector:selector]) {
             return YES;
@@ -105,8 +117,40 @@
     if ([self.target respondsToSelector:invocation.selector]) {
         [invocation invokeWithTarget:self.target];
     }
-    
-    }
 }
+
+#pragma mark - Map view proxied delegate methods
+
+#if TARGET_OS_IPHONE
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
+{
+    MKOverlayView *view;
+	
+    // Display debug polygons
+    if ([overlay isKindOfClass:MKPolygon.class]) {
+        MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon *)overlay];
+        polygonView.strokeColor = [UIColor.blueColor colorWithAlphaComponent:0.7];
+        polygonView.lineWidth = 1;
+        view = polygonView;
+    }
+    
+    return view;
+}
+#else
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
+{
+    MKOverlayRenderer *renderer;
+	
+    // Display debug polygons
+    if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
+        MKPolygonRenderer *polygonRenderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
+        polygonRenderer.strokeColor = [NSColor.blueColor colorWithAlphaComponent:0.7];
+        polygonRenderer.lineWidth = 1;
+        renderer = polygonRenderer;
+    }
+    
+    return renderer;
+}
+#endif
 
 @end

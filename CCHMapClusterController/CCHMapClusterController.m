@@ -43,9 +43,10 @@
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 
-@interface CCHMapClusterControllerPolygon : MKPolygon
+@interface CCHMapClusterControllerDebugPolygon : MKPolygon
+@property (nonatomic, weak) CCHMapClusterController *mapClusterController;
 @end
-@implementation CCHMapClusterControllerPolygon
+@implementation CCHMapClusterControllerDebugPolygon
 @end
 
 @interface CCHMapClusterController()<MKMapViewDelegate>
@@ -265,8 +266,11 @@
     
     // Remove old polygons
     for (id<MKOverlay> overlay in mapView.overlays) {
-        if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
-            [mapView removeOverlay:overlay];
+        if ([overlay isKindOfClass:CCHMapClusterControllerDebugPolygon.class]) {
+            CCHMapClusterControllerDebugPolygon *debugPolygon = (CCHMapClusterControllerDebugPolygon *)overlay;
+            if (debugPolygon.mapClusterController == self) {
+                [mapView removeOverlay:overlay];
+            }
         }
     }
     
@@ -279,8 +283,9 @@
         points[1] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMinY(cellRect));
         points[2] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMaxY(cellRect));
         points[3] = MKMapPointMake(MKMapRectGetMinX(cellRect), MKMapRectGetMaxY(cellRect));
-        MKPolygon *polygon = [CCHMapClusterControllerPolygon polygonWithPoints:points count:4];
-        [mapView addOverlay:polygon];
+        CCHMapClusterControllerDebugPolygon *debugPolygon = (CCHMapClusterControllerDebugPolygon *)[CCHMapClusterControllerDebugPolygon polygonWithPoints:points count:4];
+        debugPolygon.mapClusterController = self;
+        [mapView addOverlay:debugPolygon];
     });
 }
 
@@ -360,37 +365,5 @@
         }
     }];
 }
-
-#if TARGET_OS_IPHONE
-- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
-{
-    MKOverlayView *view;
-	
-    // Display debug polygons
-    if (view == nil && [overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
-        MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon *)overlay];
-        polygonView.strokeColor = [UIColor.blueColor colorWithAlphaComponent:0.7];
-        polygonView.lineWidth = 1;
-        view = polygonView;
-    }
-    
-    return view;
-}
-#else
-- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
-{
-    MKOverlayRenderer *renderer;
-	
-    // Display debug polygons
-    if (renderer == nil && [overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
-        MKPolygonRenderer *polygonRenderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
-        polygonRenderer.strokeColor = [NSColor.blueColor colorWithAlphaComponent:0.7];
-        polygonRenderer.lineWidth = 1;
-        renderer = polygonRenderer;
-    }
-    
-    return renderer;
-}
-#endif
 
 @end

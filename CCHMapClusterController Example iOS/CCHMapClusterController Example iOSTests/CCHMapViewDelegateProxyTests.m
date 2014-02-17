@@ -16,6 +16,27 @@
 @implementation MapViewDelegate
 @end
 
+@interface MapViewDelegateOverlay : NSObject<MKMapViewDelegate>
+#if TARGET_OS_IPHONE
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay;
+#else
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay;
+#endif
+@end
+@implementation MapViewDelegateOverlay
+#if TARGET_OS_IPHONE
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay {
+    return [[MKOverlayView alloc] init];
+}
+#else
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay;
+#endif
+@end
+
+// MKMapViewDelegate no viewForOverlay:
+// MKMapViewDelegate viewForOverlay: returns nil
+// MKMapViewDelegate viewForOverlay: returns object
+
 @interface CCHMapViewDelegateProxyTests : XCTestCase
 
 @property (nonatomic, strong) MKMapView *mapView;
