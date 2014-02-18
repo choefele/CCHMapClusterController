@@ -25,6 +25,8 @@
 
 #import "CCHMapViewDelegateProxy.h"
 
+#define DEBUG_POLYGON_CLASS NSClassFromString(@"CCHMapClusterControllerDebugPolygon")
+
 @interface CCHMapViewDelegateProxy()
 
 @property (nonatomic, strong) NSHashTable *delegates;
@@ -125,9 +127,13 @@
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
 {
     MKOverlayView *view;
+    
+    if ([self.target respondsToSelector:@selector(mapView:viewForOverlay:)]) {
+        view = [self.target mapView:mapView viewForOverlay:overlay];
+    }
 	
     // Display debug polygons
-    if ([overlay isKindOfClass:MKPolygon.class]) {
+    if (view == nil && [overlay isKindOfClass:DEBUG_POLYGON_CLASS]) {
         MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon *)overlay];
         polygonView.strokeColor = [UIColor.blueColor colorWithAlphaComponent:0.7];
         polygonView.lineWidth = 1;
