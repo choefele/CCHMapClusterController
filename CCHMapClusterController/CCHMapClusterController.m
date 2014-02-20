@@ -286,6 +286,13 @@
 
 - (void)selectAnnotation:(id<MKAnnotation>)annotation andZoomToRegionWithLatitudinalMeters:(CLLocationDistance)latitudinalMeters longitudinalMeters:(CLLocationDistance)longitudinalMeters
 {
+    // Check for valid annotation
+    BOOL existingAnnotation = [self.annotations containsObject:annotation];
+    NSAssert(existingAnnotation, @"Invalid annotation - can only select annotations previously added by calling addAnnotations:withCompletionHandler:");
+    if (!existingAnnotation) {
+        return;
+    }
+    
     // Deselect annotations
     [self deselectAllAnnotations];
     

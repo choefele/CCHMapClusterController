@@ -138,12 +138,15 @@ A common use case is to have a search field where the user can make a choice fro
 
 For this to work, you have to figure out which cluster contains the selected annotation. In addition, the clustering changes while zooming thus requiring an incremental approach to finding the cluster that contains the annotation the user is looking for.
 
-`CCHMapClusterController` contains an easy to use interface to help you with this:
+`CCHMapClusterController` contains an easy to use interface to help you with this. Note that you have to use an annotation that has previously been added to the clustering:
 
 ```Objective-C
-[self.mapClusterController selectAnnotation:annotation 
-       andZoomToRegionWithLatitudinalMeters:1000 
-                         longitudinalMeters:1000];
+    id<MKAnnotation> clusteredAnnotation = ...
+    [self.mapClusterController addAnnotations:@[clusteredAnnotation] withCompletionHandler:NULL];
+    
+    ...
+    
+    [self.mapClusterController selectAnnotation:clusteredAnnotation andZoomToRegionWithLatitudinalMeters:1000 longitudinalMeters:1000];
 ``` 
 
 #### Centering the map without changing the zoom level
