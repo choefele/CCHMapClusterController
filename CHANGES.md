@@ -1,7 +1,13 @@
 Changes
 =======
 
+## Upcoming version
+
+- Updated documentation with example code for centering the map (thanks to plu for suggesting this)
+- Added unit tests for animation code (thanks to nferruzzi for the pull request)
+
 ## 1.4.1
+
 - Fixed issue where non-clustered `MKAnnotation`s would be removed from the map view (thanks to rosskimes for the pull request)
 - Fixed bug that was causing `MKOverlayView`s/`MKOverlayRenderer`s to not show up (thanks to rosskimes for the pull request)
 - Added a settings UI in example to configure clustering
