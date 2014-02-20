@@ -1,7 +1,11 @@
 CCHMapClusterController
 =======================
 
+`CCHMapClusterController` solves the problem of displaying many annotations on an `MKMapView`.
+
 [![Build Status](https://travis-ci.org/choefele/CCHMapClusterController.png?branch=master)](https://travis-ci.org/choefele/CCHMapClusterController)
+
+## Getting started
 
 If you have your project set up with an `MKMapView`, integrating clustering will take 4 lines of code:
 
@@ -32,12 +36,25 @@ Don't worry about manually updating the clusters; `CCHMapClusterController` auto
 
 To try out the clustering, experiment with the examples included in this project, or download the app “Stolpersteine in Berlin” [![Download on the App Store](https://linkmaker.itunes.apple.com/htmlResources/assets//images/web/linkmaker/badge_appstore-sm.png)](https://itunes.apple.com/de/app/stolpersteine-in-berlin/id640731757?mt=8&uo=4).
 
-Additional materials:
-- [Theodore Calmes' in-depth explanation](http://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps) of how to implement a clustering algorithm
-- [Video of Claus' presentation at Macoun 2013](http://www.macoun.de/video2013tsso1.php) that explains some of the techniques used to implement `CCHMapClusterController` (German)
-- [Blog article](http://www.technology-ebay.de/the-teams/ebay-kleinanzeigen/blog/ios-mapkit-clustering.html) covering Claus' Macoun presentation
+## Developer's guide
 
-## Installation
+- [Recent changes](#recent-changes)
+- [Installation](#installation)
+- [Performance](#performance)
+- [Cell size and margin factor](#cell-size-and-margin-factor)
+- [Customizing cluster annotations](#customizing-cluster-annotations)
+- [Positioning cluster annotations](#positioning-cluster-annotations)
+- [Animations](#animations)
+- [Code recipes](#code-recipes)
+ - [Finding a clustered annotation](#finding-a-clustered-annotation)
+- [Additional reading](#additional-reading)
+- [License (MIT)](#license-mit)
+
+### Recent changes
+
+See [Changes](https://github.com/choefele/CCHMapClusterController/blob/master/CHANGES.md) for a high-level overview of recent updates.
+
+### Installation
 
 Use [CocoaPods](http://cocoapods.org) to easily integrate `CCHMapClusterController` into your project. Minimum deployment targets are 6.0 for iOS and 10.9 for OS X.
 
@@ -51,9 +68,7 @@ platform :osx, '10.9'
 pod "CCHMapClusterController"
 ```
 
-See [Changes.md](https://github.com/choefele/CCHMapClusterController/blob/master/CHANGES.md) for a high-level overview of recent updates.
-
-## Performance
+### Performance
 
 The clustering algorithm splits a rectangular area of the map into a grid of square cells. For each cell, a representation for the annotations in this cell is selected and displayed. 
 
@@ -71,7 +86,7 @@ The `marginFactor` property configures the additional map area around the visibl
 
 To debug these settings, set the `debugEnabled` property to `YES`. This will display the clustering grid over the map.
 
-## Customizing cluster annotations
+### Customizing cluster annotations
 
 Cluster annotations are of type `CCHMapClusterAnnotation`. You can customize their titles and subtitles by registering as a `CCHMapClusterControllerDelegate` with `CCHMapClusterController` and implementing two delegate methods.
 
@@ -98,7 +113,7 @@ Here is an example:
 
 Customizing the look of clustered annotations is possible via the standard `mapView:viewForAnnotation:` method that's part of `MKMapViewDelegate`. In addition, the delegate method `mapClusterController:willReuseMapClusterAnnotation:` is called when a cluster annotation is reused for a cell (see property `reuseExistingClusterAnnotations` below). The iOS example contains code that demonstrates how to display the current cluster size as part of the annotation view.
 
-## Positioning cluster annotations
+### Positioning cluster annotations
 
 For aesthetic reasons, cluster annotations are not lined up evenly as this would make the underlying grid obvious. This library comes with two implementations to configure the position of cluster annotations:
 
@@ -109,11 +124,13 @@ Instances of these classes can be assigned to `CCHMapClusterController`'s proper
 
 In addition, `CCHMapClusterController` by default reuses cluster annotations for a cell. This is beneficial for incrementally adding more annotations to the clustering (e.g. when downloading batches of data) because you want to avoid the cluster annotation jumping around during updates. Set `reuseExistingClusterAnnotations` to `NO` if you don't want this behavior.
 
-## Animations
+### Animations
 
 By default, annotation views for cluster annotations receive an animation that fades the view in when added and out when removed (`CCHFadeInOutAnimator`). You can provide your own animation code by implementing the protocol `CCHMapAnimator` and changing `CCHMapClusterController`'s property `animator`.
 
-## Finding a clustered annotation
+### Code recipes
+
+### Finding a clustered annotation
 
 A common use case is to have a search field where the user can make a choice from a list of matching annotations. Selecting an annotation would then zoom to its position on the map.
 
@@ -127,7 +144,13 @@ For this to work, you have to figure out which cluster contains the selected ann
                          longitudinalMeters:1000];
 ``` 
 
-## License (MIT)
+### Additional reading
+
+- [Theodore Calmes' in-depth explanation](http://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps) of how to implement a clustering algorithm
+- [Video of Claus' presentation at Macoun 2013](http://www.macoun.de/video2013tsso1.php) that explains some of the techniques used to implement `CCHMapClusterController` (German)
+- [Blog article](http://www.technology-ebay.de/the-teams/ebay-kleinanzeigen/blog/ios-mapkit-clustering.html) covering Claus' Macoun presentation
+
+### License (MIT)
 
 Copyright (C) 2013 Claus Höfele
 
