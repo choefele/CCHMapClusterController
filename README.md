@@ -80,7 +80,7 @@ Other factors are the density of the clustered annotations (annotations spread o
 
 The examples in this project contain two data sets for testing: 5000+ annotations in a small area around Berlin and 80000+ annotations spread over the entire US. Both data sets perform fine on an iPhone 4S.
 
-## Cell size and margin factor
+### Cell size and margin factor
 
 `CCHMapClusterController` has a property `cellSize` to configure the size of the cell in points (1 point = 2 pixels on Retina displays). This way, you can select a cell size that is large enough to display map icons with minimal overlap. More likely, however, you will choose the cell size to optimize clustering performance (the larger the size, the better the performance). The actual cell size used for clustering will be adjusted so that the map's width is a multiple of the cell size. This avoids realignment of cells when panning across the 180th meridian.
 
