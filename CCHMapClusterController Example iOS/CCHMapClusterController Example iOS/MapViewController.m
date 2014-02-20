@@ -154,6 +154,16 @@
     return annotationView;
 }
 
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    if ([view.annotation isKindOfClass:CCHMapClusterAnnotation.class]) {
+        CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)view.annotation;
+        MKMapRect mapRect = [clusterAnnotation mapRect];
+        UIEdgeInsets edgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
+        [mapView setVisibleMapRect:mapRect edgePadding:edgeInsets animated:YES];
+    }
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"mapToSettings"]) {

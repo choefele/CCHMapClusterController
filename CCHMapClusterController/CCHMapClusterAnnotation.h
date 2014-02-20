@@ -51,4 +51,7 @@
 /** Returns YES if all annotations in this cluster are at the same location. */
 - (BOOL)isOneLocation;
 
+/** The area that includes all annotations. */
+- (MKMapRect)mapRect;
+
 @end

@@ -69,4 +69,18 @@
     return CLLocationCoordinate2DIsValid(coordinate);
 }
 
+- (MKMapRect)mapRect
+{
+    MKMapPoint clusterPoint = MKMapPointForCoordinate(self.coordinate);
+    MKMapRect mapRect = MKMapRectMake(clusterPoint.x, clusterPoint.y, 0.1, 0.1);
+    for (id<MKAnnotation> annotation in self.annotations)
+    {
+        MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
+        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1);
+        mapRect = MKMapRectUnion(mapRect, pointRect);
+    }
+    
+    return mapRect;
+}
+
 @end
