@@ -3,7 +3,8 @@ Changes
 
 ## Upcoming version
 
-- Updated documentation with example code for centering the map (thanks to plu for suggesting this)
+- Added the method `mapRect` to `CCHMapClusterAnnotation` to calculate the area that includes all clustered annotations. Also added a code recipe on how to use this method to zoom in to a cluster.
+- Updated code recipe for centering the map without changing the zoom level (thanks to plu for suggesting this)
 - Added unit tests for animation code (thanks to nferruzzi for the pull request)
 
 ## 1.4.1

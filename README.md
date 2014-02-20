@@ -148,7 +148,7 @@ For this to work, you have to figure out which cluster contains the selected ann
 
 #### Centering the map without changing the zoom level
 
-`MKMapView` offers the method `setCenterCoordinate:animated:` to center the map on a new coordinate without changing the current zoom level. Unfortunately, this method doesn't work as promised on iOS 7. Instead, calling it will zoom the map slightly causing the clusters to regroup with a different zoom level.
+`MKMapView` offers the method `setCenterCoordinate:animated:` to center the map on a new coordinate without changing the current zoom level. Unfortunately, this method doesn't work as advertised on iOS 7. Instead, calling it will zoom the map slightly thus causing the clusters to regroup with a different zoom level.
 
 The following code avoids this problem:
 
@@ -167,23 +167,16 @@ The following code avoids this problem:
 
 On iOS 7, you could use `showAnnotations:animated:`, but this will also add the given annotations to the `MKMapView`. Thus you will end up with all the clustered annotations on the screen _in addition_ to the clusters.
 
-Instead, manually calculate a `MapRect` that includes all clustered annotations:
+Instead, `CCHMapClusterAnnotation` offers the method `mapRect` that manually calculates an `MKMapRect` that includes all clustered annotations:
 
 ```Objective-C
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
     if ([view.annotation isKindOfClass:CCHMapClusterAnnotation.class]) {
         CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)view.annotation;
-
-        MKMapRect zoomRect = MKMapRectNull;
-        for (id<MKAnnotation> annotation in clusterAnnotation.annotations)
-        {
-            MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
-            MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1);
-            zoomRect = MKMapRectUnion(zoomRect, pointRect);
-        }
+        MKMapRect mapRect = [clusterAnnotation mapRect];
         UIEdgeInsets edgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
-        [mapView setVisibleMapRect:zoomRect edgePadding:edgeInsets animated:YES];
+        [mapView setVisibleMapRect:mapRect edgePadding:edgeInsets animated:YES];
     }
 }
 ```
