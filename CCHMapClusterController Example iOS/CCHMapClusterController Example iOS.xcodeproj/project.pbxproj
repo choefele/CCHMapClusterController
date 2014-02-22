@@ -50,7 +50,7 @@
 		62D667D41845F8A40046D5D5 /* CCHMapViewDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */; };
 		62D71E11187EB45500E52EE3 /* ClusterAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D71E10187EB45500E52EE3 /* ClusterAnnotationView.m */; };
 		62F9FC8218B2636200D5D8F2 /* CCHMapViewDelegateProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F9FC8118B2636200D5D8F2 /* CCHMapViewDelegateProxyTests.m */; };
-		62F9FC8418B3687400D5D8F2 /* CCHMapViewDelegateProxyReturnValueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F9FC8318B3687400D5D8F2 /* CCHMapViewDelegateProxyReturnValueTests.m */; };
+		62F9FC8418B3687400D5D8F2 /* CCHMapViewDelegateProxyViewForOverlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F9FC8318B3687400D5D8F2 /* CCHMapViewDelegateProxyViewForOverlayTests.m */; };
 		8A3EB24E18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A3EB24D18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m */; };
 /* End PBXBuildFile section */
 
@@ -138,7 +138,7 @@
 		62D71E0F187EB45500E52EE3 /* ClusterAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClusterAnnotationView.h; sourceTree = "<group>"; };
 		62D71E10187EB45500E52EE3 /* ClusterAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClusterAnnotationView.m; sourceTree = "<group>"; };
 		62F9FC8118B2636200D5D8F2 /* CCHMapViewDelegateProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapViewDelegateProxyTests.m; sourceTree = "<group>"; };
-		62F9FC8318B3687400D5D8F2 /* CCHMapViewDelegateProxyReturnValueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapViewDelegateProxyReturnValueTests.m; sourceTree = "<group>"; };
+		62F9FC8318B3687400D5D8F2 /* CCHMapViewDelegateProxyViewForOverlayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapViewDelegateProxyViewForOverlayTests.m; sourceTree = "<group>"; };
 		8A3EB24D18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHFadeInOutMapAnimatorTests.m; path = "../../CCHMapClusterController Tests/CCHFadeInOutMapAnimatorTests.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -287,7 +287,7 @@
 				48899967185F875600F3D6ED /* CCHMapClusterControllerTests.m */,
 				62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */,
 				62F9FC8118B2636200D5D8F2 /* CCHMapViewDelegateProxyTests.m */,
-				62F9FC8318B3687400D5D8F2 /* CCHMapViewDelegateProxyReturnValueTests.m */,
+				62F9FC8318B3687400D5D8F2 /* CCHMapViewDelegateProxyViewForOverlayTests.m */,
 				4889995E185D1D9300F3D6ED /* CCHMapTreeTests.m */,
 				62D667A81845E0F20046D5D5 /* Supporting Files */,
 			);
@@ -465,7 +465,7 @@
 				62F9FC8218B2636200D5D8F2 /* CCHMapViewDelegateProxyTests.m in Sources */,
 				4889995F185D1D9300F3D6ED /* CCHMapTreeTests.m in Sources */,
 				48899956185CE2B000F3D6ED /* QTree.m in Sources */,
-				62F9FC8418B3687400D5D8F2 /* CCHMapViewDelegateProxyReturnValueTests.m in Sources */,
+				62F9FC8418B3687400D5D8F2 /* CCHMapViewDelegateProxyViewForOverlayTests.m in Sources */,
 				48D7B0CA185A679F0071636B /* KPTreeNode.m in Sources */,
 				4869F1911851105A00251ADC /* CCHNearCenterMapClustererTests.m in Sources */,
 				4869F19818511B6D00251ADC /* CCHCenterOfMassMapClustererTests.m in Sources */,

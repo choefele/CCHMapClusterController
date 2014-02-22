@@ -128,11 +128,12 @@
 {
     MKOverlayView *view;
     
+    // Target can override return value
     if ([self.target respondsToSelector:@selector(mapView:viewForOverlay:)]) {
         view = [self.target mapView:mapView viewForOverlay:overlay];
     }
 	
-    // Display debug polygons
+    // Default return value for debug polygons
     if (view == nil && [overlay isKindOfClass:DEBUG_POLYGON_CLASS]) {
         MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon *)overlay];
         polygonView.strokeColor = [UIColor.blueColor colorWithAlphaComponent:0.7];

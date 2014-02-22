@@ -12,8 +12,12 @@
 #import <MapKit/MapKit.h>
 
 @interface MapViewDelegate : NSObject<MKMapViewDelegate>
+@property (nonatomic, assign) BOOL called;
 @end
 @implementation MapViewDelegate
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
+    self.called = YES;
+}
 @end
 
 @interface CCHMapViewDelegateProxyTests : XCTestCase
@@ -140,6 +144,22 @@
     }
     
     XCTAssertEqual(self.mapView.delegate, mapViewDelegate);
+}
+
+- (void)testCallDelegates
+{
+    MapViewDelegate *mapViewDelegate = [[MapViewDelegate alloc] init];
+    self.mapView.delegate = mapViewDelegate;
+    MapViewDelegate *proxyDelegate0 = [[MapViewDelegate alloc] init];
+    CCHMapViewDelegateProxy *mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate0];
+    MapViewDelegate *proxyDelegate1 = [[MapViewDelegate alloc] init];
+    [mapViewDelegateProxy addDelegate:proxyDelegate1];
+    
+    [mapViewDelegateProxy mapView:nil regionDidChangeAnimated:YES];
+
+    XCTAssertTrue(mapViewDelegate.called);
+    XCTAssertTrue(proxyDelegate0.called);
+    XCTAssertTrue(proxyDelegate1.called);
 }
 
 @end
