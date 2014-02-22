@@ -96,6 +96,13 @@
         self.mapAnimator = [[CCHFadeInOutMapAnimator alloc] init];
     }
     self.mapClusterControllerRed.animator = self.mapAnimator;
+    
+    // Similar settings for second cluster controller
+    self.mapClusterControllerBlue.debuggingEnabled = settings.isDebuggingEnabled;
+    self.mapClusterControllerBlue.cellSize = settings.cellSize + 10;
+    self.mapClusterControllerBlue.marginFactor = settings.marginFactor;
+    self.mapClusterControllerBlue.clusterer = self.mapClusterer;
+    self.mapClusterControllerBlue.animator = self.mapAnimator;
 
     // Region and data
     MKCoordinateRegion region;
