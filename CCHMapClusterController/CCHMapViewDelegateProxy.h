@@ -28,9 +28,10 @@
 
 @interface CCHMapViewDelegateProxy : NSObject<MKMapViewDelegate>
 
-@property (nonatomic, weak, readonly) NSObject<MKMapViewDelegate> *delegate;
-@property (nonatomic, weak, readonly) NSObject<MKMapViewDelegate> *target;
+@property (nonatomic, readonly) NSHashTable *delegates;
+@property (nonatomic, readonly) NSObject<MKMapViewDelegate> *target;
 
 - (id)initWithMapView:(MKMapView *)mapView delegate:(NSObject<MKMapViewDelegate> *)delegate;
+- (void)addDelegate:(NSObject<MKMapViewDelegate> *)delegate;
 
 @end

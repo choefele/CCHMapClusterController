@@ -301,7 +301,7 @@
 
 - (void)testFilterAnnotationsNil
 {
-    NSSet *filteredAnnotations = CCHMapClusterControllerClusterAnnotationsForAnnotations(nil);
+    NSSet *filteredAnnotations = CCHMapClusterControllerClusterAnnotationsForAnnotations(nil, nil);
     XCTAssertEqual(filteredAnnotations.count, (NSUInteger)0);
 }
 
@@ -310,7 +310,7 @@
     MKPointAnnotation *pointAnnotation = [[MKPointAnnotation alloc] init];
     CCHMapClusterAnnotation *clusterAnnotation = [[CCHMapClusterAnnotation alloc] init];
     NSArray *annotations = @[pointAnnotation, clusterAnnotation];
-    NSSet *filteredAnnotations = CCHMapClusterControllerClusterAnnotationsForAnnotations(annotations);
+    NSSet *filteredAnnotations = CCHMapClusterControllerClusterAnnotationsForAnnotations(annotations, nil);
     XCTAssertEqual(filteredAnnotations.count, (NSUInteger)1);
     XCTAssertEqualObjects(filteredAnnotations.anyObject, clusterAnnotation);
 }

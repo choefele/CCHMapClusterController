@@ -11,5 +11,6 @@
 @interface ClusterAnnotationView : MKAnnotationView
 
 @property (assign, nonatomic) NSUInteger count;
+@property (assign, nonatomic, getter = isBlue) BOOL blue;
 
 @end
