@@ -10,8 +10,7 @@
 #import <MapKit/MapKit.h>
 
 #import "CCHMapViewDelegateProxy.h"
-
-#define DEBUG_POLYGON_CLASS NSClassFromString(@"CCHMapClusterControllerDebugPolygon")
+#import "CCHMapClusterControllerDebugPolygon.h"
 
 @interface TestOverlayView0 : MKOverlayView
 @end
@@ -83,7 +82,7 @@
 {
     NSObject<MKMapViewDelegate> *mapViewDelegate = nil;
     NSObject<MKMapViewDelegate> *proxyDelegate = nil;
-    MKOverlayView *view = [self viewForOverlay:[DEBUG_POLYGON_CLASS new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
+    MKOverlayView *view = [self viewForOverlay:[CCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
     XCTAssertTrue([view isMemberOfClass:MKPolygonView.class]);
 }
 
@@ -99,7 +98,7 @@
 {
     NSObject<MKMapViewDelegate> *mapViewDelegate = [[MapViewDelegateReturnsValue alloc] initWithValueClass:TestOverlayView0.class];
     NSObject<MKMapViewDelegate> *proxyDelegate = [[MapViewDelegateReturnsValue alloc] initWithValueClass:TestOverlayView1.class];
-    MKOverlayView *view = [self viewForOverlay:[DEBUG_POLYGON_CLASS new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
+    MKOverlayView *view = [self viewForOverlay:[CCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
     XCTAssertTrue([view isMemberOfClass:TestOverlayView0.class]);
 }
 
@@ -107,7 +106,7 @@
 {
     NSObject<MKMapViewDelegate> *mapViewDelegate = nil;
     NSObject<MKMapViewDelegate> *proxyDelegate = [[MapViewDelegateReturnsValue alloc] initWithValueClass:TestOverlayView0.class];
-    MKOverlayView *view = [self viewForOverlay:[DEBUG_POLYGON_CLASS new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
+    MKOverlayView *view = [self viewForOverlay:[CCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
     XCTAssertTrue([view isMemberOfClass:MKPolygonView.class]);
 }
 
@@ -115,7 +114,7 @@
 {
     NSObject<MKMapViewDelegate> *mapViewDelegate = [[MapViewDelegateReturnsNil alloc] init];
     NSObject<MKMapViewDelegate> *proxyDelegate = [[MapViewDelegateReturnsValue alloc] initWithValueClass:TestOverlayView0.class];
-    MKOverlayView *view = [self viewForOverlay:[DEBUG_POLYGON_CLASS new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
+    MKOverlayView *view = [self viewForOverlay:[CCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
     XCTAssertTrue([view isMemberOfClass:MKPolygonView.class]);
 }
 
@@ -123,7 +122,7 @@
 {
     NSObject<MKMapViewDelegate> *mapViewDelegate = [[MapViewDelegateEmpty alloc] init];
     NSObject<MKMapViewDelegate> *proxyDelegate = [[MapViewDelegateReturnsValue alloc] initWithValueClass:TestOverlayView0.class];
-    MKOverlayView *view = [self viewForOverlay:[DEBUG_POLYGON_CLASS new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
+    MKOverlayView *view = [self viewForOverlay:[CCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
     XCTAssertTrue([view isMemberOfClass:MKPolygonView.class]);
 }
 

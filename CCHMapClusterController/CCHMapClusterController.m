@@ -27,6 +27,7 @@
 
 #import "CCHMapClusterController.h"
 
+#import "CCHMapClusterControllerDebugPolygon.h"
 #import "CCHMapClusterControllerUtils.h"
 #import "CCHMapClusterAnnotation.h"
 #import "CCHMapClusterControllerDelegate.h"
@@ -42,12 +43,6 @@
 #define WORLD_MAX_LON 180
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
-
-@interface CCHMapClusterControllerDebugPolygon : MKPolygon
-@property (nonatomic, weak) CCHMapClusterController *mapClusterController;
-@end
-@implementation CCHMapClusterControllerDebugPolygon
-@end
 
 @interface CCHMapClusterController()<MKMapViewDelegate>
 
