@@ -298,17 +298,15 @@
     }];
 
     XCTAssertTrue([self waitForCompletion:1.0]);
+
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
+    XCTAssertTrue([self.mapView.annotations containsObject:nonClusteredAnnotation]);
 
-    NSArray *clusteredAnnotations = [self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        return [evaluatedObject isMemberOfClass:CCHMapClusterAnnotation.class];
-    }]];
-    XCTAssertEqual(clusteredAnnotations.count, (NSUInteger)1);
-
-    NSArray *pointAnnotations = [self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        return [evaluatedObject isMemberOfClass:MKPointAnnotation.class];
-    }]];
-    XCTAssertEqual(pointAnnotations.count, (NSUInteger)1);
+    NSMutableArray *annotations = [NSMutableArray arrayWithArray:self.mapView.annotations];
+    [annotations removeObject:nonClusteredAnnotation];
+    XCTAssertTrue([annotations.lastObject isKindOfClass:CCHMapClusterAnnotation.class]);
+    CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotations.lastObject;
+    XCTAssertTrue([clusterAnnotation.annotations containsObject:clusteredAnnotation]);
 }
 
 - (void)testFadeInOut
