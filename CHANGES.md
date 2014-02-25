@@ -3,6 +3,7 @@ Changes
 
 ## Upcoming version
 
+- Multiple `CCHMapClusterController`s can now use the same `MKMapView` instance. This allows you to have multiple groups of clusters where each group has its own settings (thanks to eikebartles for ideas and suggestions)
 - `selectAnnotation:andZoomToRegionWithLatitudinalMeters:longitudinalMeters:` will now assert that the right annotation has been passed in. The documentation has also been updated with a better example on how to use this API (thanks to tspacek for the request)
 - Added the method `mapRect` to `CCHMapClusterAnnotation` to calculate the area that includes all clustered annotations. Also added a code recipe on how to use this method to zoom in to a cluster.
 - Updated code recipe for centering the map without changing the zoom level (thanks to plu for suggesting this)
