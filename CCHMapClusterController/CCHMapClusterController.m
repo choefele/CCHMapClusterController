@@ -27,6 +27,7 @@
 
 #import "CCHMapClusterController.h"
 
+#import "CCHMapClusterControllerDebugPolygon.h"
 #import "CCHMapClusterControllerUtils.h"
 #import "CCHMapClusterAnnotation.h"
 #import "CCHMapClusterControllerDelegate.h"
@@ -42,11 +43,6 @@
 #define WORLD_MAX_LON 180
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
-
-@interface CCHMapClusterControllerPolygon : MKPolygon
-@end
-@implementation CCHMapClusterControllerPolygon
-@end
 
 @interface CCHMapClusterController()<MKMapViewDelegate>
 
@@ -79,7 +75,14 @@
         _visibleAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
         _backgroundQueue = [[NSOperationQueue alloc] init];
         _updateOperations = [NSMutableArray array];
-        _mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
+        
+        if ([mapView.delegate isKindOfClass:CCHMapViewDelegateProxy.class]) {
+            CCHMapViewDelegateProxy *delegateProxy = (CCHMapViewDelegateProxy *)mapView.delegate;
+            [delegateProxy addDelegate:self];
+            _mapViewDelegateProxy = delegateProxy;
+        } else {
+            _mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
+        }
         
         // Keep strong reference to default instance because public property is weak
         id<CCHMapClusterer> clusterer = [[CCHCenterOfMassMapClusterer alloc] init];
@@ -191,6 +194,7 @@
                 CCHMapClusterAnnotation *annotationForCell = _findVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
                 if (annotationForCell == nil) {
                     annotationForCell = [[CCHMapClusterAnnotation alloc] init];
+                    annotationForCell.mapClusterController = self;
                     annotationForCell.coordinate = [_clusterer mapClusterController:self coordinateForAnnotations:allAnnotationsInCell inMapRect:cellRect];
                     annotationForCell.delegate = _delegate;
                     annotationForCell.annotations = allAnnotationsInCell;
@@ -212,7 +216,7 @@
         });
         
         // Figure out difference between new and old clusters
-        NSSet *annotationsBeforeAsSet = CCHMapClusterControllerClusterAnnotationsForAnnotations(self.mapView.annotations);
+        NSSet *annotationsBeforeAsSet = CCHMapClusterControllerClusterAnnotationsForAnnotations(self.mapView.annotations, self);
         NSMutableSet *annotationsToKeep = [NSMutableSet setWithSet:annotationsBeforeAsSet];
         [annotationsToKeep intersectSet:clusters];
         NSMutableSet *annotationsToAddAsSet = [NSMutableSet setWithSet:clusters];
@@ -257,8 +261,11 @@
     
     // Remove old polygons
     for (id<MKOverlay> overlay in mapView.overlays) {
-        if ([overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
-            [mapView removeOverlay:overlay];
+        if ([overlay isKindOfClass:CCHMapClusterControllerDebugPolygon.class]) {
+            CCHMapClusterControllerDebugPolygon *debugPolygon = (CCHMapClusterControllerDebugPolygon *)overlay;
+            if (debugPolygon.mapClusterController == self) {
+                [mapView removeOverlay:overlay];
+            }
         }
     }
     
@@ -271,8 +278,9 @@
         points[1] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMinY(cellRect));
         points[2] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMaxY(cellRect));
         points[3] = MKMapPointMake(MKMapRectGetMinX(cellRect), MKMapRectGetMaxY(cellRect));
-        MKPolygon *polygon = [CCHMapClusterControllerPolygon polygonWithPoints:points count:4];
-        [mapView addOverlay:polygon];
+        CCHMapClusterControllerDebugPolygon *debugPolygon = (CCHMapClusterControllerDebugPolygon *)[CCHMapClusterControllerDebugPolygon polygonWithPoints:points count:4];
+        debugPolygon.mapClusterController = self;
+        [mapView addOverlay:debugPolygon];
     });
 }
 
@@ -311,22 +319,12 @@
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)annotationViews
 {
-    // Forward to standard delegate
-    if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:didAddAnnotationViews:)]) {
-        [self.mapViewDelegateProxy.target mapView:mapView didAddAnnotationViews:annotationViews];
-    }
-
     // Animate annotations that get added
     [self.animator mapClusterController:self didAddAnnotationViews:annotationViews];
 }
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
 {
-    // Forward to standard delegate
-    if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:regionWillChangeAnimated:)]) {
-        [self.mapViewDelegateProxy.target mapView:mapView regionWillChangeAnimated:animated];
-    }
-    
     self.regionSpanBeforeChange = mapView.region.span;
     self.regionChanging = YES;
 }
@@ -334,11 +332,6 @@
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
     self.regionChanging = NO;
-    
-    // Forward to standard delegate
-    if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:regionDidChangeAnimated:)]) {
-        [self.mapViewDelegateProxy.target mapView:mapView regionDidChangeAnimated:animated];
-    }
     
     // Deselect all annotations when zooming in/out. Longitude delta will not change
     // unless zoom changes (in contrast to latitude delta).
@@ -374,47 +367,5 @@
         }
     }];
 }
-
-#if TARGET_OS_IPHONE
-- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
-{
-    MKOverlayView *view;
-	
-    // Forward to standard delegate
-    if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:viewForOverlay:)]) {
-        view = [self.mapViewDelegateProxy.target mapView:mapView viewForOverlay:overlay];
-    }
-
-    // Display debug polygons
-    if (view == nil && [overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
-        MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon *)overlay];
-        polygonView.strokeColor = [UIColor.blueColor colorWithAlphaComponent:0.7];
-        polygonView.lineWidth = 1;
-        view = polygonView;
-    }
-    
-    return view;
-}
-#else
-- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
-{
-    MKOverlayRenderer *renderer;
-	
-    // Forward to standard delegate
-    if ([self.mapViewDelegateProxy.target respondsToSelector:@selector(mapView:rendererForOverlay:)]) {
-        renderer = [self.mapViewDelegateProxy.target mapView:mapView rendererForOverlay:overlay];
-    }
-    
-    // Display debug polygons
-    if (renderer == nil && [overlay isKindOfClass:CCHMapClusterControllerPolygon.class]) {
-        MKPolygonRenderer *polygonRenderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
-        polygonRenderer.strokeColor = [NSColor.blueColor colorWithAlphaComponent:0.7];
-        polygonRenderer.lineWidth = 1;
-        renderer = polygonRenderer;
-    }
-    
-    return renderer;
-}
-#endif
 
 @end

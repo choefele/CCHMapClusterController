@@ -28,6 +28,7 @@
 		621834EA18A576C5000210AF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 621834E918A576C5000210AF /* SettingsViewController.m */; };
 		621834ED18A6AD25000210AF /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 621834EC18A6AD25000210AF /* Settings.m */; };
 		621CB61E18B660F70040A1FF /* CCHMapClusterAnnotationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 621CB61D18B660F70040A1FF /* CCHMapClusterAnnotationTests.m */; };
+		6222E32918BA61290045A528 /* CCHMapClusterControllerDebugPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 6222E32818BA61290045A528 /* CCHMapClusterControllerDebugPolygon.m */; };
 		626379F9184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */; };
 		62978DDF1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */; };
 		62D667831845E0F20046D5D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667821845E0F20046D5D5 /* Foundation.framework */; };
@@ -50,6 +51,8 @@
 		62D667D21845F8A40046D5D5 /* CCHMapClusterControllerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667CB1845F8A40046D5D5 /* CCHMapClusterControllerUtils.m */; };
 		62D667D41845F8A40046D5D5 /* CCHMapViewDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */; };
 		62D71E11187EB45500E52EE3 /* ClusterAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D71E10187EB45500E52EE3 /* ClusterAnnotationView.m */; };
+		62F9FC8218B2636200D5D8F2 /* CCHMapViewDelegateProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F9FC8118B2636200D5D8F2 /* CCHMapViewDelegateProxyTests.m */; };
+		62F9FC8418B3687400D5D8F2 /* CCHMapViewDelegateProxyViewForOverlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F9FC8318B3687400D5D8F2 /* CCHMapViewDelegateProxyViewForOverlayTests.m */; };
 		8A3EB24E18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A3EB24D18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m */; };
 /* End PBXBuildFile section */
 
@@ -102,6 +105,8 @@
 		621834EB18A6AD25000210AF /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		621834EC18A6AD25000210AF /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		621CB61D18B660F70040A1FF /* CCHMapClusterAnnotationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterAnnotationTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterAnnotationTests.m"; sourceTree = "<group>"; };
+		6222E32718BA61290045A528 /* CCHMapClusterControllerDebugPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapClusterControllerDebugPolygon.h; sourceTree = "<group>"; };
+		6222E32818BA61290045A528 /* CCHMapClusterControllerDebugPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapClusterControllerDebugPolygon.m; sourceTree = "<group>"; };
 		626379F8184CE4C10039F334 /* CCHMapClusterControllerUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerUtilsTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerUtilsTests.m"; sourceTree = "<group>"; };
 		62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerPerformanceTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerPerformanceTests.m"; sourceTree = "<group>"; };
 		62D6677F1845E0F20046D5D5 /* CCHMapClusterController Example iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CCHMapClusterController Example iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +142,8 @@
 		62D667CD1845F8A40046D5D5 /* CCHMapViewDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapViewDelegateProxy.m; sourceTree = "<group>"; };
 		62D71E0F187EB45500E52EE3 /* ClusterAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClusterAnnotationView.h; sourceTree = "<group>"; };
 		62D71E10187EB45500E52EE3 /* ClusterAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClusterAnnotationView.m; sourceTree = "<group>"; };
+		62F9FC8118B2636200D5D8F2 /* CCHMapViewDelegateProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapViewDelegateProxyTests.m; sourceTree = "<group>"; };
+		62F9FC8318B3687400D5D8F2 /* CCHMapViewDelegateProxyViewForOverlayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapViewDelegateProxyViewForOverlayTests.m; sourceTree = "<group>"; };
 		8A3EB24D18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHFadeInOutMapAnimatorTests.m; path = "../../CCHMapClusterController Tests/CCHFadeInOutMapAnimatorTests.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -285,6 +292,8 @@
 				8A3EB24D18A9B8C400605363 /* CCHFadeInOutMapAnimatorTests.m */,
 				48899967185F875600F3D6ED /* CCHMapClusterControllerTests.m */,
 				62978DDE1859D57F00748230 /* CCHMapClusterControllerPerformanceTests.m */,
+				62F9FC8118B2636200D5D8F2 /* CCHMapViewDelegateProxyTests.m */,
+				62F9FC8318B3687400D5D8F2 /* CCHMapViewDelegateProxyViewForOverlayTests.m */,
 				4889995E185D1D9300F3D6ED /* CCHMapTreeTests.m */,
 				62D667A81845E0F20046D5D5 /* Supporting Files */,
 			);
@@ -307,6 +316,8 @@
 				62D667C61845F8A40046D5D5 /* CCHMapClusterAnnotation.m */,
 				62D667C71845F8A40046D5D5 /* CCHMapClusterController.h */,
 				62D667C81845F8A40046D5D5 /* CCHMapClusterController.m */,
+				6222E32718BA61290045A528 /* CCHMapClusterControllerDebugPolygon.h */,
+				6222E32818BA61290045A528 /* CCHMapClusterControllerDebugPolygon.m */,
 				62D667C91845F8A40046D5D5 /* CCHMapClusterControllerDelegate.h */,
 				62D667CA1845F8A40046D5D5 /* CCHMapClusterControllerUtils.h */,
 				62D667CB1845F8A40046D5D5 /* CCHMapClusterControllerUtils.m */,
@@ -445,6 +456,7 @@
 				62D667D01845F8A40046D5D5 /* CCHMapClusterController.m in Sources */,
 				62D6678F1845E0F20046D5D5 /* main.m in Sources */,
 				621834EA18A576C5000210AF /* SettingsViewController.m in Sources */,
+				6222E32918BA61290045A528 /* CCHMapClusterControllerDebugPolygon.m in Sources */,
 				62D667CE1845F8A40046D5D5 /* CCHMapClusterAnnotation.m in Sources */,
 				4869F183184FC4CC00251ADC /* CCHNearCenterMapClusterer.m in Sources */,
 			);
@@ -459,8 +471,10 @@
 				48899957185CE2B000F3D6ED /* QTreeGeometryUtils.m in Sources */,
 				4889995A185D175000F3D6ED /* QCluster.m in Sources */,
 				48899968185F875600F3D6ED /* CCHMapClusterControllerTests.m in Sources */,
+				62F9FC8218B2636200D5D8F2 /* CCHMapViewDelegateProxyTests.m in Sources */,
 				4889995F185D1D9300F3D6ED /* CCHMapTreeTests.m in Sources */,
 				48899956185CE2B000F3D6ED /* QTree.m in Sources */,
+				62F9FC8418B3687400D5D8F2 /* CCHMapViewDelegateProxyViewForOverlayTests.m in Sources */,
 				48D7B0CA185A679F0071636B /* KPTreeNode.m in Sources */,
 				4869F1911851105A00251ADC /* CCHNearCenterMapClustererTests.m in Sources */,
 				4869F19818511B6D00251ADC /* CCHCenterOfMassMapClustererTests.m in Sources */,
