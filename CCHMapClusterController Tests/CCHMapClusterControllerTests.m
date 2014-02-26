@@ -266,6 +266,7 @@
     XCTAssertTrue([[self.mapView.annotations[1] annotations] containsObject:clusteredAnnotation]);
 }
 
+#if TARGET_OS_IPHONE
 - (void)testFadeInOut
 {
     CCHFadeInOutMapAnimator *animator = [[CCHFadeInOutMapAnimator alloc] init];
@@ -295,5 +296,6 @@
     XCTAssertTrue([self waitForCompletion:1.0]);
     XCTAssertEqualWithAccuracy(annotationView.alpha, 0.0, __FLT_EPSILON__);
 }
+#endif
 
 @end
