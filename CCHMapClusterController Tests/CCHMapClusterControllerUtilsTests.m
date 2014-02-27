@@ -23,10 +23,10 @@
 //  THE SOFTWARE.
 //
 
-#import <XCTest/XCTest.h>
-
 #import "CCHMapClusterControllerUtils.h"
 #import "CCHMapClusterAnnotation.h"
+
+#import <XCTest/XCTest.h>
 
 @interface CCHMapClusterControllerUtilsTests : XCTestCase
 
