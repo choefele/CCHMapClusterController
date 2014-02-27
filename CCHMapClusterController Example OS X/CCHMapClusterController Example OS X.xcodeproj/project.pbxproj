@@ -31,6 +31,12 @@
 		6217D70A18BDD98E00CDB8C3 /* CCHMapViewDelegateProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6217D70018BDD98E00CDB8C3 /* CCHMapViewDelegateProxyTests.m */; };
 		6217D70B18BDD98E00CDB8C3 /* CCHMapViewDelegateProxyOverlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6217D70118BDD98E00CDB8C3 /* CCHMapViewDelegateProxyOverlayTests.m */; };
 		6217D70C18BDD98E00CDB8C3 /* CCHNearCenterMapClustererTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6217D70218BDD98E00CDB8C3 /* CCHNearCenterMapClustererTests.m */; };
+		6268C20E18BFE1F500BB1C9A /* CCHMapClusterControllerPerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268C1F418BFE1F500BB1C9A /* CCHMapClusterControllerPerformanceTests.m */; };
+		6268C21418BFE1F500BB1C9A /* QCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268C20218BFE1F500BB1C9A /* QCluster.m */; };
+		6268C21518BFE1F500BB1C9A /* QNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268C20418BFE1F500BB1C9A /* QNode.m */; };
+		6268C21618BFE1F500BB1C9A /* QTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268C20718BFE1F500BB1C9A /* QTree.m */; };
+		6268C21718BFE1F500BB1C9A /* QTreeGeometryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268C20918BFE1F500BB1C9A /* QTreeGeometryUtils.m */; };
+		6268C21818BFE1F500BB1C9A /* TBQuadTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268C20D18BFE1F500BB1C9A /* TBQuadTree.m */; };
 		62D667431845E0BA0046D5D5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667421845E0BA0046D5D5 /* Cocoa.framework */; };
 		62D6674D1845E0BA0046D5D5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62D6674B1845E0BA0046D5D5 /* InfoPlist.strings */; };
 		62D6674F1845E0BA0046D5D5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D6674E1845E0BA0046D5D5 /* main.m */; };
@@ -92,6 +98,19 @@
 		6217D70018BDD98E00CDB8C3 /* CCHMapViewDelegateProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapViewDelegateProxyTests.m; path = "../../CCHMapClusterController Tests/CCHMapViewDelegateProxyTests.m"; sourceTree = "<group>"; };
 		6217D70118BDD98E00CDB8C3 /* CCHMapViewDelegateProxyOverlayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapViewDelegateProxyOverlayTests.m; path = "../../CCHMapClusterController Tests/CCHMapViewDelegateProxyOverlayTests.m"; sourceTree = "<group>"; };
 		6217D70218BDD98E00CDB8C3 /* CCHNearCenterMapClustererTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHNearCenterMapClustererTests.m; path = "../../CCHMapClusterController Tests/CCHNearCenterMapClustererTests.m"; sourceTree = "<group>"; };
+		6268C1F418BFE1F500BB1C9A /* CCHMapClusterControllerPerformanceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerPerformanceTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerPerformanceTests.m"; sourceTree = "<group>"; };
+		6268C20118BFE1F500BB1C9A /* QCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QCluster.h; sourceTree = "<group>"; };
+		6268C20218BFE1F500BB1C9A /* QCluster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QCluster.m; sourceTree = "<group>"; };
+		6268C20318BFE1F500BB1C9A /* QNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNode.h; sourceTree = "<group>"; };
+		6268C20418BFE1F500BB1C9A /* QNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QNode.m; sourceTree = "<group>"; };
+		6268C20518BFE1F500BB1C9A /* QTree-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QTree-Prefix.pch"; sourceTree = "<group>"; };
+		6268C20618BFE1F500BB1C9A /* QTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTree.h; sourceTree = "<group>"; };
+		6268C20718BFE1F500BB1C9A /* QTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTree.m; sourceTree = "<group>"; };
+		6268C20818BFE1F500BB1C9A /* QTreeGeometryUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTreeGeometryUtils.h; sourceTree = "<group>"; };
+		6268C20918BFE1F500BB1C9A /* QTreeGeometryUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTreeGeometryUtils.m; sourceTree = "<group>"; };
+		6268C20A18BFE1F500BB1C9A /* QTreeInsertable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTreeInsertable.h; sourceTree = "<group>"; };
+		6268C20C18BFE1F500BB1C9A /* TBQuadTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBQuadTree.h; sourceTree = "<group>"; };
+		6268C20D18BFE1F500BB1C9A /* TBQuadTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBQuadTree.m; sourceTree = "<group>"; };
 		62D6673F1845E0BA0046D5D5 /* CCHMapClusterController Example OS X.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CCHMapClusterController Example OS X.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62D667421845E0BA0046D5D5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		62D667451845E0BA0046D5D5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -167,6 +186,34 @@
 			);
 			name = CCHMapClusterController;
 			path = ../CCHMapClusterController;
+			sourceTree = "<group>";
+		};
+		6268C20018BFE1F500BB1C9A /* QTree */ = {
+			isa = PBXGroup;
+			children = (
+				6268C20118BFE1F500BB1C9A /* QCluster.h */,
+				6268C20218BFE1F500BB1C9A /* QCluster.m */,
+				6268C20318BFE1F500BB1C9A /* QNode.h */,
+				6268C20418BFE1F500BB1C9A /* QNode.m */,
+				6268C20518BFE1F500BB1C9A /* QTree-Prefix.pch */,
+				6268C20618BFE1F500BB1C9A /* QTree.h */,
+				6268C20718BFE1F500BB1C9A /* QTree.m */,
+				6268C20818BFE1F500BB1C9A /* QTreeGeometryUtils.h */,
+				6268C20918BFE1F500BB1C9A /* QTreeGeometryUtils.m */,
+				6268C20A18BFE1F500BB1C9A /* QTreeInsertable.h */,
+			);
+			name = QTree;
+			path = "../../CCHMapClusterController Tests/QTree";
+			sourceTree = "<group>";
+		};
+		6268C20B18BFE1F500BB1C9A /* TBQuadTree */ = {
+			isa = PBXGroup;
+			children = (
+				6268C20C18BFE1F500BB1C9A /* TBQuadTree.h */,
+				6268C20D18BFE1F500BB1C9A /* TBQuadTree.m */,
+			);
+			name = TBQuadTree;
+			path = "../../CCHMapClusterController Tests/TBQuadTree";
 			sourceTree = "<group>";
 		};
 		62D667361845E0BA0046D5D5 = {
@@ -245,12 +292,15 @@
 				6217D6F918BDD98E00CDB8C3 /* CCHCenterOfMassMapClustererTests.m */,
 				6217D6FA18BDD98E00CDB8C3 /* CCHFadeInOutMapAnimatorTests.m */,
 				6217D6FB18BDD98E00CDB8C3 /* CCHMapClusterAnnotationTests.m */,
+				6268C1F418BFE1F500BB1C9A /* CCHMapClusterControllerPerformanceTests.m */,
 				6217D6FD18BDD98E00CDB8C3 /* CCHMapClusterControllerTests.m */,
 				6217D6FE18BDD98E00CDB8C3 /* CCHMapClusterControllerUtilsTests.m */,
 				6217D6FF18BDD98E00CDB8C3 /* CCHMapTreeTests.m */,
 				6217D70018BDD98E00CDB8C3 /* CCHMapViewDelegateProxyTests.m */,
 				6217D70118BDD98E00CDB8C3 /* CCHMapViewDelegateProxyOverlayTests.m */,
 				6217D70218BDD98E00CDB8C3 /* CCHNearCenterMapClustererTests.m */,
+				6268C20018BFE1F500BB1C9A /* QTree */,
+				6268C20B18BFE1F500BB1C9A /* TBQuadTree */,
 				62D667671845E0BA0046D5D5 /* Supporting Files */,
 			);
 			path = "CCHMapClusterController Example OS XTests";
@@ -389,10 +439,16 @@
 				6217D70418BDD98E00CDB8C3 /* CCHFadeInOutMapAnimatorTests.m in Sources */,
 				6217D70818BDD98E00CDB8C3 /* CCHMapClusterControllerUtilsTests.m in Sources */,
 				6217D70918BDD98E00CDB8C3 /* CCHMapTreeTests.m in Sources */,
+				6268C21818BFE1F500BB1C9A /* TBQuadTree.m in Sources */,
+				6268C21418BFE1F500BB1C9A /* QCluster.m in Sources */,
+				6268C21718BFE1F500BB1C9A /* QTreeGeometryUtils.m in Sources */,
+				6268C21618BFE1F500BB1C9A /* QTree.m in Sources */,
 				6217D70718BDD98E00CDB8C3 /* CCHMapClusterControllerTests.m in Sources */,
 				6217D70C18BDD98E00CDB8C3 /* CCHNearCenterMapClustererTests.m in Sources */,
+				6268C20E18BFE1F500BB1C9A /* CCHMapClusterControllerPerformanceTests.m in Sources */,
 				6217D70318BDD98E00CDB8C3 /* CCHCenterOfMassMapClustererTests.m in Sources */,
 				6217D70B18BDD98E00CDB8C3 /* CCHMapViewDelegateProxyOverlayTests.m in Sources */,
+				6268C21518BFE1F500BB1C9A /* QNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +504,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -486,6 +543,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;

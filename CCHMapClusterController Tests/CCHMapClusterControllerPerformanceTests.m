@@ -6,14 +6,16 @@
 //  Copyright (c) 2013 Claus Höfele. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
 
 #import "CCHMapClusterControllerUtils.h"
+#if TARGET_OS_IPHONE
 #import "KPAnnotationTree.h"
+#endif
 #import "TBQuadTree.h"
 #import "QTree.h"
 
 #include <mach/mach_time.h>
+#import <XCTest/XCTest.h>
 
 #define NUM_PASSES 1
 
@@ -105,6 +107,7 @@ double performAndTrackTime(int numPasses, dispatch_block_t block)
     NSLog(@"Duration %@: %f ms", NSStringFromSelector(_cmd), duration / 1E6);
 }
 
+#if TARGET_OS_IPHONE
 - (void)testKPAnnotationTree
 {
     KPAnnotationTree *tree = [[KPAnnotationTree alloc] initWithAnnotations:self.annotations];
@@ -125,6 +128,7 @@ double performAndTrackTime(int numPasses, dispatch_block_t block)
     
     NSLog(@"Duration %@: %f ms", NSStringFromSelector(_cmd), duration / 1E6);
 }
+#endif
 
 TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
 {
