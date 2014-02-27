@@ -29,7 +29,7 @@
 		6217D70818BDD98E00CDB8C3 /* CCHMapClusterControllerUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6217D6FE18BDD98E00CDB8C3 /* CCHMapClusterControllerUtilsTests.m */; };
 		6217D70918BDD98E00CDB8C3 /* CCHMapTreeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6217D6FF18BDD98E00CDB8C3 /* CCHMapTreeTests.m */; };
 		6217D70A18BDD98E00CDB8C3 /* CCHMapViewDelegateProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6217D70018BDD98E00CDB8C3 /* CCHMapViewDelegateProxyTests.m */; };
-		6217D70B18BDD98E00CDB8C3 /* CCHMapViewDelegateProxyViewForOverlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6217D70118BDD98E00CDB8C3 /* CCHMapViewDelegateProxyViewForOverlayTests.m */; };
+		6217D70B18BDD98E00CDB8C3 /* CCHMapViewDelegateProxyOverlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6217D70118BDD98E00CDB8C3 /* CCHMapViewDelegateProxyOverlayTests.m */; };
 		6217D70C18BDD98E00CDB8C3 /* CCHNearCenterMapClustererTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6217D70218BDD98E00CDB8C3 /* CCHNearCenterMapClustererTests.m */; };
 		62D667431845E0BA0046D5D5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667421845E0BA0046D5D5 /* Cocoa.framework */; };
 		62D6674D1845E0BA0046D5D5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62D6674B1845E0BA0046D5D5 /* InfoPlist.strings */; };
@@ -90,7 +90,7 @@
 		6217D6FE18BDD98E00CDB8C3 /* CCHMapClusterControllerUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapClusterControllerUtilsTests.m; path = "../../CCHMapClusterController Tests/CCHMapClusterControllerUtilsTests.m"; sourceTree = "<group>"; };
 		6217D6FF18BDD98E00CDB8C3 /* CCHMapTreeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapTreeTests.m; path = "../../CCHMapClusterController Tests/CCHMapTreeTests.m"; sourceTree = "<group>"; };
 		6217D70018BDD98E00CDB8C3 /* CCHMapViewDelegateProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapViewDelegateProxyTests.m; path = "../../CCHMapClusterController Tests/CCHMapViewDelegateProxyTests.m"; sourceTree = "<group>"; };
-		6217D70118BDD98E00CDB8C3 /* CCHMapViewDelegateProxyViewForOverlayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapViewDelegateProxyViewForOverlayTests.m; path = "../../CCHMapClusterController Tests/CCHMapViewDelegateProxyViewForOverlayTests.m"; sourceTree = "<group>"; };
+		6217D70118BDD98E00CDB8C3 /* CCHMapViewDelegateProxyOverlayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHMapViewDelegateProxyOverlayTests.m; path = "../../CCHMapClusterController Tests/CCHMapViewDelegateProxyOverlayTests.m"; sourceTree = "<group>"; };
 		6217D70218BDD98E00CDB8C3 /* CCHNearCenterMapClustererTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCHNearCenterMapClustererTests.m; path = "../../CCHMapClusterController Tests/CCHNearCenterMapClustererTests.m"; sourceTree = "<group>"; };
 		62D6673F1845E0BA0046D5D5 /* CCHMapClusterController Example OS X.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CCHMapClusterController Example OS X.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62D667421845E0BA0046D5D5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -249,7 +249,7 @@
 				6217D6FE18BDD98E00CDB8C3 /* CCHMapClusterControllerUtilsTests.m */,
 				6217D6FF18BDD98E00CDB8C3 /* CCHMapTreeTests.m */,
 				6217D70018BDD98E00CDB8C3 /* CCHMapViewDelegateProxyTests.m */,
-				6217D70118BDD98E00CDB8C3 /* CCHMapViewDelegateProxyViewForOverlayTests.m */,
+				6217D70118BDD98E00CDB8C3 /* CCHMapViewDelegateProxyOverlayTests.m */,
 				6217D70218BDD98E00CDB8C3 /* CCHNearCenterMapClustererTests.m */,
 				62D667671845E0BA0046D5D5 /* Supporting Files */,
 			);
@@ -392,7 +392,7 @@
 				6217D70718BDD98E00CDB8C3 /* CCHMapClusterControllerTests.m in Sources */,
 				6217D70C18BDD98E00CDB8C3 /* CCHNearCenterMapClustererTests.m in Sources */,
 				6217D70318BDD98E00CDB8C3 /* CCHCenterOfMassMapClustererTests.m in Sources */,
-				6217D70B18BDD98E00CDB8C3 /* CCHMapViewDelegateProxyViewForOverlayTests.m in Sources */,
+				6217D70B18BDD98E00CDB8C3 /* CCHMapViewDelegateProxyOverlayTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
