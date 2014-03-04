@@ -3,7 +3,7 @@ CCHMapClusterController
 
 `CCHMapClusterController` solves the problem of displaying many annotations on an `MKMapView` and is available under the MIT license.
 
-[![Build Status](https://travis-ci.org/choefele/CCHMapClusterController.png?branch=master)](https://travis-ci.org/choefele/CCHMapClusterController) [![Stories in Review](https://badge.waffle.io/choefele/cchmapclustercontroller.png?label=in%20review&title=In%20Review)](https://waffle.io/choefele/cchmapclustercontroller) [![Stories in Ready](https://badge.waffle.io/choefele/cchmapclustercontroller.png?label=ready&title=Ready)](https://waffle.io/choefele/cchmapclustercontroller) [![Stories in Progress](https://badge.waffle.io/choefele/cchmapclustercontroller.png?label=in%20progress&title=In%20Progress)](https://waffle.io/choefele/cchmapclustercontroller)
+[![Build Status](https://travis-ci.org/choefele/CCHMapClusterController.png?branch=master)](https://travis-ci.org/choefele/CCHMapClusterController) [![Version](https://cocoapod-badges.herokuapp.com/v/CCHMapClusterController/badge.png)]() [![platform](https://cocoapod-badges.herokuapp.com/p/CCHMapClusterController/badge.png)]() [![Issues in Progress](https://badge.waffle.io/choefele/cchmapclustercontroller.png?label=in%20progress&title=In%20Progress)](https://waffle.io/choefele/cchmapclustercontroller)
 
 ## Getting started
 
