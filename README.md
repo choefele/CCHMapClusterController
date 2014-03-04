@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/choefele/cchmapclustercontroller.png?label=ready&title=Ready)](https://waffle.io/choefele/cchmapclustercontroller)
 CCHMapClusterController
 =======================
 
