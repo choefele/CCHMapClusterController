@@ -76,16 +76,10 @@
 
 - (BOOL)respondsToSelector:(SEL)selector
 {
-    // Special case for direct implementation in this class
-#if TARGET_OS_IPHONE
-    if (selector == @selector(mapView:viewForOverlay:)) {
+    // Check if selector is implemented in this class
+    if ([super respondsToSelector:selector]) {
         return YES;
     }
-#else
-    if (selector == @selector(mapView:rendererForOverlay:)) {
-        return YES;
-    }
-#endif
     
     // Otherwise, use forwardInvocation: on delegates and target
     for (id delegate in self.delegates) {

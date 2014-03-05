@@ -132,7 +132,11 @@
     CCHMapViewDelegateProxy *delegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:proxyDelegate];
     (void)delegateProxy;
     
-    MKOverlayView *overlayView = [mapView.delegate mapView:mapView viewForOverlay:overlay];
+    MKOverlayView *overlayView;
+    if ([mapView.delegate respondsToSelector:@selector(mapView:viewForOverlay:)]) {
+        overlayView = [mapView.delegate mapView:mapView viewForOverlay:overlay];
+    }
+    
     return overlayView;
 }
 #else
@@ -144,7 +148,10 @@
     CCHMapViewDelegateProxy *delegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:proxyDelegate];
     (void)delegateProxy;
     
-    MKOverlayRenderer *overlayRenderer = [mapView.delegate mapView:mapView rendererForOverlay:overlay];
+    MKOverlayRenderer *overlayRenderer;
+    if ([mapView.delegate respondsToSelector:@selector(mapView:rendererForOverlay:)]) {
+        overlayRenderer = [mapView.delegate mapView:mapView rendererForOverlay:overlay];
+    }
     return overlayRenderer;
 }
 #endif
