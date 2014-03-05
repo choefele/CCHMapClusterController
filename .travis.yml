@@ -1,4 +1,5 @@
 language: objective-c
+osx_image: mavericks
 install: echo
 script: 
   - xcodebuild -workspace CCHMapClusterController.xcworkspace -scheme 'CCHMapClusterController Example iOS' -sdk iphonesimulator7.0 -configuration Debug -destination 'platform=iOS Simulator,OS=7.0,name=iPhone Retina (4-inch)' test
