@@ -143,6 +143,7 @@
     self.settings.debuggingEnabled = self.debuggingEnabledSwitch.on;
     self.settings.cellSize = self.cellSizeStepper.value;
     self.settings.marginFactor = self.marginFactorStepper.value;
+    self.settings.groupingEnabled = self.groupingEnabledSwitch.on;
     self.settings.dataSet = (SettingsDataSet)[self selectedRowForSection:SECTION_DATA_SET];
     self.settings.clusterer = (SettingsClusterer)[self selectedRowForSection:SECTION_CLUSTERER];
     self.settings.animator = (SettingsAnimator)[self selectedRowForSection:SECTION_ANIMATOR];

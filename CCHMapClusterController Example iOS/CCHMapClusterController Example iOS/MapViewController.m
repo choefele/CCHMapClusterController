@@ -69,10 +69,10 @@
 
 - (void)updateWithSettings:(Settings *)settings
 {
-    self.count = 0;
     self.settings = settings;
     
     // Reset
+    self.count = 0;
     [self.dataReader stopReadingData];
     [self.mapClusterControllerRed removeAnnotations:self.mapClusterControllerRed.annotations.allObjects withCompletionHandler:NULL];
     [self.mapClusterControllerBlue removeAnnotations:self.mapClusterControllerBlue.annotations.allObjects withCompletionHandler:NULL];
@@ -122,10 +122,14 @@
 
 - (void)dataReader:(DataReader *)dataReader addAnnotations:(NSArray *)annotations
 {
-    if (self.count++ % 2 == 0) {
-        [self.mapClusterControllerRed addAnnotations:annotations withCompletionHandler:NULL];
+    if (self.settings.isGroupingEnabled) {
+        if (self.count++ % 2 == 0) {
+            [self.mapClusterControllerRed addAnnotations:annotations withCompletionHandler:NULL];
+        } else {
+            [self.mapClusterControllerBlue addAnnotations:annotations withCompletionHandler:NULL];
+        }
     } else {
-        [self.mapClusterControllerBlue addAnnotations:annotations withCompletionHandler:NULL];
+        [self.mapClusterControllerRed addAnnotations:annotations withCompletionHandler:NULL];        
     }
 }
 
