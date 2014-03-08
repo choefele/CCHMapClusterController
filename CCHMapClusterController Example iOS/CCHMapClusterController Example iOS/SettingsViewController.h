@@ -16,11 +16,4 @@
 @property (nonatomic, copy) void (^completionBlock)(Settings *settings);
 @property (nonatomic, copy) Settings *settings;
 
-@property (weak, nonatomic) IBOutlet UITableViewCell *debuggingEnabledTableViewCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *cellSizeTableViewCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *marginFactorTableViewCell;
-
-- (IBAction)cancel:(UIBarButtonItem *)sender;
-- (IBAction)done:(UIBarButtonItem *)sender;
-
 @end

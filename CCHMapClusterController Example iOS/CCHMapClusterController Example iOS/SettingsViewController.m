@@ -19,9 +19,15 @@
 
 @interface SettingsViewController()
 
+@property (weak, nonatomic) IBOutlet UITableViewCell *debuggingEnabledTableViewCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *cellSizeTableViewCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *marginFactorTableViewCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *groupingEnabledTableViewCell;
+
 @property (nonatomic, strong) UISwitch *debuggingEnabledSwitch;
 @property (nonatomic, strong) UIStepper *cellSizeStepper;
 @property (nonatomic, strong) UIStepper *marginFactorStepper;
+@property (nonatomic, strong) UISwitch *groupingEnabledSwitch;
 
 @end
 
@@ -31,6 +37,7 @@
 {
     [super viewDidLoad];
 
+    // SECTION_GENERAL
     self.debuggingEnabledSwitch = [[UISwitch alloc] init];
     self.debuggingEnabledSwitch.on = self.settings.isDebuggingEnabled;
     self.debuggingEnabledTableViewCell.accessoryView = self.debuggingEnabledSwitch;
@@ -51,12 +58,19 @@
     self.marginFactorTableViewCell.accessoryView = self.marginFactorStepper;
     self.marginFactorTableViewCell.detailTextLabel.text = [NSString stringWithFormat:@"%.1f", self.marginFactorStepper.value];
 
+    // SECTION_DATA_SET
     NSIndexPath *dataSetIndexPath = [NSIndexPath indexPathForRow:(NSInteger)self.settings.dataSet inSection:SECTION_DATA_SET];
     [self selectIndexPath:dataSetIndexPath];
+    
+    self.groupingEnabledSwitch = [[UISwitch alloc] init];
+    self.groupingEnabledSwitch.on = self.settings.isGroupingEnabled;
+    self.groupingEnabledTableViewCell.accessoryView = self.groupingEnabledSwitch;
 
+    // SECTION_CLUSTERER
     NSIndexPath *clustererIndexPath = [NSIndexPath indexPathForRow:(NSInteger)self.settings.clusterer inSection:SECTION_CLUSTERER];
     [self selectIndexPath:clustererIndexPath];
 
+    // SECTION_ANIMATOR
     NSIndexPath *animatorIndexPath = [NSIndexPath indexPathForRow:(NSInteger)self.settings.clusterer inSection:SECTION_ANIMATOR];
     [self selectIndexPath:animatorIndexPath];
 }

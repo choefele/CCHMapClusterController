@@ -28,6 +28,7 @@ typedef enum {
 @property (nonatomic, assign, getter = isDebuggingEnabled) BOOL debuggingEnabled;
 @property (nonatomic, assign) double cellSize;
 @property (nonatomic, assign) double marginFactor;
+@property (nonatomic, assign, getter = isGroupingEnabled) BOOL groupingEnabled;
 @property (nonatomic, assign) SettingsDataSet dataSet;
 @property (nonatomic, assign) SettingsClusterer clusterer;
 @property (nonatomic, assign) SettingsAnimator animator;
