@@ -150,7 +150,7 @@
 
 - (void)mapClusterController:(CCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
 {
-    ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[self.mapClusterControllerRed.mapView viewForAnnotation:mapClusterAnnotation];
+    ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[self.mapView viewForAnnotation:mapClusterAnnotation];
     clusterAnnotationView.count = mapClusterAnnotation.annotations.count;
 }
 

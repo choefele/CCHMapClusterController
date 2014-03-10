@@ -5,6 +5,8 @@ CCHMapClusterController
 
 [![Build Status](https://travis-ci.org/choefele/CCHMapClusterController.png?branch=master)](https://travis-ci.org/choefele/CCHMapClusterController)&nbsp;![Version](https://cocoapod-badges.herokuapp.com/v/CCHMapClusterController/badge.png)&nbsp;![Platform](https://cocoapod-badges.herokuapp.com/p/CCHMapClusterController/badge.png)&nbsp;[![Issues in Progress](https://badge.waffle.io/choefele/cchmapclustercontroller.png?label=in%20progress&title=In%20Progress)](https://waffle.io/choefele/cchmapclustercontroller)
 
+See [Changes](https://github.com/choefele/CCHMapClusterController/blob/master/CHANGES.md) for a high-level overview of recent updates.
+
 ## Getting started
 
 If you have your project set up with an `MKMapView`, integrating clustering will take 4 lines of code:
@@ -38,23 +40,20 @@ To try out the clustering, experiment with the examples included in this project
 
 ## Developer's guide
 
-- [Recent changes](#recent-changes)
 - [Installation](#installation)
 - [Performance](#performance)
 - [Cell size and margin factor](#cell-size-and-margin-factor)
-- [Customizing cluster annotations](#customizing-cluster-annotations)
+- [Custom annotation views](#custom-annotation-views)
+- [Custom titles and subtitles for callouts](#custom-titles-and-subtitles-for-callouts)
 - [Positioning cluster annotations](#positioning-cluster-annotations)
 - [Animations](#animations)
+- [Cluster grouping](#cluster-grouping)
 - [Code recipes](#code-recipes)
  - [Finding a clustered annotation](#finding-a-clustered-annotation)
  - [Centering the map without changing the zoom level](#centering-the-map-without-changing-the-zoom-level)
  - [Zooming in to a cluster](#zooming-in-to-a-cluster)
 - [Additional reading](#additional-reading)
 - [License (MIT)](#license-mit)
-
-### Recent changes
-
-See [Changes](https://github.com/choefele/CCHMapClusterController/blob/master/CHANGES.md) for a high-level overview of recent updates.
 
 ### Installation
 
@@ -88,9 +87,35 @@ The `marginFactor` property configures the additional map area around the visibl
 
 To debug these settings, set the `debugEnabled` property to `YES`. This will display the clustering grid over the map.
 
-### Customizing cluster annotations
+### Custom annotation views
 
-Cluster annotations are of type `CCHMapClusterAnnotation`. You can customize their titles and subtitles by registering as a `CCHMapClusterControllerDelegate` with `CCHMapClusterController` and implementing two delegate methods.
+Cluster annotations are of type `CCHMapClusterAnnotation`. Customizing the look of clustered annotations is possible via the standard `mapView:viewForAnnotation:` method that's part of `MKMapViewDelegate`. In addition, the delegate method `mapClusterController:willReuseMapClusterAnnotation:` is called when a cluster annotation is reused for a cell (see property `reuseExistingClusterAnnotations` below).
+
+```Objective-C
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    MKAnnotationView *annotationView;
+    
+    if ([annotation isKindOfClass:CCHMapClusterAnnotation.class]) {
+        ...
+        annotationView = clusterAnnotationView;
+    }
+    
+    return annotationView;
+}
+
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+{
+    ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[self.mapView viewForAnnotation:mapClusterAnnotation];
+    ...
+}
+```
+
+The iOS example contains code that demonstrates how to display the current cluster size as part of the annotation view.
+
+### Custom titles and subtitles for callouts
+
+You can customize titles and subtitles used for their callouts by registering as a `CCHMapClusterControllerDelegate` with `CCHMapClusterController` and implementing two delegate methods.
 
 In these methods, `CCHMapClusterAnnotation` gives you access to the annotations contained in the cluster through the property `annotations`. An annotation in this array will always implement `MKAnnotation`, but is otherwise of same type as the instances you added to `CCHMapClusterController` when calling `addAnnotations:withCompletionHandler:`.
 
@@ -113,8 +138,6 @@ Here is an example:
 }
 ```
 
-Customizing the look of clustered annotations is possible via the standard `mapView:viewForAnnotation:` method that's part of `MKMapViewDelegate`. In addition, the delegate method `mapClusterController:willReuseMapClusterAnnotation:` is called when a cluster annotation is reused for a cell (see property `reuseExistingClusterAnnotations` below). The iOS example contains code that demonstrates how to display the current cluster size as part of the annotation view.
-
 ### Positioning cluster annotations
 
 For aesthetic reasons, cluster annotations are not lined up evenly as this would make the underlying grid obvious. This library comes with two implementations to configure the position of cluster annotations:
@@ -130,6 +153,22 @@ In addition, `CCHMapClusterController` by default reuses cluster annotations for
 
 By default, annotation views for cluster annotations receive an animation that fades the view in when added and out when removed (`CCHFadeInOutAnimator`). You can provide your own animation code by implementing the protocol `CCHMapAnimator` and changing `CCHMapClusterController`'s property `animator`.
 
+### Cluster grouping
+
+To have independent groups of clusters, more than one `CCHMapClusterController` can work on the same `MKMapView` instance. Each `CCHMapClusterController` can have its own settings.
+
+```Objective-C
+// First cluster controller
+self.mapClusterControllerRed = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+self.mapClusterControllerRed.cellSize = ...;
+self.mapClusterControllerRed.marginFactor = ...;
+    
+// Second cluster controller
+self.mapClusterControllerBlue = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+self.mapClusterControllerBlue.cellSize = ...;
+self.mapClusterControllerBlue.marginFactor = ...;
+```
+
 ### Code recipes
 
 #### Finding a clustered annotation
@@ -141,12 +180,12 @@ For this to work, you have to figure out which cluster contains the selected ann
 `CCHMapClusterController` contains an easy to use interface to help you with this. Note that you have to use an annotation that has previously been added to the clustering:
 
 ```Objective-C
-    id<MKAnnotation> clusteredAnnotation = ...
-    [self.mapClusterController addAnnotations:@[clusteredAnnotation] withCompletionHandler:NULL];
+id<MKAnnotation> clusteredAnnotation = ...
+[self.mapClusterController addAnnotations:@[clusteredAnnotation] withCompletionHandler:NULL];
     
-    ...
+...
     
-    [self.mapClusterController selectAnnotation:clusteredAnnotation andZoomToRegionWithLatitudinalMeters:1000 longitudinalMeters:1000];
+[self.mapClusterController selectAnnotation:clusteredAnnotation andZoomToRegionWithLatitudinalMeters:1000 longitudinalMeters:1000];
 ``` 
 
 #### Centering the map without changing the zoom level
