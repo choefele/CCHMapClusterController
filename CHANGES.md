@@ -1,7 +1,7 @@
 Changes
 =======
 
-## Upcoming version
+## 1.5.0
 
 - Multiple `CCHMapClusterController`s can now use the same `MKMapView` instance. This allows you to have multiple groups of clusters where each group has its own settings (thanks to eikebartles for ideas and suggestions)
 - `selectAnnotation:andZoomToRegionWithLatitudinalMeters:longitudinalMeters:` will now assert that the right annotation has been passed in. The documentation has also been updated with a better example on how to use this API (thanks to tspacek for the request)
