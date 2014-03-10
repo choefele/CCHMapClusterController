@@ -110,7 +110,7 @@
     }
     self.mapView.region = region;
     
-    // Same settings for second cluster controller
+    // Similar settings for second cluster controller
     if (settings.isGroupingEnabled) {
         if (self.mapClusterControllerBlue == nil) {
             self.mapClusterControllerBlue = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
@@ -118,7 +118,7 @@
         }
         
         self.mapClusterControllerBlue.debuggingEnabled = settings.isDebuggingEnabled;
-        self.mapClusterControllerBlue.cellSize = settings.cellSize;
+        self.mapClusterControllerBlue.cellSize = settings.cellSize + 20;
         self.mapClusterControllerBlue.marginFactor = settings.marginFactor;
         self.mapClusterControllerBlue.clusterer = self.mapClusterer;
         self.mapClusterControllerBlue.animator = self.mapAnimator;
