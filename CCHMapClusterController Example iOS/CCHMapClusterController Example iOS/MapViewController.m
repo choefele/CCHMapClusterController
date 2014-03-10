@@ -49,9 +49,6 @@
     self.mapClusterControllerRed = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.mapClusterControllerRed.delegate = self;
     
-    self.mapClusterControllerBlue = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
-    self.mapClusterControllerBlue.delegate = self;
-    
     // Read annotations
     self.dataReader = [[DataReader alloc] init];
     self.dataReader.delegate = self;
@@ -76,6 +73,7 @@
     [self.dataReader stopReadingData];
     [self.mapClusterControllerRed removeAnnotations:self.mapClusterControllerRed.annotations.allObjects withCompletionHandler:NULL];
     [self.mapClusterControllerBlue removeAnnotations:self.mapClusterControllerBlue.annotations.allObjects withCompletionHandler:NULL];
+    [self.mapView removeAnnotations:self.mapView.annotations];
     for (id<MKOverlay> overlay in self.mapView.overlays) {
         [self.mapView removeOverlay:overlay];
     }
@@ -97,13 +95,6 @@
     }
     self.mapClusterControllerRed.animator = self.mapAnimator;
     
-    // Similar settings for second cluster controller
-    self.mapClusterControllerBlue.debuggingEnabled = settings.isDebuggingEnabled;
-    self.mapClusterControllerBlue.cellSize = settings.cellSize + 10;
-    self.mapClusterControllerBlue.marginFactor = settings.marginFactor;
-    self.mapClusterControllerBlue.clusterer = self.mapClusterer;
-    self.mapClusterControllerBlue.animator = self.mapAnimator;
-
     // Region and data
     MKCoordinateRegion region;
     if (self.settings.dataSet == SettingsDataSetBerlin) {
@@ -118,6 +109,22 @@
         [self.dataReader startReadingUSData];
     }
     self.mapView.region = region;
+    
+    // Same settings for second cluster controller
+    if (settings.isGroupingEnabled) {
+        if (self.mapClusterControllerBlue == nil) {
+            self.mapClusterControllerBlue = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+            self.mapClusterControllerBlue.delegate = self;
+        }
+        
+        self.mapClusterControllerBlue.debuggingEnabled = settings.isDebuggingEnabled;
+        self.mapClusterControllerBlue.cellSize = settings.cellSize;
+        self.mapClusterControllerBlue.marginFactor = settings.marginFactor;
+        self.mapClusterControllerBlue.clusterer = self.mapClusterer;
+        self.mapClusterControllerBlue.animator = self.mapAnimator;
+    } else {
+        self.mapClusterControllerBlue = nil;
+    }
 }
 
 - (void)dataReader:(DataReader *)dataReader addAnnotations:(NSArray *)annotations
