@@ -52,6 +52,7 @@ To try out the clustering, experiment with the examples included in this project
  - [Finding a clustered annotation](#finding-a-clustered-annotation)
  - [Centering the map without changing the zoom level](#centering-the-map-without-changing-the-zoom-level)
  - [Zooming in to a cluster](#zooming-in-to-a-cluster)
+ - [Showing callout accessory views for unclustered annotations only](#showing-callout-accessory-views-for-unclustered-annotations-only)
 - [Additional reading](#additional-reading)
 - [License (MIT)](#license-mit)
 
@@ -225,7 +226,7 @@ Instead, `CCHMapClusterAnnotation` offers the method `mapRect` that manually cal
 }
 ```
 
-#### Showing callout accessory views unclustered annotations only
+#### Showing callout accessory views for unclustered annotations only
 
 This can be achieved by setting up the accessory views and then controlling their display status via the `canShowCallout` property.
 
