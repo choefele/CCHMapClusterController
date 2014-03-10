@@ -171,6 +171,8 @@ self.mapClusterControllerBlue.marginFactor = ...;
 
 ### Code recipes
 
+This list contains solutions to a number of issues that people have encountered. Feel free to ask additional questions by [creating a new issue](https://github.com/choefele/CCHMapClusterController/issues/new).
+
 #### Finding a clustered annotation
 
 A common use case is to have a search field where the user can make a choice from a list of matching annotations. Selecting an annotation would then zoom to its position on the map.
@@ -220,6 +222,31 @@ Instead, `CCHMapClusterAnnotation` offers the method `mapRect` that manually cal
         UIEdgeInsets edgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
         [mapView setVisibleMapRect:mapRect edgePadding:edgeInsets animated:YES];
     }
+}
+```
+
+#### Showing callout accessory views unclustered annotations only
+
+This can be achieved by setting up the accessory views and then controlling their display status via the `canShowCallout` property.
+
+```Objective-C
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    MKAnnotationView *annotationView;
+    
+    if ([annotation isKindOfClass:CCHMapClusterAnnotation.class]) {
+        annotationView = ...
+        annotationView.rightCalloutAccessoryView = ...
+
+        CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotation;
+        annotationView.canShowCallout = clusterAnnotation.isOneLocation;
+    }
+}
+
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+{
+    ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[self.mapClusterController.mapView viewForAnnotation:mapClusterAnnotation];
+    clusterAnnotationView.canShowCallout = clusterAnnotation.isOneLocation;
 }
 ```
 
