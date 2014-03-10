@@ -7,6 +7,7 @@ Changes
 - `selectAnnotation:andZoomToRegionWithLatitudinalMeters:longitudinalMeters:` will now assert that the right annotation has been passed in. The documentation has also been updated with a better example on how to use this API (thanks to tspacek for the request)
 - Added the method `mapRect` to `CCHMapClusterAnnotation` to calculate the area that includes all clustered annotations. Also added a code recipe on how to use this method to zoom in to a cluster.
 - Updated code recipe for centering the map without changing the zoom level (thanks to plu for suggesting this)
+- Added code recipe for showing callout accessory views dynamically (thanks to SSA111 for suggesting this)
 - Added unit tests for animation code (thanks to nferruzzi for the pull request)
 
 ## 1.4.1
