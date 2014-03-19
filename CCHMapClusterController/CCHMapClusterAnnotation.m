@@ -36,7 +36,7 @@
     if (_title == nil && [self.delegate respondsToSelector:@selector(mapClusterController:titleForMapClusterAnnotation:)]) {
         _title = [self.delegate mapClusterController:nil titleForMapClusterAnnotation:self];
     }
-
+    
     return _title;
 }
 
@@ -81,6 +81,17 @@
     }
     
     return mapRect;
+}
+
+- (BOOL)isEqual:(id)object
+{
+    return [object respondsToSelector:@selector(annotations)]
+        && [[object annotations] isEqual:_annotations];
+}
+
+- (NSUInteger)hash
+{
+    return [_annotations hash];
 }
 
 @end
