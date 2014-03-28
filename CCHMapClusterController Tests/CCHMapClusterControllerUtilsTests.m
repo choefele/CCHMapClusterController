@@ -315,4 +315,12 @@
     XCTAssertEqualObjects(filteredAnnotations.anyObject, clusterAnnotation);
 }
 
+- (void)testZoomLevelForRegion
+{
+    double zoomLevel = CCHMapClusterControllerZoomLevelForRegion(0, 360, 256);
+    XCTAssertEqualWithAccuracy(zoomLevel, 0, __FLT_EPSILON__);
+    zoomLevel = CCHMapClusterControllerZoomLevelForRegion(0, 180, 256);
+    XCTAssertEqualWithAccuracy(zoomLevel, 1, __FLT_EPSILON__);
+}
+
 @end

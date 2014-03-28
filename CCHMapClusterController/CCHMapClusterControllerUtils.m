@@ -172,3 +172,28 @@ NSSet *CCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotati
     
     return filteredAnnotations;
 }
+
+static inline double originXForLongitudeAtZoomLevel22(CLLocationDegrees longitude)
+{
+    const double MERCATOR_OFFSET = 536870912;  // (width in points at zoom level 22) / 2
+    const double MERCATOR_RADIUS_SCALE = MERCATOR_OFFSET / 180.0;
+    
+    return MERCATOR_OFFSET + MERCATOR_RADIUS_SCALE * longitude;
+}
+
+double CCHMapClusterControllerZoomLevelForRegion(CLLocationDegrees longitudeCenter, CLLocationDegrees longitudeDelta, CGFloat width)
+{
+    // Based on http://troybrant.net/blog/2010/01/mkmapview-and-zoom-levels-a-visual-guide/
+    // Adjusted so that at zoom level 0, the entire world fits on the screen.
+    const double LOG_2 = 0.69314718055994529;  // log(2)
+    
+    double centerPointX = originXForLongitudeAtZoomLevel22(longitudeCenter);
+    double topLeftPointX = originXForLongitudeAtZoomLevel22(longitudeCenter - longitudeDelta / 2);
+    
+    double scaledMapWidth = (centerPointX - topLeftPointX) * 2;
+    double zoomScale = scaledMapWidth / width;
+    double zoomExponent = log(zoomScale) / LOG_2;
+    double zoomLevel = 22 - zoomExponent;
+    
+    return zoomLevel;
+}
