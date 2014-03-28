@@ -23,6 +23,8 @@
 
 @interface MapViewController()<DataReaderDelegate, CCHMapClusterControllerDelegate, MKMapViewDelegate>
 
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
 @property (strong, nonatomic) DataReader *dataReader;
 @property (strong, nonatomic) Settings *settings;
 @property (strong, nonatomic) CCHMapClusterController *mapClusterControllerRed;
