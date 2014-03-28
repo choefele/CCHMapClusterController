@@ -173,7 +173,7 @@ NSSet *CCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotati
     return filteredAnnotations;
 }
 
-static inline double originXForLongitudeAtZoomLevel22(CLLocationDegrees longitude)
+NS_INLINE double originXForLongitudeAtZoomLevel22(CLLocationDegrees longitude)
 {
     const double MERCATOR_OFFSET = 536870912;  // (width in points at zoom level 22) / 2
     const double MERCATOR_RADIUS_SCALE = MERCATOR_OFFSET / 180.0;
