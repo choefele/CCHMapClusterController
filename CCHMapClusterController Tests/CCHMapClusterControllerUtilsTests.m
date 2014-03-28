@@ -333,7 +333,7 @@
     NSSet *annotations = [NSSet setWithArray:@[annotation0]];
     NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
     
-    XCTAssertEqual(uniqueAnnotations.count, 1u);
+    XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
 }
 
 - (void)testAnnotationsByUniqueLocationsSameLocation
@@ -346,7 +346,7 @@
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
     NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
     
-    XCTAssertEqual(uniqueAnnotations.count, 1u);
+    XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
 }
 
 - (void)testAnnotationsByUniqueLocationsClose
@@ -359,7 +359,7 @@
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
     NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
     
-    XCTAssertEqual(uniqueAnnotations.count, 1u);
+    XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
 }
 
 @end
