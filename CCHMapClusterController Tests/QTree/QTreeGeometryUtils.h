@@ -9,5 +9,5 @@
 BOOL MKCoordinateRegionIntersectsRegion(MKCoordinateRegion region1, MKCoordinateRegion region2);
 BOOL MKCoordinateRegionContainsCoordinate(MKCoordinateRegion region, CLLocationCoordinate2D coordinate);
 
-inline CLLocationDistance CLMetersBetweenCoordinates(CLLocationCoordinate2D c1, CLLocationCoordinate2D c2);
+CLLocationDistance CLMetersBetweenCoordinates(CLLocationCoordinate2D c1, CLLocationCoordinate2D c2);
 
