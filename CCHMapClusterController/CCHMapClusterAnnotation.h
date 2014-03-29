@@ -52,7 +52,8 @@
 /** Returns YES if this cluster contains more than one annotation. */
 - (BOOL)isCluster;
 /** Returns YES if all annotations in this cluster are at the same location. */
-- (BOOL)isOneLocation;
+- (BOOL)isUniqueLocation;
+- (BOOL)isOneLocation __deprecated;
 
 /** The area that includes all annotations. */
 - (MKMapRect)mapRect;

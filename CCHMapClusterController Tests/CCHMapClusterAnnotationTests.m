@@ -58,7 +58,7 @@
     XCTAssertFalse(self.clusterAnnotation.isCluster);
 }
 
-- (void)testIsOneLocation
+- (void)testIsUniqueLocation
 {
     MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
     annotation0.coordinate = CLLocationCoordinate2DMake(50.0, 12.0);
@@ -66,20 +66,20 @@
     annotation1.coordinate = annotation0.coordinate;
     
     self.clusterAnnotation.annotations = [NSSet setWithArray:@[annotation0]];
-    XCTAssertTrue(self.clusterAnnotation.isOneLocation);
+    XCTAssertTrue(self.clusterAnnotation.isUniqueLocation);
 
     self.clusterAnnotation.annotations = [NSSet setWithArray:@[annotation0, annotation1]];
-    XCTAssertTrue(self.clusterAnnotation.isOneLocation);
+    XCTAssertTrue(self.clusterAnnotation.isUniqueLocation);
 }
 
-- (void)testIsNotOneLocation
+- (void)testIsUniqueLocationFalse
 {
     MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
     annotation0.coordinate = CLLocationCoordinate2DMake(50.0, 12.0);
     MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
     annotation1.coordinate = CLLocationCoordinate2DMake(50.1, 12.0);
     self.clusterAnnotation.annotations = [NSSet setWithArray:@[annotation0, annotation1]];
-    XCTAssertFalse(self.clusterAnnotation.isOneLocation);
+    XCTAssertFalse(self.clusterAnnotation.isUniqueLocation);
 }
 
 - (void)testMapRectIncludesClusterCoordinate

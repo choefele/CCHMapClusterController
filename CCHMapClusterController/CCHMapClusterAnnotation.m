@@ -53,9 +53,14 @@
     return (self.annotations.count > 1);
 }
 
-- (BOOL)isOneLocation
+- (BOOL)isUniqueLocation
 {
     return CCHMapClusterControllerIsUniqueLocation(self.annotations);
+}
+
+- (BOOL)isOneLocation
+{
+    return [self isUniqueLocation];
 }
 
 - (MKMapRect)mapRect
