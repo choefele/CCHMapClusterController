@@ -217,9 +217,9 @@ typedef struct {
     double min;
 } GEOHASH_range;
 
-static char *GEOHASH_encode(double lat, double lon, unsigned int len)
+static char *GEOHASH_encode(double lat, double lon, unsigned long len)
 {
-    int i;
+    unsigned long i;
     char *hash;
     unsigned char bits = 0;
     double mid;
