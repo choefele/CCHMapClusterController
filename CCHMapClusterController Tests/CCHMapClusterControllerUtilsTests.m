@@ -334,6 +334,8 @@
     NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
     
     XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
+    XCTAssertEqual([uniqueAnnotations[0] count], (NSUInteger)1);
+    XCTAssertEqualObjects(uniqueAnnotations[0][0], annotation0);
 }
 
 - (void)testAnnotationsByUniqueLocationsSameLocation
@@ -347,6 +349,7 @@
     NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
     
     XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
+    XCTAssertEqual([uniqueAnnotations[0] count], (NSUInteger)2);
 }
 
 - (void)testAnnotationsByUniqueLocationsClose
@@ -360,6 +363,53 @@
     NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
     
     XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
+    XCTAssertEqual([uniqueAnnotations[0] count], (NSUInteger)2);
+}
+
+- (void)testAnnotationsByUniqueLocationsTwoLocations
+{
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(52.0, 13.0);
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = CLLocationCoordinate2DMake(52.1, 13.1);
+    
+    NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
+    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
+    
+    XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)2);
+}
+
+- (void)testIsUniqueLocation
+{
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(52.0, 13.0);
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = annotation0.coordinate;
+    
+    NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
+    BOOL isUniqueLocation = CCHMapClusterControllerIsUniqueLocation(annotations);
+    
+    XCTAssertTrue(isUniqueLocation);
+}
+
+- (void)testIsUniqueLocationNil
+{
+    BOOL isUniqueLocation = CCHMapClusterControllerIsUniqueLocation(nil);
+    
+    XCTAssertFalse(isUniqueLocation);
+}
+
+- (void)testIsUniqueLocationFalse
+{
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(52.0, 13.0);
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = CLLocationCoordinate2DMake(52.0, 13.1);
+    
+    NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
+    BOOL isUniqueLocation = CCHMapClusterControllerIsUniqueLocation(annotations);
+    
+    XCTAssertFalse(isUniqueLocation);
 }
 
 @end

@@ -30,6 +30,7 @@
 #import <float.h>
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
+#define GEOHASH_LENGTH 9
 
 MKMapRect CCHMapClusterControllerAlignMapRectToCellSize(MKMapRect mapRect, double cellSize)
 {
@@ -284,8 +285,8 @@ NSArray *CCHMapClusterControllerAnnotationsByUniqueLocations(NSSet *annotations)
 {
     NSMutableDictionary *annotationsByGeohash = [NSMutableDictionary dictionary];
     
-    for (id <MKAnnotation>annotation in annotations) {
-        NSString *geohash = hashForCoordinate(annotation.coordinate, 9);
+    for (id<MKAnnotation> annotation in annotations) {
+        NSString *geohash = hashForCoordinate(annotation.coordinate, GEOHASH_LENGTH);
         NSMutableArray *annotationsAtLocation = [annotationsByGeohash objectForKey:geohash];
         if (!annotationsAtLocation) {
             annotationsAtLocation = [NSMutableArray array];
@@ -295,4 +296,20 @@ NSArray *CCHMapClusterControllerAnnotationsByUniqueLocations(NSSet *annotations)
     }
     
     return [annotationsByGeohash allValues];
+}
+
+BOOL CCHMapClusterControllerIsUniqueLocation(NSSet *annotations)
+{
+    NSString *geohash;
+    for (id<MKAnnotation> annotation in annotations) {
+        NSString *updatedGeohash = hashForCoordinate(annotation.coordinate, GEOHASH_LENGTH);
+        if (geohash == nil) {
+            geohash = updatedGeohash;
+        } else if (![geohash isEqualToString:updatedGeohash]) {
+            geohash = nil;
+            break;
+        }
+    }
+    
+    return (geohash != nil);
 }

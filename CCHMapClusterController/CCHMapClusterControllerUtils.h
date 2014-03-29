@@ -44,3 +44,4 @@ MKMapRect CCHMapClusterControllerMapRectForCoordinateRegion(MKCoordinateRegion c
 NSSet *CCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotations, CCHMapClusterController *mapClusterController);
 double CCHMapClusterControllerZoomLevelForRegion(CLLocationDegrees longitudeCenter, CLLocationDegrees longitudeDelta, CGFloat width);
 NSArray *CCHMapClusterControllerAnnotationsByUniqueLocations(NSSet *annotations);
+BOOL CCHMapClusterControllerIsUniqueLocation(NSSet *annotations);
