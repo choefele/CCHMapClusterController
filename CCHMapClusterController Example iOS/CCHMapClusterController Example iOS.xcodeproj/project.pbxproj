@@ -34,6 +34,7 @@
 		621834EA18A576C5000210AF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 621834E918A576C5000210AF /* SettingsViewController.m */; };
 		621834ED18A6AD25000210AF /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 621834EC18A6AD25000210AF /* Settings.m */; };
 		6222E32918BA61290045A528 /* CCHMapClusterControllerDebugPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 6222E32818BA61290045A528 /* CCHMapClusterControllerDebugPolygon.m */; };
+		62C49A7818E75033000BC5CD /* CCHMapClusterOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C49A7718E75033000BC5CD /* CCHMapClusterOperation.m */; };
 		62D667831845E0F20046D5D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667821845E0F20046D5D5 /* Foundation.framework */; };
 		62D667851845E0F20046D5D5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667841845E0F20046D5D5 /* CoreGraphics.framework */; };
 		62D667871845E0F20046D5D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667861845E0F20046D5D5 /* UIKit.framework */; };
@@ -112,6 +113,8 @@
 		621834EC18A6AD25000210AF /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		6222E32718BA61290045A528 /* CCHMapClusterControllerDebugPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapClusterControllerDebugPolygon.h; sourceTree = "<group>"; };
 		6222E32818BA61290045A528 /* CCHMapClusterControllerDebugPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapClusterControllerDebugPolygon.m; sourceTree = "<group>"; };
+		62C49A7618E75033000BC5CD /* CCHMapClusterOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapClusterOperation.h; sourceTree = "<group>"; };
+		62C49A7718E75033000BC5CD /* CCHMapClusterOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapClusterOperation.m; sourceTree = "<group>"; };
 		62D6677F1845E0F20046D5D5 /* CCHMapClusterController Example iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CCHMapClusterController Example iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62D667821845E0F20046D5D5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		62D667841845E0F20046D5D5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -321,6 +324,8 @@
 				62D667C91845F8A40046D5D5 /* CCHMapClusterControllerDelegate.h */,
 				62D667CA1845F8A40046D5D5 /* CCHMapClusterControllerUtils.h */,
 				62D667CB1845F8A40046D5D5 /* CCHMapClusterControllerUtils.m */,
+				62C49A7618E75033000BC5CD /* CCHMapClusterOperation.h */,
+				62C49A7718E75033000BC5CD /* CCHMapClusterOperation.m */,
 				4869F180184FC1E700251ADC /* CCHMapClusterer.h */,
 				4869F181184FC4CC00251ADC /* CCHNearCenterMapClusterer.h */,
 				4869F182184FC4CC00251ADC /* CCHNearCenterMapClusterer.m */,
@@ -450,6 +455,7 @@
 				62D667D41845F8A40046D5D5 /* CCHMapViewDelegateProxy.m in Sources */,
 				621834ED18A6AD25000210AF /* Settings.m in Sources */,
 				62D667C11845F76F0046D5D5 /* DataReader.m in Sources */,
+				62C49A7818E75033000BC5CD /* CCHMapClusterOperation.m in Sources */,
 				62D667D21845F8A40046D5D5 /* CCHMapClusterControllerUtils.m in Sources */,
 				4869F186184FD5F100251ADC /* CCHCenterOfMassMapClusterer.m in Sources */,
 				4889995D185D1C1300F3D6ED /* CCHMapTree.m in Sources */,

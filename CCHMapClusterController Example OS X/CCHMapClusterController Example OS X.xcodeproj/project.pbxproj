@@ -37,6 +37,7 @@
 		6268C21618BFE1F500BB1C9A /* QTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268C20718BFE1F500BB1C9A /* QTree.m */; };
 		6268C21718BFE1F500BB1C9A /* QTreeGeometryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268C20918BFE1F500BB1C9A /* QTreeGeometryUtils.m */; };
 		6268C21818BFE1F500BB1C9A /* TBQuadTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268C20D18BFE1F500BB1C9A /* TBQuadTree.m */; };
+		62C49A7B18E75097000BC5CD /* CCHMapClusterOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C49A7A18E75097000BC5CD /* CCHMapClusterOperation.m */; };
 		62D667431845E0BA0046D5D5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D667421845E0BA0046D5D5 /* Cocoa.framework */; };
 		62D6674D1845E0BA0046D5D5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62D6674B1845E0BA0046D5D5 /* InfoPlist.strings */; };
 		62D6674F1845E0BA0046D5D5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D6674E1845E0BA0046D5D5 /* main.m */; };
@@ -111,6 +112,8 @@
 		6268C20A18BFE1F500BB1C9A /* QTreeInsertable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTreeInsertable.h; sourceTree = "<group>"; };
 		6268C20C18BFE1F500BB1C9A /* TBQuadTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBQuadTree.h; sourceTree = "<group>"; };
 		6268C20D18BFE1F500BB1C9A /* TBQuadTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBQuadTree.m; sourceTree = "<group>"; };
+		62C49A7918E75097000BC5CD /* CCHMapClusterOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCHMapClusterOperation.h; sourceTree = "<group>"; };
+		62C49A7A18E75097000BC5CD /* CCHMapClusterOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCHMapClusterOperation.m; sourceTree = "<group>"; };
 		62D6673F1845E0BA0046D5D5 /* CCHMapClusterController Example OS X.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CCHMapClusterController Example OS X.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62D667421845E0BA0046D5D5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		62D667451845E0BA0046D5D5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -169,6 +172,8 @@
 				48D06BD718466FF4005AC9C7 /* CCHMapClusterControllerDelegate.h */,
 				48D06BD818466FF4005AC9C7 /* CCHMapClusterControllerUtils.h */,
 				48D06BD918466FF4005AC9C7 /* CCHMapClusterControllerUtils.m */,
+				62C49A7918E75097000BC5CD /* CCHMapClusterOperation.h */,
+				62C49A7A18E75097000BC5CD /* CCHMapClusterOperation.m */,
 				4869F18B184FDC0800251ADC /* CCHMapClusterer.h */,
 				4869F187184FDC0800251ADC /* CCHNearCenterMapClusterer.h */,
 				4869F188184FDC0800251ADC /* CCHNearCenterMapClusterer.m */,
@@ -424,6 +429,7 @@
 				48D06BEA184673E0005AC9C7 /* DataReader.m in Sources */,
 				62D6674F1845E0BA0046D5D5 /* main.m in Sources */,
 				4869F18D184FDC0800251ADC /* CCHCenterOfMassMapClusterer.m in Sources */,
+				62C49A7B18E75097000BC5CD /* CCHMapClusterOperation.m in Sources */,
 				485EDCFE1876E929008F0323 /* CCHMapTreeUtils.m in Sources */,
 				48D06BDD18466FF4005AC9C7 /* CCHMapClusterController.m in Sources */,
 				48D06BDC18466FF4005AC9C7 /* CCHMapClusterAnnotation.m in Sources */,
