@@ -35,17 +35,19 @@
 
 @interface CCHMapClusterOperation : NSOperation
 
-@property (nonatomic, assign) MKMapRect gridMapRect;
-@property (nonatomic, assign) double cellSize;
 @property (nonatomic, copy) CCHMapClusterAnnotation *(^findVisibleAnnotation)(NSSet *annotations, NSSet *visibleAnnotations);
 @property (nonatomic, copy) void (^completionHandler)();
 
-@property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) CCHMapTree *allAnnotationsMapTree;
 @property (nonatomic, strong) CCHMapTree *visibleAnnotationsMapTree;
 @property (nonatomic, strong) id<CCHMapClusterer> clusterer;
 @property (nonatomic, strong) id<CCHMapAnimator> animator;
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
 @property (nonatomic, weak) CCHMapClusterController *clusterController;
+
+- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor;
+
++ (double)cellMapSizeForCellSize:(double)cellSize withMapView:(MKMapView *)mapView;
++ (MKMapRect)gridMapRectForMapRect:(MKMapRect)mapRect withCellMapSize:(double)cellMapSize marginFactor:(double)marginFactor;
 
 @end

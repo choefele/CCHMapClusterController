@@ -175,21 +175,9 @@
 {
     [self sync];
     
-    // World size is multiple of cell size so that cells wrap around at the 180th meridian
-    double cellSize = CCHMapClusterControllerMapLengthForLength(_mapView, _mapView.superview, _cellSize);
-    cellSize = CCHMapClusterControllerAlignMapLengthToWorldWidth(cellSize);
-    
-    // Expand map rect and align to cell size to avoid popping when panning
-    MKMapRect visibleMapRect = _mapView.visibleMapRect;
-    MKMapRect gridMapRect = MKMapRectInset(visibleMapRect, -_marginFactor * visibleMapRect.size.width, -_marginFactor * visibleMapRect.size.height);
-    gridMapRect = CCHMapClusterControllerAlignMapRectToCellSize(gridMapRect, cellSize);
-    
-    CCHMapClusterOperation *operation = [[CCHMapClusterOperation alloc] init];
-    operation.gridMapRect = gridMapRect;
-    operation.cellSize = cellSize;
+    CCHMapClusterOperation *operation = [[CCHMapClusterOperation alloc] initWithMapView:self.mapView cellSize:self.cellSize marginFactor:self.marginFactor];
     operation.findVisibleAnnotation = self.findVisibleAnnotation;
     operation.completionHandler = completionHandler;
-    operation.mapView = self.mapView;
     operation.allAnnotationsMapTree = self.allAnnotationsMapTree;
     operation.visibleAnnotationsMapTree = self.visibleAnnotationsMapTree;
     operation.clusterer = self.clusterer;
@@ -208,11 +196,13 @@
 
     // Debugging
     if (self.isDebuggingEnabled) {
-        [self updateDebugPolygonsInMapRect:gridMapRect withCellSize:cellSize];
+        double cellMapSize = [CCHMapClusterOperation cellMapSizeForCellSize:self.cellSize withMapView:self.mapView];
+        MKMapRect gridMapRect = [CCHMapClusterOperation gridMapRectForMapRect:self.mapView.visibleMapRect withCellMapSize:cellMapSize marginFactor:self.marginFactor];
+        [self updateDebugPolygonsInGridMapRect:gridMapRect withCellMapSize:cellMapSize];
     }
 }
 
-- (void)updateDebugPolygonsInMapRect:(MKMapRect)mapRect withCellSize:(double)cellSize
+- (void)updateDebugPolygonsInGridMapRect:(MKMapRect)gridMapRect withCellMapSize:(double)cellMapSize
 {
     MKMapView *mapView = self.mapView;
     
@@ -227,14 +217,14 @@
     }
     
     // Add polygons outlining each cell
-    CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
-        cellRect.origin.x -= MKMapSizeWorld.width;  // fixes issue when view port spans 180th meridian
+    CCHMapClusterControllerEnumerateCells(gridMapRect, cellMapSize, ^(MKMapRect cellMapRect) {
+        cellMapRect.origin.x -= MKMapSizeWorld.width;  // fixes issue when view port spans 180th meridian
         
         MKMapPoint points[4];
-        points[0] = MKMapPointMake(MKMapRectGetMinX(cellRect), MKMapRectGetMinY(cellRect));
-        points[1] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMinY(cellRect));
-        points[2] = MKMapPointMake(MKMapRectGetMaxX(cellRect), MKMapRectGetMaxY(cellRect));
-        points[3] = MKMapPointMake(MKMapRectGetMinX(cellRect), MKMapRectGetMaxY(cellRect));
+        points[0] = MKMapPointMake(MKMapRectGetMinX(cellMapRect), MKMapRectGetMinY(cellMapRect));
+        points[1] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect), MKMapRectGetMinY(cellMapRect));
+        points[2] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect), MKMapRectGetMaxY(cellMapRect));
+        points[3] = MKMapPointMake(MKMapRectGetMinX(cellMapRect), MKMapRectGetMaxY(cellMapRect));
         CCHMapClusterControllerDebugPolygon *debugPolygon = (CCHMapClusterControllerDebugPolygon *)[CCHMapClusterControllerDebugPolygon polygonWithPoints:points count:4];
         debugPolygon.mapClusterController = self;
         [mapView addOverlay:debugPolygon];

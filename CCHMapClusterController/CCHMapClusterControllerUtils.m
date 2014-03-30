@@ -124,7 +124,7 @@ CCHMapClusterAnnotation *CCHMapClusterControllerClusterAnnotationForAnnotation(M
     return annotationResult;
 }
 
-void CCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, void (^block)(MKMapRect cellRect))
+void CCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, void (^block)(MKMapRect cellMapRect))
 {
     NSCAssert(block != NULL, @"Block argument can't be NULL");
     if (block == nil) {

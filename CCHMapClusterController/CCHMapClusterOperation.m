@@ -34,25 +34,62 @@
 
 @interface CCHMapClusterOperation()
 
+@property (nonatomic, strong) MKMapView *mapView;
+@property (nonatomic, assign) double cellMapSize;
+@property (nonatomic, assign) double marginFactor;
+@property (nonatomic, assign) MKMapRect visibleMapRect;
 
 @end
 
 @implementation CCHMapClusterOperation
 
+- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor
+{
+    self = [super init];
+    if (self) {
+        self.mapView = mapView;
+        self.cellMapSize = [self.class cellMapSizeForCellSize:cellSize withMapView:mapView];
+        self.marginFactor = marginFactor;
+        self.visibleMapRect = mapView.visibleMapRect;
+    }
+    
+    return self;
+}
+
++ (double)cellMapSizeForCellSize:(double)cellSize withMapView:(MKMapView *)mapView
+{
+    // World size is multiple of cell size so that cells wrap around at the 180th meridian
+    double cellMapSize = CCHMapClusterControllerMapLengthForLength(mapView, mapView.superview, cellSize);
+    cellMapSize = CCHMapClusterControllerAlignMapLengthToWorldWidth(cellMapSize);
+    
+    return cellMapSize;
+}
+
++ (MKMapRect)gridMapRectForMapRect:(MKMapRect)mapRect withCellMapSize:(double)cellMapSize marginFactor:(double)marginFactor
+{
+    // Expand map rect and align to cell size to avoid popping when panning
+    MKMapRect gridMapRect = MKMapRectInset(mapRect, -marginFactor * mapRect.size.width, -marginFactor * mapRect.size.height);
+    gridMapRect = CCHMapClusterControllerAlignMapRectToCellSize(gridMapRect, cellMapSize);
+    
+    return gridMapRect;
+}
+
 - (void)main
 {
     // For each cell in the grid, pick one annotation to show
+    double cellMapSize = self.cellMapSize;
+    MKMapRect gridMapRect = [self.class gridMapRectForMapRect:self.visibleMapRect withCellMapSize:cellMapSize marginFactor:self.marginFactor];
     NSMutableSet *clusters = [NSMutableSet set];
-    CCHMapClusterControllerEnumerateCells(self.gridMapRect, self.cellSize, ^(MKMapRect cellRect) {
-        NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellRect];
+    CCHMapClusterControllerEnumerateCells(gridMapRect, cellMapSize, ^(MKMapRect cellMapRect) {
+        NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellMapRect];
         if (allAnnotationsInCell.count > 0) {
             // Select cluster representation
-            NSSet *visibleAnnotationsInCell = [_visibleAnnotationsMapTree annotationsInMapRect:cellRect];
+            NSSet *visibleAnnotationsInCell = [_visibleAnnotationsMapTree annotationsInMapRect:cellMapRect];
             CCHMapClusterAnnotation *annotationForCell = _findVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
             if (annotationForCell == nil) {
                 annotationForCell = [[CCHMapClusterAnnotation alloc] init];
                 annotationForCell.mapClusterController = self.clusterController;
-                annotationForCell.coordinate = [_clusterer mapClusterController:self.clusterController coordinateForAnnotations:allAnnotationsInCell inMapRect:cellRect];
+                annotationForCell.coordinate = [_clusterer mapClusterController:self.clusterController coordinateForAnnotations:allAnnotationsInCell inMapRect:cellMapRect];
                 annotationForCell.delegate = _delegate;
                 annotationForCell.annotations = allAnnotationsInCell;
             } else {
