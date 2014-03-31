@@ -50,7 +50,6 @@
 @property (nonatomic, strong) CCHMapTree *allAnnotationsMapTree;
 @property (nonatomic, strong) CCHMapTree *visibleAnnotationsMapTree;
 @property (nonatomic, strong) NSOperationQueue *backgroundQueue;
-@property (nonatomic, strong) NSMutableArray *updateOperations;
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) CCHMapViewDelegateProxy *mapViewDelegateProxy;
 @property (nonatomic, strong) id<MKAnnotation> annotationToSelect;
@@ -75,7 +74,6 @@
         _allAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
         _visibleAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
         _backgroundQueue = [[NSOperationQueue alloc] init];
-        _updateOperations = [NSMutableArray array];
         
         if ([mapView.delegate isKindOfClass:CCHMapViewDelegateProxy.class]) {
             CCHMapViewDelegateProxy *delegateProxy = (CCHMapViewDelegateProxy *)mapView.delegate;
@@ -132,11 +130,13 @@
 
 - (void)sync
 {
-    for (NSOperation *operation in self.updateOperations) {
-        [operation cancel];
+    NSOperationQueue *backgroundQueue = self.backgroundQueue;
+    for (NSOperation *operation in backgroundQueue.operations) {
+        if ([operation isKindOfClass:CCHMapClusterOperation.class]) {
+            [operation cancel];
+        }
     }
-    [self.updateOperations removeAllObjects];
-    [self.backgroundQueue waitUntilAllOperationsAreFinished];
+    [backgroundQueue waitUntilAllOperationsAreFinished];
 }
 
 - (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
@@ -185,13 +185,6 @@
     operation.delegate = self.delegate;
     operation.clusterController = self;
     
-    __weak NSOperation *weakOperation = operation;
-    operation.completionBlock = ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.updateOperations removeObject:weakOperation]; // also prevents retain cycle
-        });
-    };
-    [self.updateOperations addObject:operation];
     [self.backgroundQueue addOperation:operation];
 
     // Debugging
