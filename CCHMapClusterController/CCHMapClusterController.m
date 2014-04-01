@@ -57,7 +57,6 @@
 @property (nonatomic, assign) MKCoordinateSpan regionSpanBeforeChange;
 @property (nonatomic, assign, getter = isRegionChanging) BOOL regionChanging;
 @property (nonatomic, strong) id<CCHMapClusterer> strongClusterer;
-@property (nonatomic, copy) CCHMapClusterAnnotation *(^findVisibleAnnotation)(NSSet *annotations, NSSet *visibleAnnotations);
 @property (nonatomic, strong) id<CCHMapAnimator> strongAnimator;
 
 @end
@@ -114,20 +113,6 @@
     self.strongAnimator = nil;
 }
 
-- (void)setReuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotations
-{
-    _reuseExistingClusterAnnotations = reuseExistingClusterAnnotations;
-    if (reuseExistingClusterAnnotations) {
-        self.findVisibleAnnotation = ^CCHMapClusterAnnotation *(NSSet *annotations, NSSet *visibleAnnotations) {
-            return CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
-        };
-    } else {
-        self.findVisibleAnnotation = ^CCHMapClusterAnnotation *(NSSet *annotations, NSSet *visibleAnnotations) {
-            return nil;
-        };
-    }
-}
-
 - (void)sync
 {
     NSOperationQueue *backgroundQueue = self.backgroundQueue;
@@ -175,8 +160,7 @@
 {
     [self sync];
     
-    CCHMapClusterOperation *operation = [[CCHMapClusterOperation alloc] initWithMapView:self.mapView cellSize:self.cellSize marginFactor:self.marginFactor];
-    operation.findVisibleAnnotation = self.findVisibleAnnotation;
+    CCHMapClusterOperation *operation = [[CCHMapClusterOperation alloc] initWithMapView:self.mapView cellSize:self.cellSize marginFactor:self.marginFactor reuseExistingClusterAnnotations:self.reuseExistingClusterAnnotations];
     operation.completionHandler = completionHandler;
     operation.allAnnotationsMapTree = self.allAnnotationsMapTree;
     operation.visibleAnnotationsMapTree = self.visibleAnnotationsMapTree;

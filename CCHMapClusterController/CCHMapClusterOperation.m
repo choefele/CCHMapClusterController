@@ -38,19 +38,21 @@
 @property (nonatomic, assign) double cellMapSize;
 @property (nonatomic, assign) double marginFactor;
 @property (nonatomic, assign) MKMapRect visibleMapRect;
+@property (nonatomic, assign) BOOL reuseExistingClusterAnnotations;
 
 @end
 
 @implementation CCHMapClusterOperation
 
-- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor
+- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation
 {
     self = [super init];
     if (self) {
-        self.mapView = mapView;
-        self.cellMapSize = [self.class cellMapSizeForCellSize:cellSize withMapView:mapView];
-        self.marginFactor = marginFactor;
-        self.visibleMapRect = mapView.visibleMapRect;
+        _mapView = mapView;
+        _cellMapSize = [self.class cellMapSizeForCellSize:cellSize withMapView:mapView];
+        _marginFactor = marginFactor;
+        _visibleMapRect = mapView.visibleMapRect;
+        _reuseExistingClusterAnnotations = reuseExistingClusterAnnotation;
     }
     
     return self;
@@ -76,35 +78,40 @@
 
 - (void)main
 {
-    // For each cell in the grid, pick one annotation to show
-    double cellMapSize = self.cellMapSize;
-    MKMapRect gridMapRect = [self.class gridMapRectForMapRect:self.visibleMapRect withCellMapSize:cellMapSize marginFactor:self.marginFactor];
+    // For each cell in the grid, pick one cluster annotation to show
+    MKMapRect gridMapRect = [self.class gridMapRectForMapRect:self.visibleMapRect withCellMapSize:self.cellMapSize marginFactor:self.marginFactor];
     NSMutableSet *clusters = [NSMutableSet set];
-    CCHMapClusterControllerEnumerateCells(gridMapRect, cellMapSize, ^(MKMapRect cellMapRect) {
+    CCHMapClusterControllerEnumerateCells(gridMapRect, _cellMapSize, ^(MKMapRect cellMapRect) {
         NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellMapRect];
         if (allAnnotationsInCell.count > 0) {
-            // Select cluster representation
-            NSSet *visibleAnnotationsInCell = [_visibleAnnotationsMapTree annotationsInMapRect:cellMapRect];
-            CCHMapClusterAnnotation *annotationForCell = _findVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
+            CCHMapClusterAnnotation *annotationForCell;
+            
+            if (_reuseExistingClusterAnnotations) {
+                // Check if an existing cluster annotation can be reused
+                NSSet *visibleAnnotationsInCell = [_visibleAnnotationsMapTree annotationsInMapRect:cellMapRect];
+                annotationForCell = CCHMapClusterControllerFindVisibleAnnotation(allAnnotationsInCell, visibleAnnotationsInCell);
+            }
+            
             if (annotationForCell == nil) {
+                // Create new cluster annotation
                 annotationForCell = [[CCHMapClusterAnnotation alloc] init];
-                annotationForCell.mapClusterController = self.clusterController;
-                annotationForCell.coordinate = [_clusterer mapClusterController:self.clusterController coordinateForAnnotations:allAnnotationsInCell inMapRect:cellMapRect];
+                annotationForCell.mapClusterController = _clusterController;
+                annotationForCell.coordinate = [_clusterer mapClusterController:_clusterController coordinateForAnnotations:allAnnotationsInCell inMapRect:cellMapRect];
                 annotationForCell.delegate = _delegate;
                 annotationForCell.annotations = allAnnotationsInCell;
             } else {
-                // For existing annotations, this will implicitly update annotation views
+                // For an existing cluster annotation, this will implicitly update its annotation view
                 dispatch_async(dispatch_get_main_queue(), ^{
                     annotationForCell.annotations = allAnnotationsInCell;
                     annotationForCell.title = nil;
                     annotationForCell.subtitle = nil;
-                    if ([self.delegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)]) {
-                        [self.delegate mapClusterController:self.clusterController willReuseMapClusterAnnotation:annotationForCell];
+                    if ([_delegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)]) {
+                        [_delegate mapClusterController:_clusterController willReuseMapClusterAnnotation:annotationForCell];
                     }
                 });
             }
             
-            // Collect clusters
+            // Collect cluster annotations
             [clusters addObject:annotationForCell];
         }
     });

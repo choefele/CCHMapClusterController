@@ -35,7 +35,6 @@
 
 @interface CCHMapClusterOperation : NSOperation
 
-@property (nonatomic, copy) CCHMapClusterAnnotation *(^findVisibleAnnotation)(NSSet *annotations, NSSet *visibleAnnotations);
 @property (nonatomic, copy) void (^completionHandler)();
 
 @property (nonatomic, strong) CCHMapTree *allAnnotationsMapTree;
@@ -45,7 +44,7 @@
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
 @property (nonatomic, weak) CCHMapClusterController *clusterController;
 
-- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor;
+- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation;
 
 + (double)cellMapSizeForCellSize:(double)cellSize withMapView:(MKMapView *)mapView;
 + (MKMapRect)gridMapRectForMapRect:(MKMapRect)mapRect withCellMapSize:(double)cellMapSize marginFactor:(double)marginFactor;
