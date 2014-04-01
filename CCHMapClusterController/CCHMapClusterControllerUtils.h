@@ -43,5 +43,5 @@ void CCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, v
 MKMapRect CCHMapClusterControllerMapRectForCoordinateRegion(MKCoordinateRegion coordinateRegion);
 NSSet *CCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotations, CCHMapClusterController *mapClusterController);
 double CCHMapClusterControllerZoomLevelForRegion(CLLocationDegrees longitudeCenter, CLLocationDegrees longitudeDelta, CGFloat width);
-NSArray *CCHMapClusterControllerAnnotationsByUniqueLocations(NSSet *annotations);
+NSArray *CCHMapClusterControllerAnnotationSetsByUniqueLocations(NSSet *annotations);
 BOOL CCHMapClusterControllerIsUniqueLocation(NSSet *annotations);

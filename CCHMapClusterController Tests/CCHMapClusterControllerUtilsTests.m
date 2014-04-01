@@ -331,11 +331,11 @@
     annotation0.coordinate = CLLocationCoordinate2DMake(51.0, 13.0);
 
     NSSet *annotations = [NSSet setWithArray:@[annotation0]];
-    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
+    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations);
     
     XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
     XCTAssertEqual([uniqueAnnotations[0] count], (NSUInteger)1);
-    XCTAssertEqualObjects(uniqueAnnotations[0][0], annotation0);
+    XCTAssertEqualObjects([uniqueAnnotations[0] anyObject], annotation0);
 }
 
 - (void)testAnnotationsByUniqueLocationsSameLocation
@@ -346,7 +346,7 @@
     annotation1.coordinate = annotation0.coordinate;
 
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
-    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
+    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations);
     
     XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
     XCTAssertEqual([uniqueAnnotations[0] count], (NSUInteger)2);
@@ -360,7 +360,7 @@
     annotation1.coordinate = CLLocationCoordinate2DMake(annotation0.coordinate.latitude + __FLT_EPSILON__, annotation0.coordinate.longitude + __FLT_EPSILON__);
     
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
-    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
+    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations);
     
     XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
     XCTAssertEqual([uniqueAnnotations[0] count], (NSUInteger)2);
@@ -374,7 +374,7 @@
     annotation1.coordinate = CLLocationCoordinate2DMake(52.1, 13.1);
     
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
-    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationsByUniqueLocations(annotations);
+    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations);
     
     XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)2);
 }
