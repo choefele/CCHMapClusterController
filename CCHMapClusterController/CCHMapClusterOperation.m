@@ -102,7 +102,6 @@
                 disableClusterer = CCHMapClusterControllerIsUniqueLocation(allAnnotationsInCell);
             }
 
-            BOOL reuseExistingClusterAnnotations = _reuseExistingClusterAnnotations;
             for (NSSet *annotationSet in annotationSets) {
 
                 CLLocationCoordinate2D coordinate;
@@ -114,7 +113,7 @@
                 
                 CCHMapClusterAnnotation *annotationForCell;
                 
-                if (reuseExistingClusterAnnotations) {
+                if (_reuseExistingClusterAnnotations) {
                     // Check if an existing cluster annotation can be reused
                     annotationForCell = CCHMapClusterControllerFindVisibleAnnotation(annotationSet, visibleAnnotationsInCell);
                 }
@@ -131,7 +130,9 @@
                     [visibleAnnotationsInCell removeObject:annotationForCell];
                     annotationForCell.annotations = annotationSet;
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        annotationForCell.coordinate = coordinate;
+                        if (disableClusterer) {
+                            annotationForCell.coordinate = coordinate;
+                        }
                         annotationForCell.title = nil;
                         annotationForCell.subtitle = nil;
                         if (respondsToSelector) {
