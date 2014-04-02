@@ -44,7 +44,7 @@
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
 @property (nonatomic, weak) CCHMapClusterController *clusterController;
 
-- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation;
+- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering;
 
 + (double)cellMapSizeForCellSize:(double)cellSize withMapView:(MKMapView *)mapView;
 + (MKMapRect)gridMapRectForMapRect:(MKMapRect)mapRect withCellMapSize:(double)cellMapSize marginFactor:(double)marginFactor;

@@ -50,6 +50,7 @@
     // Set up map clustering
     self.mapClusterControllerRed = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.mapClusterControllerRed.delegate = self;
+    self.mapClusterControllerRed.maxZoomLevelForClustering = 15;
     
     // Read annotations
     self.dataReader = [[DataReader alloc] init];

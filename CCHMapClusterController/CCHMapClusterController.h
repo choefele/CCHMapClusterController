@@ -44,6 +44,14 @@
 @property (nonatomic, assign) double marginFactor;
 /** Cell size in [points] (default: 60). */
 @property (nonatomic, assign) double cellSize;
+
+/** The current zoom level of the visible map region. A zoom level of 0 means that the entire map fits
+ the screen width. The value increases when zooming in. */
+@property (nonatomic, assign, readonly) double zoomLevel;
+/** If the current zoom level exceeds this value, the clustering will be disabled and each cluster annotation
+ on the map will have one unique location (default: `DBL_MAX`). */
+@property (nonatomic, assign) double maxZoomLevelForClustering;
+
 /** Displays the grid used for clustering. */
 @property (nonatomic, assign, getter = isDebuggingEnabled) BOOL debuggingEnabled;
 

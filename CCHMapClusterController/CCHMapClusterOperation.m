@@ -37,24 +37,30 @@
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, assign) double cellMapSize;
 @property (nonatomic, assign) double marginFactor;
-@property (nonatomic, assign) MKMapRect visibleMapRect;
-@property (nonatomic, assign) BOOL reuseExistingClusterAnnotations;
+@property (nonatomic, assign) MKMapRect mapViewVisibleMapRect;
+@property (nonatomic, assign) MKCoordinateRegion mapViewRegion;
+@property (nonatomic, assign) CGFloat mapViewWidth;
 @property (nonatomic, copy) NSArray *mapViewAnnotations;
+@property (nonatomic, assign) BOOL reuseExistingClusterAnnotations;
+@property (nonatomic, assign) double maxZoomLevelForClustering;
 
 @end
 
 @implementation CCHMapClusterOperation
 
-- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation
+- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering
 {
     self = [super init];
     if (self) {
         _mapView = mapView;
         _cellMapSize = [self.class cellMapSizeForCellSize:cellSize withMapView:mapView];
         _marginFactor = marginFactor;
-        _visibleMapRect = mapView.visibleMapRect;
-        _reuseExistingClusterAnnotations = reuseExistingClusterAnnotation;
+        _mapViewVisibleMapRect = mapView.visibleMapRect;
+        _mapViewRegion = mapView.region;
+        _mapViewWidth = mapView.bounds.size.width;
         _mapViewAnnotations = mapView.annotations;
+        _reuseExistingClusterAnnotations = reuseExistingClusterAnnotation;
+        _maxZoomLevelForClustering = maxZoomLevelForClustering;
     }
     
     return self;
@@ -80,11 +86,12 @@
 
 - (void)main
 {
-    BOOL disableClustering = NO;
+    double zoomLevel = CCHMapClusterControllerZoomLevelForRegion(self.mapViewRegion.center.longitude, self.mapViewRegion.span.longitudeDelta, self.mapViewWidth);
+    BOOL disableClustering = (zoomLevel >= self.maxZoomLevelForClustering);
     BOOL respondsToSelector = [_delegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)];
     
     // For each cell in the grid, pick one cluster annotation to show
-    MKMapRect gridMapRect = [self.class gridMapRectForMapRect:self.visibleMapRect withCellMapSize:self.cellMapSize marginFactor:self.marginFactor];
+    MKMapRect gridMapRect = [self.class gridMapRectForMapRect:self.mapViewVisibleMapRect withCellMapSize:self.cellMapSize marginFactor:self.marginFactor];
     NSMutableSet *clusters = [NSMutableSet set];
     CCHMapClusterControllerEnumerateCells(gridMapRect, _cellMapSize, ^(MKMapRect cellMapRect) {
         NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellMapRect];
