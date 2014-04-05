@@ -52,9 +52,6 @@
  on the map will have one unique location (default: `DBL_MAX`). */
 @property (nonatomic, assign) double maxZoomLevelForClustering;
 
-/** Displays the grid used for clustering. */
-@property (nonatomic, assign, getter = isDebuggingEnabled) BOOL debuggingEnabled;
-
 /** Delegate to configure cluster annotations. */
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
 
@@ -65,6 +62,9 @@
 
 /** Delegate to define strategy for animating cluster annotations in and out (default: `CCHFadeInOutMapAnimator`). */
 @property (nonatomic, weak) id<CCHMapAnimator> animator;
+
+/** Displays the grid used for clustering. */
+@property (nonatomic, assign, getter = isDebuggingEnabled) BOOL debuggingEnabled;
 
 /**
  Initializes the cluster controller.

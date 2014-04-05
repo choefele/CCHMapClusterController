@@ -1,6 +1,11 @@
 Changes
 =======
 
+## Upcoming version
+
+- `CCHMapClusterController` now has a new property `maxZoomLevelForClustering`, which disables clustering if the current zoom level exceeds this value. When disabled, all cluster annotations on the map cluster will have one unique location. The current zoom level can be queried with the property `zoomLevel`
+- Renamed property `isOneLocation` in `CCHMapClusterAnnotation` to `isUniqueLocation`
+
 ## 1.5.0
 
 - Multiple `CCHMapClusterController`s can now use the same `MKMapView` instance. This allows you to have multiple groups of clusters where each group has its own settings (thanks to eikebartles for ideas and suggestions)
