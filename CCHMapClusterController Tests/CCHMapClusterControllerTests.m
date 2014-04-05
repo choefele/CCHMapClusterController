@@ -319,7 +319,7 @@
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
     XCTAssertEqual(self.mapClusterController.annotations.count, annotations.count);
-    XCTAssertEqual(self.mapView.annotations.count, 3);  // 3 unique locations
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)3);  // 3 unique locations
     
     // Origin MKCoordinateRegion -> bottom left, MKMapRect -> top left
     double cellWidth = visibleMapRect.size.width / 3;
