@@ -66,7 +66,11 @@
     annotationView.alpha = 0;
     [self.animator mapClusterController:nil didAddAnnotationViews:@[annotationView]];
     XCTAssertEqualWithAccuracy(annotationView.alpha, 1.0, __FLT_EPSILON__);
-    XCTAssert(NO);
+}
+#else
+- (void)testFadeIn
+{
+    XCTAssertTrue(NO);
 }
 #endif
 
