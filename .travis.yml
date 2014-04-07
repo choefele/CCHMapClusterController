@@ -6,4 +6,4 @@ install: echo
 script:
   - export LC_CTYPE=en_US.UTF-8
   - set -o pipefail
-  - xcodebuild -workspace CCHMapClusterController.xcworkspace -scheme 'CCHMapClusterController Example iOS' -sdk iphonesimulator7.0 -configuration Debug test
+  - xcodebuild -workspace CCHMapClusterController.xcworkspace -scheme 'CCHMapClusterController Example iOS' -sdk iphonesimulator7.0 -configuration Debug -destination 'platform=iOS Simulator,OS=7.0,name=iPhone Retina (4-inch)' test
