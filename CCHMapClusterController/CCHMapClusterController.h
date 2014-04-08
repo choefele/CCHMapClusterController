@@ -46,10 +46,10 @@
 @property (nonatomic, assign) double cellSize;
 
 /** The current zoom level of the visible map region. A zoom level of 0 means that the entire map fits
- the screen width. The value increases when zooming in. */
+ the screen width. The value increases while zooming in. */
 @property (nonatomic, assign, readonly) double zoomLevel;
-/** If the current zoom level exceeds this value, the clustering will be disabled and each cluster annotation
- on the map will have one unique location (default: `DBL_MAX`). */
+/** If the current zoom level exceeds this value, clustering will be disabled and each annotation in 
+ a cluster annotation will have the same location (default: `DBL_MAX`). */
 @property (nonatomic, assign) double maxZoomLevelForClustering;
 
 /** Delegate to configure cluster annotations. */

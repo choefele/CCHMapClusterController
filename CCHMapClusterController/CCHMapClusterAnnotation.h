@@ -51,7 +51,7 @@
 
 /** Returns YES if this cluster contains more than one annotation. */
 - (BOOL)isCluster;
-/** Returns YES if all annotations in this cluster are at the same location. */
+/** Returns YES if all annotations in this cluster have the same location. */
 - (BOOL)isUniqueLocation;
 - (BOOL)isOneLocation __deprecated;
 
