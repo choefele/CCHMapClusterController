@@ -91,6 +91,7 @@
         self.mapClusterer = [[CCHNearCenterMapClusterer alloc] init];
     }
     self.mapClusterControllerRed.clusterer = self.mapClusterer;
+    self.mapClusterControllerRed.maxZoomLevelForClustering = settings.maxZoomLevelForClustering;
 
     if (settings.animator == SettingsAnimatorFadeInOut) {
         self.mapAnimator = [[CCHFadeInOutMapAnimator alloc] init];
@@ -123,6 +124,7 @@
         self.mapClusterControllerBlue.cellSize = settings.cellSize + 20;
         self.mapClusterControllerBlue.marginFactor = settings.marginFactor;
         self.mapClusterControllerBlue.clusterer = self.mapClusterer;
+        self.mapClusterControllerBlue.maxZoomLevelForClustering = settings.maxZoomLevelForClustering;
         self.mapClusterControllerBlue.animator = self.mapAnimator;
     } else {
         self.mapClusterControllerBlue = nil;
