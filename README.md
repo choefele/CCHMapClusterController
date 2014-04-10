@@ -159,9 +159,11 @@ Instances of these classes can be assigned to `CCHMapClusterController`'s proper
 
 In addition, `CCHMapClusterController` by default reuses cluster annotations for a cell. This is beneficial for incrementally adding more annotations to the clustering (e.g. when downloading batches of data) because you want to avoid the cluster annotation jumping around during updates. Set `reuseExistingClusterAnnotations` to `NO` if you don't want this behavior.
 
-### Disabling clustering when being zoomed in (upcoming version)
+### Disabling clustering when being zoomed in
 
-You can disable clustering depending on how far the map has been zoomed in. When clustering is disabled, each annotation in a cluster annotation will have the same location.
+(Upcoming version)
+
+You can disable clustering depending on how far the map has been zoomed in. When clustering is disabled, each annotation in a cluster annotation will have the same location (`isUniqueLocation` for the `CCHMapClusterAnnotation` instance returns `YES`).
 
 This feature is controlled by the zoom level of the map. A zoom level of 0 means that the entire map fits the screen width and the value increases while zooming in. You can retrieve the current zoom level from `CCHMapClusterController`'s property `zoomLevel`.
 
