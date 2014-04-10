@@ -70,16 +70,6 @@
 {
     self.settings = settings;
     
-    // Reset
-    self.count = 0;
-    [self.dataReader stopReadingData];
-    [self.mapClusterControllerRed removeAnnotations:self.mapClusterControllerRed.annotations.allObjects withCompletionHandler:NULL];
-    [self.mapClusterControllerBlue removeAnnotations:self.mapClusterControllerBlue.annotations.allObjects withCompletionHandler:NULL];
-    [self.mapView removeAnnotations:self.mapView.annotations];
-    for (id<MKOverlay> overlay in self.mapView.overlays) {
-        [self.mapView removeOverlay:overlay];
-    }
-    
     // Map cluster controller settings
     self.mapClusterControllerRed.debuggingEnabled = settings.isDebuggingEnabled;
     self.mapClusterControllerRed.cellSize = settings.cellSize;
@@ -98,21 +88,6 @@
     }
     self.mapClusterControllerRed.animator = self.mapAnimator;
     
-    // Region and data
-    MKCoordinateRegion region;
-    if (self.settings.dataSet == SettingsDataSetBerlin) {
-        // 5000+ items near Berlin
-        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
-        region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
-        [self.dataReader startReadingBerlinData];
-    } else {
-        // 80000+ items in the US
-        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.833333, -98.583333);
-        region = MKCoordinateRegionMakeWithDistance(location, 7000000, 7000000);
-        [self.dataReader startReadingUSData];
-    }
-    self.mapView.region = region;
-    
     // Similar settings for second cluster controller
     if (settings.isGroupingEnabled) {
         if (self.mapClusterControllerBlue == nil) {
@@ -128,6 +103,32 @@
         self.mapClusterControllerBlue.animator = self.mapAnimator;
     } else {
         self.mapClusterControllerBlue = nil;
+    }
+    
+    // Restart data reader
+    self.count = 0;
+    [self.dataReader stopReadingData];
+
+    MKCoordinateRegion region;
+    if (self.settings.dataSet == SettingsDataSetBerlin) {
+        // 5000+ items near Berlin
+        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
+        region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
+        [self.dataReader startReadingBerlinData];
+    } else {
+        // 80000+ items in the US
+        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.833333, -98.583333);
+        region = MKCoordinateRegionMakeWithDistance(location, 7000000, 7000000);
+        [self.dataReader startReadingUSData];
+    }
+    self.mapView.region = region;
+    
+    // Remove all current items form the map
+    [self.mapClusterControllerRed removeAnnotations:self.mapClusterControllerRed.annotations.allObjects withCompletionHandler:NULL];
+    [self.mapClusterControllerBlue removeAnnotations:self.mapClusterControllerBlue.annotations.allObjects withCompletionHandler:NULL];
+    [self.mapView removeAnnotations:self.mapView.annotations];
+    for (id<MKOverlay> overlay in self.mapView.overlays) {
+        [self.mapView removeOverlay:overlay];
     }
 }
 
