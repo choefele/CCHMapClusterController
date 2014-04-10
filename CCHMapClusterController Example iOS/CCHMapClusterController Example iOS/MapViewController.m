@@ -163,6 +163,7 @@
 {
     ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[self.mapView viewForAnnotation:mapClusterAnnotation];
     clusterAnnotationView.count = mapClusterAnnotation.annotations.count;
+    clusterAnnotationView.uniqueLocation = mapClusterAnnotation.isUniqueLocation;
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
@@ -183,6 +184,7 @@
         CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotation;
         clusterAnnotationView.count = clusterAnnotation.annotations.count;
         clusterAnnotationView.blue = (clusterAnnotation.mapClusterController == self.mapClusterControllerBlue);
+        clusterAnnotationView.uniqueLocation = clusterAnnotation.isUniqueLocation;
         annotationView = clusterAnnotationView;
     }
     

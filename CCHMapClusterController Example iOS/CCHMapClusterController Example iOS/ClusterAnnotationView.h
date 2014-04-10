@@ -12,5 +12,6 @@
 
 @property (assign, nonatomic) NSUInteger count;
 @property (assign, nonatomic, getter = isBlue) BOOL blue;
+@property (assign, nonatomic, getter = isUniqueLocation) BOOL uniqueLocation;
 
 @end

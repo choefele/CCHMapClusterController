@@ -16,7 +16,7 @@
     if (self) {
         _cellSize = 60;
         _marginFactor = 0.5;
-        _maxZoomLevelForClustering = 15;
+        _maxZoomLevelForClustering = 16;
     }
     
     return self;

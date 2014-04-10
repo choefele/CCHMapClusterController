@@ -51,43 +51,66 @@
     _count = count;
     
     self.countLabel.text = [@(count) stringValue];
-    [self update];
+    [self setNeedsLayout];
 }
 
 - (void)setBlue:(BOOL)blue
 {
     _blue = blue;
-    [self update];
+    [self setNeedsLayout];
 }
 
-- (void)update
+- (void)setUniqueLocation:(BOOL)uniqueLocation
 {
-    self.countLabel.frame = self.bounds;
-    
-    // Images are faster than using drawRect:
-    NSString *suffix;
-    if (self.count > 1000) {
-        suffix = @"39";
-    } else if (self.count > 500) {
-        suffix = @"38";
-    } else if (self.count > 200) {
-        suffix = @"36";
-    } else if (self.count > 100) {
-        suffix = @"34";
-    } else if (self.count > 50) {
-        suffix = @"31";
-    } else if (self.count > 20) {
-        suffix = @"28";
-    } else if (self.count > 10) {
-        suffix = @"25";
-    } else if (self.count > 5) {
-        suffix = @"24";
-    } else {
-        suffix = @"21";
-    }
+    _uniqueLocation = uniqueLocation;
+    [self setNeedsLayout];
+}
 
-    NSString *prefix = self.isBlue ? @"CircleBlue" : @"CircleRed";
-    self.image = [UIImage imageNamed:[prefix stringByAppendingString:suffix]];
+- (void)layoutSubviews
+{
+    // Images are faster than using drawRect:
+    UIImage *image;
+    CGPoint centerOffset;
+    CGRect countLabelFrame;
+    if (self.isUniqueLocation) {
+        NSString *imageName = self.isBlue ? @"SquareBlue" : @"SquareRed";
+        image = [UIImage imageNamed:imageName];
+        centerOffset = CGPointMake(0, image.size.height * 0.5);
+        CGRect frame = self.bounds;
+        frame.origin.y -= 2;
+        countLabelFrame = frame;
+    } else {
+        NSString *suffix;
+        if (self.count > 1000) {
+            suffix = @"39";
+        } else if (self.count > 500) {
+            suffix = @"38";
+        } else if (self.count > 200) {
+            suffix = @"36";
+        } else if (self.count > 100) {
+            suffix = @"34";
+        } else if (self.count > 50) {
+            suffix = @"31";
+        } else if (self.count > 20) {
+            suffix = @"28";
+        } else if (self.count > 10) {
+            suffix = @"25";
+        } else if (self.count > 5) {
+            suffix = @"24";
+        } else {
+            suffix = @"21";
+        }
+        
+        NSString *imageName = [NSString stringWithFormat:@"%@%@", self.isBlue ? @"CircleBlue" : @"CircleRed", suffix];
+        image = [UIImage imageNamed:imageName];
+
+        centerOffset = CGPointZero;
+        countLabelFrame = self.bounds;
+    }
+    
+    self.countLabel.frame = countLabelFrame;
+    self.image = image;
+    self.centerOffset = centerOffset;
 }
 
 @end
