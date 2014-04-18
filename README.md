@@ -7,6 +7,8 @@ CCHMapClusterController
 
 See [Changes](https://github.com/choefele/CCHMapClusterController/blob/master/CHANGES.md) for a high-level overview of recent updates.
 
+Need to talk to a human? [Follow @claushoefele on Twitter](https://twitter.com/claushoefele).
+
 ## Getting started
 
 If you have your project set up with an `MKMapView`, integrating clustering will take 4 lines of code:
@@ -38,7 +40,7 @@ Don't worry about manually updating the clusters; `CCHMapClusterController` auto
 
 To try out the clustering, experiment with the example included in this project, or download the app “Stolpersteine in Berlin” [![Download on the App Store](https://linkmaker.itunes.apple.com/htmlResources/assets//images/web/linkmaker/badge_appstore-sm.png)](https://itunes.apple.com/de/app/stolpersteine-in-berlin/id640731757?mt=8&uo=4).
 
-## Developer's guide
+## Usage
 
 - [Installation](#installation)
 - [Performance](#performance)
