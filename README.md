@@ -7,7 +7,7 @@ CCHMapClusterController
 
 See [Changes](https://github.com/choefele/CCHMapClusterController/blob/master/CHANGES.md) for a high-level overview of recent updates.
 
-Need to talk to a human? [Follow @claushoefele on Twitter](https://twitter.com/claushoefele).
+Need to talk to a human? [I'm @claushoefele on Twitter](https://twitter.com/claushoefele).
 
 ## Getting started
 
