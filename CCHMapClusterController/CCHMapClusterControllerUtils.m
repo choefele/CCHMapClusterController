@@ -34,7 +34,6 @@
 
 MKMapRect CCHMapClusterControllerAlignMapRectToCellSize(MKMapRect mapRect, double cellSize)
 {
-    NSCAssert(cellSize != 0, @"Invalid map length");
     if (cellSize == 0) {
         return MKMapRectNull;
     }
@@ -89,7 +88,6 @@ double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, NSView *vie
 
 double CCHMapClusterControllerAlignMapLengthToWorldWidth(double mapLength)
 {
-    NSCAssert(mapLength != 0, @"Invalid map length");
     if (mapLength == 0) {
         return 0;
     }
