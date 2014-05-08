@@ -5,6 +5,7 @@ Changes
 
 - `CCHMapClusterController` now has a new property `maxZoomLevelForClustering`, which disables clustering if the current zoom level exceeds this value. When disabled, all cluster annotations on the map cluster will have one unique location. The current zoom level can be queried with the property `zoomLevel`. Thanks to tspacek for the code and onato and iGriever for suggesting this feature.
 - Renamed property `isOneLocation` in `CCHMapClusterAnnotation` to `isUniqueLocation`
+- Removed asserts that triggered the exception 'Invalid map length' because my assumption that this could never happen was wrong. Thanks zeyadsalloum and jas54 for helping me find this issue
 
 ## 1.5.0
 
