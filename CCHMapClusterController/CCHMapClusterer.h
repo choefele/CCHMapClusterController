@@ -28,8 +28,17 @@
 
 @class CCHMapClusterController;
 
+/** 
+ A custom strategy that defines where clusters are positioned must implement this protocol.
+ */
 @protocol CCHMapClusterer
 
+/**
+ Called on a background thread to determine the location of the cluster for the given annotations.
+ @param mapClusterController map cluster controller.
+ @param annotations annotations in this cluster (annotations are of type `CCHMapClusterAnnotation`).
+ @param mapRect the area that's covered by this cluster.
+ */
 - (CLLocationCoordinate2D)mapClusterController:(CCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
 
 @end
