@@ -35,8 +35,6 @@
 
 @interface CCHMapClusterOperation : NSOperation
 
-@property (nonatomic, copy) void (^completionHandler)();
-
 @property (nonatomic, strong) CCHMapTree *allAnnotationsMapTree;
 @property (nonatomic, strong) CCHMapTree *visibleAnnotationsMapTree;
 @property (nonatomic, strong) id<CCHMapClusterer> clusterer;

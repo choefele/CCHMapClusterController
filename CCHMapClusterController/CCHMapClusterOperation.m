@@ -44,6 +44,9 @@
 @property (nonatomic, assign) BOOL reuseExistingClusterAnnotations;
 @property (nonatomic, assign) double maxZoomLevelForClustering;
 
+@property (nonatomic, getter = isExecuting) BOOL executing;
+@property (nonatomic, getter = isFinished) BOOL finished;
+
 @end
 
 @implementation CCHMapClusterOperation
@@ -61,6 +64,9 @@
         _mapViewAnnotations = mapView.annotations;
         _reuseExistingClusterAnnotations = reuseExistingClusterAnnotation;
         _maxZoomLevelForClustering = maxZoomLevelForClustering;
+        
+        _executing = NO;
+        _finished = NO;
     }
     
     return self;
@@ -84,8 +90,10 @@
     return gridMapRect;
 }
 
-- (void)main
+- (void)start
 {
+    self.executing = YES;
+    
     double zoomLevel = CCHMapClusterControllerZoomLevelForRegion(self.mapViewRegion.center.longitude, self.mapViewRegion.span.longitudeDelta, self.mapViewWidth);
     BOOL disableClustering = (zoomLevel >= self.maxZoomLevelForClustering);
     BOOL respondsToSelector = [_delegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)];
@@ -173,11 +181,25 @@
         [self.animator mapClusterController:self.clusterController willRemoveAnnotations:annotationsToRemove withCompletionHandler:^{
             [self.mapView removeAnnotations:annotationsToRemove];
             
-            if (self.completionHandler) {
-                self.completionHandler();
-            }
+            self.executing = NO;
+            self.finished = YES;
         }];
     });
+}
+
+- (void)setExecuting:(BOOL)executing
+{
+    [self willChangeValueForKey:@"isExecuting"];
+    _executing = YES;
+    [self didChangeValueForKey:@"isExecuting"];
+}
+
+- (void)setFinished:(BOOL)finished
+{
+    [self willChangeValueForKey:@"isFinished"];
+    _finished = YES;
+    [self didChangeValueForKey:@"isFinished"];
+    
 }
 
 @end

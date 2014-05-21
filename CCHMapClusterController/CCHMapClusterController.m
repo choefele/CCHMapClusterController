@@ -74,6 +74,7 @@
         _allAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
         _visibleAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
         _backgroundQueue = [[NSOperationQueue alloc] init];
+        _backgroundQueue.maxConcurrentOperationCount = 1;   // sync access to allAnnotationsMapTree & visibleAnnotationsMapTree
         
         if ([mapView.delegate isKindOfClass:CCHMapViewDelegateProxy.class]) {
             CCHMapViewDelegateProxy *delegateProxy = (CCHMapViewDelegateProxy *)mapView.delegate;
@@ -120,7 +121,7 @@
     return CCHMapClusterControllerZoomLevelForRegion(region.center.longitude, region.span.longitudeDelta, self.mapView.bounds.size.width);
 }
 
-- (void)sync
+- (void)cancelAllClusterOperations
 {
     NSOperationQueue *backgroundQueue = self.backgroundQueue;
     for (NSOperation *operation in backgroundQueue.operations) {
@@ -128,12 +129,11 @@
             [operation cancel];
         }
     }
-    [backgroundQueue waitUntilAllOperationsAreFinished];
 }
 
 - (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
 {
-    [self sync];
+    [self cancelAllClusterOperations];
     
     [self.backgroundQueue addOperationWithBlock:^{
         BOOL updated = [self.allAnnotationsMapTree addAnnotations:annotations];
@@ -149,7 +149,7 @@
 
 - (void)removeAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
 {
-    [self sync];
+    [self cancelAllClusterOperations];
     
     [self.backgroundQueue addOperationWithBlock:^{
         BOOL updated = [self.allAnnotationsMapTree removeAnnotations:annotations];
@@ -165,20 +165,20 @@
 
 - (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler
 {
-    [self sync];
+    [self cancelAllClusterOperations];
     
     CCHMapClusterOperation *operation = [[CCHMapClusterOperation alloc] initWithMapView:self.mapView
                                                                                cellSize:self.cellSize
                                                                            marginFactor:self.marginFactor
                                                         reuseExistingClusterAnnotations:self.reuseExistingClusterAnnotations
                                                               maxZoomLevelForClustering:self.maxZoomLevelForClustering];
-    operation.completionHandler = completionHandler;
     operation.allAnnotationsMapTree = self.allAnnotationsMapTree;
     operation.visibleAnnotationsMapTree = self.visibleAnnotationsMapTree;
     operation.clusterer = self.clusterer;
     operation.animator = self.animator;
     operation.delegate = self.delegate;
     operation.clusterController = self;
+    operation.completionBlock = completionHandler;
     
     [self.backgroundQueue addOperation:operation];
 
