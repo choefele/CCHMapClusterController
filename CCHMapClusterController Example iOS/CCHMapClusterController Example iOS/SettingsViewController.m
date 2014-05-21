@@ -23,11 +23,11 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *maxZoomLevelTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *groupingEnabledTableViewCell;
 
-@property (nonatomic, strong) UISwitch *debuggingEnabledSwitch;
-@property (nonatomic, strong) UIStepper *cellSizeStepper;
-@property (nonatomic, strong) UIStepper *marginFactorStepper;
-@property (nonatomic, strong) UIStepper *maxZoomLevelStepper;
-@property (nonatomic, strong) UISwitch *groupingEnabledSwitch;
+@property (nonatomic) UISwitch *debuggingEnabledSwitch;
+@property (nonatomic) UIStepper *cellSizeStepper;
+@property (nonatomic) UIStepper *marginFactorStepper;
+@property (nonatomic) UIStepper *maxZoomLevelStepper;
+@property (nonatomic) UISwitch *groupingEnabledSwitch;
 
 @end
 

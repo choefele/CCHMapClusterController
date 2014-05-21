@@ -35,10 +35,10 @@
 
 @interface CCHMapClusterOperation : NSOperation
 
-@property (nonatomic, strong) CCHMapTree *allAnnotationsMapTree;
-@property (nonatomic, strong) CCHMapTree *visibleAnnotationsMapTree;
-@property (nonatomic, strong) id<CCHMapClusterer> clusterer;
-@property (nonatomic, strong) id<CCHMapAnimator> animator;
+@property (nonatomic) CCHMapTree *allAnnotationsMapTree;
+@property (nonatomic) CCHMapTree *visibleAnnotationsMapTree;
+@property (nonatomic) id<CCHMapClusterer> clusterer;
+@property (nonatomic) id<CCHMapAnimator> animator;
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
 @property (nonatomic, weak) CCHMapClusterController *clusterController;
 

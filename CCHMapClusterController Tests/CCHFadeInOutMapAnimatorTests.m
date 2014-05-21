@@ -30,8 +30,8 @@
 
 @interface CCHFadeInOutMapAnimatorTests : XCTestCase
 
-@property (nonatomic, strong) CCHFadeInOutMapAnimator *animator;
-@property (nonatomic, assign) BOOL done;
+@property (nonatomic) CCHFadeInOutMapAnimator *animator;
+@property (nonatomic) BOOL done;
 
 @end
 

@@ -32,9 +32,9 @@
 
 @interface CCHMapClusterControllerTests : XCTestCase
 
-@property (nonatomic, strong) MKMapView *mapView;
-@property (nonatomic, strong) CCHMapClusterController *mapClusterController;
-@property (nonatomic, assign) BOOL done;
+@property (nonatomic) MKMapView *mapView;
+@property (nonatomic) CCHMapClusterController *mapClusterController;
+@property (nonatomic) BOOL done;
 
 @end
 

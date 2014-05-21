@@ -17,7 +17,7 @@
 
 @interface DataReader()
 
-@property (nonatomic, strong) NSOperationQueue *operationQueue;
+@property (nonatomic) NSOperationQueue *operationQueue;
 
 @end
 

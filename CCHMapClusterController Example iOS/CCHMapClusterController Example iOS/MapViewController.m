@@ -25,13 +25,13 @@
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
-@property (strong, nonatomic) DataReader *dataReader;
-@property (strong, nonatomic) Settings *settings;
-@property (strong, nonatomic) CCHMapClusterController *mapClusterControllerRed;
-@property (strong, nonatomic) CCHMapClusterController *mapClusterControllerBlue;
-@property (assign, nonatomic) NSUInteger count;
-@property (strong, nonatomic) id<CCHMapClusterer> mapClusterer;
-@property (strong, nonatomic) id<CCHMapAnimator> mapAnimator;
+@property (nonatomic) DataReader *dataReader;
+@property (nonatomic) Settings *settings;
+@property (nonatomic) CCHMapClusterController *mapClusterControllerRed;
+@property (nonatomic) CCHMapClusterController *mapClusterControllerBlue;
+@property (nonatomic) NSUInteger count;
+@property (nonatomic) id<CCHMapClusterer> mapClusterer;
+@property (nonatomic) id<CCHMapAnimator> mapAnimator;
 
 @end
 

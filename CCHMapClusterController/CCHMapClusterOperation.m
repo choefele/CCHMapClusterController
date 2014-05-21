@@ -34,15 +34,15 @@
 
 @interface CCHMapClusterOperation()
 
-@property (nonatomic, strong) MKMapView *mapView;
-@property (nonatomic, assign) double cellMapSize;
-@property (nonatomic, assign) double marginFactor;
-@property (nonatomic, assign) MKMapRect mapViewVisibleMapRect;
-@property (nonatomic, assign) MKCoordinateRegion mapViewRegion;
-@property (nonatomic, assign) CGFloat mapViewWidth;
+@property (nonatomic) MKMapView *mapView;
+@property (nonatomic) double cellMapSize;
+@property (nonatomic) double marginFactor;
+@property (nonatomic) MKMapRect mapViewVisibleMapRect;
+@property (nonatomic) MKCoordinateRegion mapViewRegion;
+@property (nonatomic) CGFloat mapViewWidth;
 @property (nonatomic, copy) NSArray *mapViewAnnotations;
-@property (nonatomic, assign) BOOL reuseExistingClusterAnnotations;
-@property (nonatomic, assign) double maxZoomLevelForClustering;
+@property (nonatomic) BOOL reuseExistingClusterAnnotations;
+@property (nonatomic) double maxZoomLevelForClustering;
 
 @property (nonatomic, getter = isExecuting) BOOL executing;
 @property (nonatomic, getter = isFinished) BOOL finished;

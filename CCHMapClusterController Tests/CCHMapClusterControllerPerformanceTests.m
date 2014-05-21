@@ -41,10 +41,10 @@
 
 @interface CCHMapClusterControllerPerformanceTests : XCTestCase
 
-@property (nonatomic, strong) NSMutableArray *annotations;
-@property (nonatomic, assign) MKMapRect mapRect;
-@property (nonatomic, assign) double cellSize;
-@property (nonatomic, strong) NSArray *clusterCounts;
+@property (nonatomic) NSMutableArray *annotations;
+@property (nonatomic) MKMapRect mapRect;
+@property (nonatomic) double cellSize;
+@property (nonatomic, copy) NSArray *clusterCounts;
 
 @end
 

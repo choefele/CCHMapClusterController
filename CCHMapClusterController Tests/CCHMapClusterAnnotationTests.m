@@ -29,7 +29,7 @@
 
 @interface CCHMapClusterAnnotationTests : XCTestCase
 
-@property (nonatomic, strong) CCHMapClusterAnnotation *clusterAnnotation;
+@property (nonatomic) CCHMapClusterAnnotation *clusterAnnotation;
 
 @end
 

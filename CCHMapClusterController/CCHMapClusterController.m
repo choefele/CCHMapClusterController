@@ -47,17 +47,17 @@
 
 @interface CCHMapClusterController()<MKMapViewDelegate>
 
-@property (nonatomic, strong) CCHMapTree *allAnnotationsMapTree;
-@property (nonatomic, strong) CCHMapTree *visibleAnnotationsMapTree;
-@property (nonatomic, strong) NSOperationQueue *backgroundQueue;
-@property (nonatomic, strong) MKMapView *mapView;
-@property (nonatomic, strong) CCHMapViewDelegateProxy *mapViewDelegateProxy;
-@property (nonatomic, strong) id<MKAnnotation> annotationToSelect;
-@property (nonatomic, strong) CCHMapClusterAnnotation *mapClusterAnnotationToSelect;
-@property (nonatomic, assign) MKCoordinateSpan regionSpanBeforeChange;
-@property (nonatomic, assign, getter = isRegionChanging) BOOL regionChanging;
-@property (nonatomic, strong) id<CCHMapClusterer> strongClusterer;
-@property (nonatomic, strong) id<CCHMapAnimator> strongAnimator;
+@property (nonatomic) CCHMapTree *allAnnotationsMapTree;
+@property (nonatomic) CCHMapTree *visibleAnnotationsMapTree;
+@property (nonatomic) NSOperationQueue *backgroundQueue;
+@property (nonatomic) MKMapView *mapView;
+@property (nonatomic) CCHMapViewDelegateProxy *mapViewDelegateProxy;
+@property (nonatomic) id<MKAnnotation> annotationToSelect;
+@property (nonatomic) CCHMapClusterAnnotation *mapClusterAnnotationToSelect;
+@property (nonatomic) MKCoordinateSpan regionSpanBeforeChange;
+@property (nonatomic, getter = isRegionChanging) BOOL regionChanging;
+@property (nonatomic) id<CCHMapClusterer> strongClusterer;
+@property (nonatomic) id<CCHMapAnimator> strongAnimator;
 
 @end
 

@@ -29,7 +29,7 @@
 
 @interface CCHNearCenterMapClustererTests : XCTestCase
 
-@property (nonatomic, strong) CCHNearCenterMapClusterer *mapClusterer;
+@property (nonatomic) CCHNearCenterMapClusterer *mapClusterer;
 
 @end
 

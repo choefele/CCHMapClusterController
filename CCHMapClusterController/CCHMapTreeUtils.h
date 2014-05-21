@@ -29,7 +29,7 @@
 @interface CCHMapTreeUnsafeMutableArray : NSObject
 
 @property (nonatomic, assign, readonly) id __unsafe_unretained *objects;
-@property (nonatomic, assign, readonly) NSUInteger numObjects;
+@property (nonatomic, readonly) NSUInteger numObjects;
 
 - (id)initWithCapacity:(NSUInteger)capacity;
 - (void)addObject:(__unsafe_unretained id)object;

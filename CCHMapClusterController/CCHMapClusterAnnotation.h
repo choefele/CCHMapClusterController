@@ -41,7 +41,7 @@
 /** The string containing the annotation's subtitle. */
 @property (nonatomic, copy) NSString *subtitle;
 /** The center point of the annotation. */
-@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
+@property (nonatomic) CLLocationCoordinate2D coordinate;
 
 /** Custom titles and subtitles are retrieved via this delegate. */
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;

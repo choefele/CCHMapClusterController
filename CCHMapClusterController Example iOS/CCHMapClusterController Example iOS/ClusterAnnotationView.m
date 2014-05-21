@@ -12,7 +12,7 @@
 
 @interface ClusterAnnotationView ()
 
-@property (strong, nonatomic) UILabel *countLabel;
+@property (nonatomic) UILabel *countLabel;
 
 @end
 

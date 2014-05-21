@@ -29,7 +29,7 @@
 
 @interface CCHCenterOfMassMapClustererTests : XCTestCase
 
-@property (nonatomic, strong) CCHCenterOfMassMapClusterer *mapClusterer;
+@property (nonatomic) CCHCenterOfMassMapClusterer *mapClusterer;
 
 @end
 

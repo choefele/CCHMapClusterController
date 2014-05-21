@@ -29,9 +29,9 @@
 
 @interface CCHMapTree()
 
-@property (nonatomic, strong) NSMutableSet *mutableAnnotations;
-@property (nonatomic, assign) CCHMapTreeNode *root;
-@property (nonatomic, assign) NSUInteger nodeCapacity;
+@property (nonatomic) NSMutableSet *mutableAnnotations;
+@property (nonatomic) CCHMapTreeNode *root;
+@property (nonatomic) NSUInteger nodeCapacity;
 
 @end
 

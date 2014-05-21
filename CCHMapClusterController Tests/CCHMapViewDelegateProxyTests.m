@@ -39,7 +39,7 @@
 
 @interface CCHMapViewDelegateProxyTests : XCTestCase
 
-@property (nonatomic, strong) MKMapView *mapView;
+@property (nonatomic) MKMapView *mapView;
 
 @end
 
