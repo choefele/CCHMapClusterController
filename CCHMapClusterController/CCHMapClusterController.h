@@ -48,19 +48,19 @@
 /** The current zoom level of the visible map region. A zoom level of 0 means that the entire map fits
  the screen width. The value increases while zooming in. */
 @property (nonatomic, readonly) double zoomLevel;
-/** If the current zoom level exceeds this value, clustering will be disabled and each annotation in 
- a cluster annotation will have the same location (default: `DBL_MAX`). */
+/** The maximum zoom level before clustering will be disabled and each annotation on the map will
+ have a unique location (default: `DBL_MAX`). */
 @property (nonatomic) double maxZoomLevelForClustering;
 
 /** Delegate to configure cluster annotations. */
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
 
-/** Delegate to define strategy for positioning cluster annotations (default: `CCHCenterOfMassMapClusterer`). */
+/** Strategy for positioning cluster annotations (default: `CCHCenterOfMassMapClusterer`). */
 @property (nonatomic, weak) id<CCHMapClusterer> clusterer;
 /** Reuse existing cluster annotations for a cell (default: `YES`). */
 @property (nonatomic) BOOL reuseExistingClusterAnnotations;
 
-/** Delegate to define strategy for animating cluster annotations in and out (default: `CCHFadeInOutMapAnimator`). */
+/** Strategy for animating cluster annotations in and out (default: `CCHFadeInOutMapAnimator`). */
 @property (nonatomic, weak) id<CCHMapAnimator> animator;
 
 /** Displays the grid used for clustering. */
