@@ -39,7 +39,7 @@
 @property (nonatomic) CCHMapTree *visibleAnnotationsMapTree;
 @property (nonatomic) id<CCHMapClusterer> clusterer;
 @property (nonatomic) id<CCHMapAnimator> animator;
-@property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
+@property (nonatomic, weak) id<CCHMapClusterControllerDelegate> clusterControllerDelegate;
 @property (nonatomic, weak) CCHMapClusterController *clusterController;
 
 - (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering;

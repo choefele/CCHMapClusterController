@@ -176,7 +176,7 @@
     operation.visibleAnnotationsMapTree = self.visibleAnnotationsMapTree;
     operation.clusterer = self.clusterer;
     operation.animator = self.animator;
-    operation.delegate = self.delegate;
+    operation.clusterControllerDelegate = self.delegate;
     operation.clusterController = self;
     operation.completionBlock = completionHandler;
     
