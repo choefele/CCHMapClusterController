@@ -297,9 +297,11 @@
     annotation0.coordinate = CLLocationCoordinate2DMake(0, 0);
     MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
     annotation1.coordinate = CLLocationCoordinate2DMake(0, 1);
-    
+    MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
+    annotation2.coordinate = CLLocationCoordinate2DMake(0, 0);
+
     __weak CCHMapClusterControllerTests *weakSelf = self;
-    [self.mapClusterController addAnnotations:@[annotation0, annotation1] withCompletionHandler:^{
+    [self.mapClusterController addAnnotations:@[annotation0, annotation1, annotation2] withCompletionHandler:^{
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
@@ -320,37 +322,17 @@
     annotation0.coordinate = CLLocationCoordinate2DMake(0, 0);
     MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
     annotation1.coordinate = CLLocationCoordinate2DMake(0, 1);
-    
+    MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
+    annotation2.coordinate = CLLocationCoordinate2DMake(0, 0);
+
     __weak CCHMapClusterControllerTests *weakSelf = self;
-    [self.mapClusterController addAnnotations:@[annotation0, annotation1] withCompletionHandler:^{
+    [self.mapClusterController addAnnotations:@[annotation0, annotation1, annotation2] withCompletionHandler:^{
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
 }
 
-- (void)testAddAnnotationsMaxZoomLevelSmallerUniqueLocation
-{
-    self.mapView.frame = CGRectMake(0, 0, 300, 300);
-    self.mapClusterController.marginFactor = 0;
-    self.mapClusterController.cellSize = 300;
-    
-    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(0, 0), MKCoordinateSpanMake(5, 5));
-    self.mapView.region = region;   // zoomLevel = 6.398285
-    self.mapClusterController.maxZoomLevelForClustering = 6;
-    
-    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
-    annotation0.coordinate = CLLocationCoordinate2DMake(0, 0);
-    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
-    annotation1.coordinate = CLLocationCoordinate2DMake(0, 0);
-    
-    __weak CCHMapClusterControllerTests *weakSelf = self;
-    [self.mapClusterController addAnnotations:@[annotation0, annotation1] withCompletionHandler:^{
-        weakSelf.done = YES;
-    }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
-}
 
 #if TARGET_OS_IPHONE
 - (void)testFadeInOut
