@@ -1,5 +1,4 @@
 language: objective-c
-osx_image: mavericks
 before_install:
   - gem install xcpretty
 install: echo
