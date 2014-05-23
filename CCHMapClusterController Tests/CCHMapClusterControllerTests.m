@@ -303,7 +303,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapView.annotations.count, 1);
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
 }
 
 - (void)testAddAnnotationsMaxZoomLevelSmaller
@@ -326,7 +326,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapView.annotations.count, 2);
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
 }
 
 - (void)testAddAnnotationsMaxZoomLevelSmallerUniqueLocation
@@ -349,7 +349,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapView.annotations.count, 1);
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
 }
 
 #if TARGET_OS_IPHONE
