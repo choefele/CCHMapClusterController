@@ -283,70 +283,73 @@
     XCTAssertTrue([[self.mapView.annotations[1] annotations] containsObject:clusteredAnnotation]);
 }
 
-- (void)testAddAnnotationsMaxZoomLevel
+- (void)testAddAnnotationsMaxZoomLevelGreater
 {
-    // 3x3 grid
     self.mapView.frame = CGRectMake(0, 0, 300, 300);
     self.mapClusterController.marginFactor = 0;
-    self.mapClusterController.cellSize = 100;
-    self.mapClusterController.maxZoomLevelForClustering = 0;    // disable clustering
+    self.mapClusterController.cellSize = 300;
     
-    // Grid spanning 51-54 lng, 12-15 lat
-    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(52.5, 13.5), MKCoordinateSpanMake(3, 3));
-    MKMapRect visibleMapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
-    self.mapView.visibleMapRect = visibleMapRect;
+    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(0, 0), MKCoordinateSpanMake(10, 10));
+    self.mapView.region = region;   // zoomLevel = 5.396910
+    self.mapClusterController.maxZoomLevelForClustering = 6;
     
-    // Bottom left
     MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
-    annotation0.coordinate = CLLocationCoordinate2DMake(51.1, 12.1);
-    
-    // Top right
+    annotation0.coordinate = CLLocationCoordinate2DMake(0, 0);
     MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
-    annotation1.coordinate = CLLocationCoordinate2DMake(53.9, 14.9);
-    MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
-    annotation2.coordinate = CLLocationCoordinate2DMake(53.9, 14.9);
-    MKPointAnnotation *annotation3 = [[MKPointAnnotation alloc] init];
-    annotation3.coordinate = CLLocationCoordinate2DMake(53.9, 14.9);
-    MKPointAnnotation *annotation4 = [[MKPointAnnotation alloc] init];
-    annotation4.coordinate = CLLocationCoordinate2DMake(53.9, 14.9);
-    MKPointAnnotation *annotation5 = [[MKPointAnnotation alloc] init];
-    annotation5.coordinate = CLLocationCoordinate2DMake(53.9, 14.6);
+    annotation1.coordinate = CLLocationCoordinate2DMake(0, 1);
     
-    NSArray *annotations = @[annotation0, annotation1, annotation2, annotation3, annotation4, annotation5];
     __weak CCHMapClusterControllerTests *weakSelf = self;
-    [self.mapClusterController addAnnotations:annotations withCompletionHandler:^{
+    [self.mapClusterController addAnnotations:@[annotation0, annotation1] withCompletionHandler:^{
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapClusterController.annotations.count, annotations.count);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)3);  // 3 unique locations
+    XCTAssertEqual(self.mapView.annotations.count, 1);
+}
+
+- (void)testAddAnnotationsMaxZoomLevelSmaller
+{
+    self.mapView.frame = CGRectMake(0, 0, 300, 300);
+    self.mapClusterController.marginFactor = 0;
+    self.mapClusterController.cellSize = 300;
     
-    // Origin MKCoordinateRegion -> bottom left, MKMapRect -> top left
-    double cellWidth = visibleMapRect.size.width / 3;
-    double cellHeight = visibleMapRect.size.height / 3;
-    MKMapPoint cellOrigin = visibleMapRect.origin;
+    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(0, 0), MKCoordinateSpanMake(5, 5));
+    self.mapView.region = region;   // zoomLevel = 6.398285
+    self.mapClusterController.maxZoomLevelForClustering = 6;
     
-    // Check bottom left
-    MKMapRect bottomLeftMapRect = MKMapRectMake(cellOrigin.x, cellOrigin.y + 2 * cellHeight, cellWidth, cellHeight);
-    NSSet *annotationsInMapRect = [self.mapView annotationsInMapRect:bottomLeftMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)1);
-    CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
-    XCTAssertEqual(clusterAnnotation.annotations.count, (NSUInteger)1);
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(0, 0);
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = CLLocationCoordinate2DMake(0, 1);
     
-    // Check top right
-    MKMapRect topRightMapRect = MKMapRectMake(cellOrigin.x + 2 * cellWidth, cellOrigin.y, cellWidth, cellHeight);
-    annotationsInMapRect = [self.mapView annotationsInMapRect:topRightMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)2);
-    NSUInteger count = 0;
-    for (CCHMapClusterAnnotation *clusterAnnotation in annotationsInMapRect) {
-        count += clusterAnnotation.annotations.count;
-    }
-    XCTAssertEqual(count, (NSUInteger)5);
+    __weak CCHMapClusterControllerTests *weakSelf = self;
+    [self.mapClusterController addAnnotations:@[annotation0, annotation1] withCompletionHandler:^{
+        weakSelf.done = YES;
+    }];
+    XCTAssertTrue([self waitForCompletion:1.0]);
+    XCTAssertEqual(self.mapView.annotations.count, 2);
+}
+
+- (void)testAddAnnotationsMaxZoomLevelSmallerUniqueLocation
+{
+    self.mapView.frame = CGRectMake(0, 0, 300, 300);
+    self.mapClusterController.marginFactor = 0;
+    self.mapClusterController.cellSize = 300;
     
-    // Check center
-    MKMapRect middleMapRect = MKMapRectMake(cellOrigin.x + cellWidth, cellOrigin.y + cellHeight, cellWidth, cellHeight);
-    annotationsInMapRect = [self.mapView annotationsInMapRect:middleMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0);
+    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(0, 0), MKCoordinateSpanMake(5, 5));
+    self.mapView.region = region;   // zoomLevel = 6.398285
+    self.mapClusterController.maxZoomLevelForClustering = 6;
+    
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(0, 0);
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = CLLocationCoordinate2DMake(0, 0);
+    
+    __weak CCHMapClusterControllerTests *weakSelf = self;
+    [self.mapClusterController addAnnotations:@[annotation0, annotation1] withCompletionHandler:^{
+        weakSelf.done = YES;
+    }];
+    XCTAssertTrue([self waitForCompletion:1.0]);
+    XCTAssertEqual(self.mapView.annotations.count, 1);
 }
 
 #if TARGET_OS_IPHONE
