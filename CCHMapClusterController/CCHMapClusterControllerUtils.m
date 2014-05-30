@@ -279,11 +279,12 @@ static NSString *hashForCoordinate(CLLocationCoordinate2D coordinate, NSUInteger
     return geohashAsString;
 }
 
-NSArray *CCHMapClusterControllerAnnotationSetsByUniqueLocations(NSSet *annotations)
+NSArray *CCHMapClusterControllerAnnotationSetsByUniqueLocations(NSSet *annotations, NSUInteger maxUniqueLocations)
 {
     NSMutableDictionary *annotationsByGeohash = [NSMutableDictionary dictionary];
     
     for (id<MKAnnotation> annotation in annotations) {
+        // Add annotation to unique locations
         NSString *geohash = hashForCoordinate(annotation.coordinate, GEOHASH_LENGTH);
         NSMutableSet *annotationsAtLocation = [annotationsByGeohash objectForKey:geohash];
         if (!annotationsAtLocation) {
@@ -291,6 +292,12 @@ NSArray *CCHMapClusterControllerAnnotationSetsByUniqueLocations(NSSet *annotatio
         }
         [annotationsAtLocation addObject:annotation];
         [annotationsByGeohash setObject:annotationsAtLocation forKey:geohash];
+        
+        // Return nil if max has been reached
+        if (annotationsByGeohash.count > maxUniqueLocations) {
+            annotationsByGeohash = nil;
+            break;
+        }
     }
     
     return [annotationsByGeohash allValues];

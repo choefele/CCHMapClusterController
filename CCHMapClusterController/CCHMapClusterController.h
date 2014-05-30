@@ -52,6 +52,9 @@
  have a unique location (default: `DBL_MAX`). */
 @property (nonatomic) double maxZoomLevelForClustering;
 
+/** The minimum number of unique locations before a cell gets clustered (default: 0). */
+@property (nonatomic) NSUInteger minUniqueLocationsForClustering;
+
 /** Delegate to configure cluster annotations. */
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
 

@@ -43,6 +43,7 @@
 @property (nonatomic, copy) NSArray *mapViewAnnotations;
 @property (nonatomic) BOOL reuseExistingClusterAnnotations;
 @property (nonatomic) double maxZoomLevelForClustering;
+@property (nonatomic) NSUInteger minUniqueLocationsForClustering;
 
 @property (nonatomic, getter = isExecuting) BOOL executing;
 @property (nonatomic, getter = isFinished) BOOL finished;
@@ -51,7 +52,7 @@
 
 @implementation CCHMapClusterOperation
 
-- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering
+- (id)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering minUniqueLocationsForClustering:(NSUInteger)minUniqueLocationsForClustering
 {
     self = [super init];
     if (self) {
@@ -64,6 +65,7 @@
         _mapViewAnnotations = mapView.annotations;
         _reuseExistingClusterAnnotations = reuseExistingClusterAnnotation;
         _maxZoomLevelForClustering = maxZoomLevelForClustering;
+        _minUniqueLocationsForClustering = minUniqueLocationsForClustering;
         
         _executing = NO;
         _finished = NO;
@@ -95,7 +97,7 @@
     self.executing = YES;
     
     double zoomLevel = CCHMapClusterControllerZoomLevelForRegion(self.mapViewRegion.center.longitude, self.mapViewRegion.span.longitudeDelta, self.mapViewWidth);
-    BOOL disableClustering = (zoomLevel >= self.maxZoomLevelForClustering);
+    BOOL disableClustering = (zoomLevel > self.maxZoomLevelForClustering);
     BOOL respondsToSelector = [_clusterControllerDelegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)];
     
     // For each cell in the grid, pick one cluster annotation to show
@@ -108,11 +110,20 @@
             BOOL disableClusterer;
             NSArray *annotationSets;
             if (disableClustering) {
-                annotationSets = CCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell);
+                // Create annotation for each unique location because clustering is disabled
+                annotationSets = CCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, NSUIntegerMax);
                 disableClusterer = YES;
             } else {
-                annotationSets = @[allAnnotationsInCell];
-                disableClusterer = CCHMapClusterControllerIsUniqueLocation(allAnnotationsInCell);
+                NSUInteger max = _minUniqueLocationsForClustering > 0 ? _minUniqueLocationsForClustering - 1 : 0;
+                annotationSets = CCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, max);
+                if (annotationSets) {
+                    // Create annotation for each unique location because there are too few locations
+                    disableClusterer = YES;
+                } else {
+                    // Create one annotation for entire cell
+                    annotationSets = @[allAnnotationsInCell];
+                    disableClusterer = CCHMapClusterControllerIsUniqueLocation(allAnnotationsInCell);
+                }
             }
 
             NSMutableSet *visibleAnnotationsInCell = [NSMutableSet setWithSet:[_visibleAnnotationsMapTree annotationsInMapRect:cellMapRect]];

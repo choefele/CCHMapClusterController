@@ -70,6 +70,7 @@
         _marginFactor = 0.5;
         _cellSize = 60;
         _maxZoomLevelForClustering = DBL_MAX;
+        _minUniqueLocationsForClustering = 0;
         _mapView = mapView;
         _allAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
         _visibleAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
@@ -171,7 +172,8 @@
                                                                                cellSize:self.cellSize
                                                                            marginFactor:self.marginFactor
                                                         reuseExistingClusterAnnotations:self.reuseExistingClusterAnnotations
-                                                              maxZoomLevelForClustering:self.maxZoomLevelForClustering];
+                                                              maxZoomLevelForClustering:self.maxZoomLevelForClustering
+                                                        minUniqueLocationsForClustering:self.minUniqueLocationsForClustering];
     operation.allAnnotationsMapTree = self.allAnnotationsMapTree;
     operation.visibleAnnotationsMapTree = self.visibleAnnotationsMapTree;
     operation.clusterer = self.clusterer;

@@ -283,7 +283,7 @@
     XCTAssertTrue([[self.mapView.annotations[1] annotations] containsObject:clusteredAnnotation]);
 }
 
-- (void)testAddAnnotationsMaxZoomLevelGreater
+- (void)testAddAnnotationsMaxZoomLevelEnableClustering
 {
     self.mapView.frame = CGRectMake(0, 0, 300, 300);
     self.mapClusterController.marginFactor = 0;
@@ -308,7 +308,7 @@
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
 }
 
-- (void)testAddAnnotationsMaxZoomLevelSmaller
+- (void)testAddAnnotationsMaxZoomLevelDisableClustering
 {
     self.mapView.frame = CGRectMake(0, 0, 300, 300);
     self.mapClusterController.marginFactor = 0;
@@ -333,6 +333,55 @@
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
 }
 
+- (void)testAddAnnotationsMinUniqueLocationsEnableClustering
+{
+    self.mapView.frame = CGRectMake(0, 0, 300, 300);
+    self.mapClusterController.marginFactor = 0;
+    self.mapClusterController.cellSize = 300;
+    
+    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(0, 0), MKCoordinateSpanMake(5, 5));
+    self.mapView.region = region;
+    self.mapClusterController.minUniqueLocationsForClustering = 2;
+    
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(0, 0);
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = CLLocationCoordinate2DMake(0, 1.5);
+    MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
+    annotation2.coordinate = CLLocationCoordinate2DMake(0, 0);
+    
+    __weak CCHMapClusterControllerTests *weakSelf = self;
+    [self.mapClusterController addAnnotations:@[annotation0, annotation1, annotation2] withCompletionHandler:^{
+        weakSelf.done = YES;
+    }];
+    XCTAssertTrue([self waitForCompletion:1.0]);
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
+}
+
+- (void)testAddAnnotationsMinUniqueLocationsDisableClustering
+{
+    self.mapView.frame = CGRectMake(0, 0, 300, 300);
+    self.mapClusterController.marginFactor = 0;
+    self.mapClusterController.cellSize = 300;
+    
+    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(0, 0), MKCoordinateSpanMake(5, 5));
+    self.mapView.region = region;
+    self.mapClusterController.minUniqueLocationsForClustering = 3;
+    
+    MKPointAnnotation *annotation0 = [[MKPointAnnotation alloc] init];
+    annotation0.coordinate = CLLocationCoordinate2DMake(0, 0);
+    MKPointAnnotation *annotation1 = [[MKPointAnnotation alloc] init];
+    annotation1.coordinate = CLLocationCoordinate2DMake(0, 1.5);
+    MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
+    annotation2.coordinate = CLLocationCoordinate2DMake(0, 0);
+    
+    __weak CCHMapClusterControllerTests *weakSelf = self;
+    [self.mapClusterController addAnnotations:@[annotation0, annotation1, annotation2] withCompletionHandler:^{
+        weakSelf.done = YES;
+    }];
+    XCTAssertTrue([self waitForCompletion:1.0]);
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
+}
 
 #if TARGET_OS_IPHONE
 - (void)testFadeInOut
