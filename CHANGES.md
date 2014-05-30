@@ -1,11 +1,13 @@
 Changes
 =======
 
-## Upcoming version
+## 1.6.0
 
 - `CCHMapClusterController` now has a new property `maxZoomLevelForClustering`, which disables clustering if the current zoom level exceeds this value. When disabled, all cluster annotations on the map cluster will have one unique location. The current zoom level can be queried with the property `zoomLevel`. Thanks to tspacek for the code and onato and iGriever for suggesting this feature.
+- There's also a new property `minUniqueLocationsForClustering` that controls clustering for a cell based on the number of unique locations in a cell. Clustering is disabled if the number of unique locations in a cell is below this value.
 - Renamed property `isOneLocation` in `CCHMapClusterAnnotation` to `isUniqueLocation`
-- Removed asserts that triggered the exception 'Invalid map length' because my assumption that this could never happen was wrong. Thanks zeyadsalloum and jas54 for helping me find this issue
+- Removed asserts that triggered the exception 'Invalid map length' because my assumption that this could never happen was wrong. Thanks to zeyadsalloum and jas54 for helping me find this issue
+- Fixed crash that was happening occasionally because the map view was accessed on a background thread. Thanks to zeyadsalloum, bpoplauschi, igordla, and rosskimes for helping me debug this issue
 
 ## 1.5.0
 
