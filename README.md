@@ -182,7 +182,7 @@ self.mapClusterControllerBlue.marginFactor = ...;
 Sometimes it's helpful to disable clustering based on the current map data. This allows you to show unclustered annotations if needed. There are two properties for this purpose:
 
 - `maxZoomLevelForClustering`: controls clustering for the entire map based on how far the map has been zoomed in. To disable clustering, set the `maxZoomLevelForClustering` property to the zoom level where you want clustering to stop. A zoom level of 0 means that the entire map fits the screen width and the value increases when zooming in. You can retrieve the current zoom level from `CCHMapClusterController`'s property `zoomLevel`. By default, `maxZoomLevelForClustering` is set to `DBL_MAX`, which means clustering is never disabled.
-- `minUniqueLocationsForClustering`: controls clustering for a cell based on the number of unique locations in a cell. Clustering is disabled if the number of unique locations in a cell is below this property. By default, `minUniqueLocationsForClustering` is set to 0, which means clustering is never disabled.
+- `minUniqueLocationsForClustering`: controls clustering for a cell based on the number of unique locations in a cell. Clustering is disabled if the number of unique locations in a cell is below this value. By default, `minUniqueLocationsForClustering` is set to 0, which means clustering is never disabled.
 
 The example in this project contains settings to experiment with these properties.
 
