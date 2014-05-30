@@ -32,6 +32,8 @@
 #import "CCHMapAnimator.h"
 #import "CCHMapClusterControllerDelegate.h"
 
+#define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
+
 @interface CCHMapClusterOperation()
 
 @property (nonatomic) MKMapView *mapView;
@@ -107,39 +109,44 @@
         NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellMapRect];
         
         if (allAnnotationsInCell.count > 0) {
-            BOOL disableClusterer;
+            BOOL annotationSetsAreUniqueLocations;
             NSArray *annotationSets;
             if (disableClustering) {
                 // Create annotation for each unique location because clustering is disabled
                 annotationSets = CCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, NSUIntegerMax);
-                disableClusterer = YES;
+                annotationSetsAreUniqueLocations = YES;
             } else {
                 NSUInteger max = _minUniqueLocationsForClustering > 1 ? _minUniqueLocationsForClustering - 1 : 1;
                 annotationSets = CCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, max);
                 if (annotationSets) {
                     // Create annotation for each unique location because there are too few locations for clustering
-                    disableClusterer = YES;
+                    annotationSetsAreUniqueLocations = YES;
                 } else {
                     // Create one annotation for entire cell
                     annotationSets = @[allAnnotationsInCell];
-                    disableClusterer = NO;
+                    annotationSetsAreUniqueLocations = NO;
                 }
             }
 
             NSMutableSet *visibleAnnotationsInCell = [NSMutableSet setWithSet:[_visibleAnnotationsMapTree annotationsInMapRect:cellMapRect]];
             for (NSSet *annotationSet in annotationSets) {
                 CLLocationCoordinate2D coordinate;
-                if (disableClusterer) {
+                if (annotationSetsAreUniqueLocations) {
                     coordinate = [annotationSet.anyObject coordinate];
                 } else {
                     coordinate = [_clusterer mapClusterController:_clusterController coordinateForAnnotations:annotationSet inMapRect:cellMapRect];
                 }
                 
                 CCHMapClusterAnnotation *annotationForCell;
-                
                 if (_reuseExistingClusterAnnotations) {
                     // Check if an existing cluster annotation can be reused
                     annotationForCell = CCHMapClusterControllerFindVisibleAnnotation(annotationSet, visibleAnnotationsInCell);
+                    
+                    // For unique locations, coordinate has to match as well
+                    if (annotationForCell && annotationSetsAreUniqueLocations) {
+                        BOOL coordinateMatches = fequal(coordinate.latitude, annotationForCell.coordinate.latitude) && fequal(coordinate.longitude, annotationForCell.coordinate.longitude);
+                        annotationForCell = coordinateMatches ? annotationForCell : nil;
+                    }
                 }
                 
                 if (annotationForCell == nil) {
@@ -154,7 +161,7 @@
                     [visibleAnnotationsInCell removeObject:annotationForCell];
                     annotationForCell.annotations = annotationSet;
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        if (disableClusterer) {
+                        if (annotationSetsAreUniqueLocations) {
                             annotationForCell.coordinate = coordinate;
                         }
                         annotationForCell.title = nil;
