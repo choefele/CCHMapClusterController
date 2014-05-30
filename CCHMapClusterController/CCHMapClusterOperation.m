@@ -114,15 +114,15 @@
                 annotationSets = CCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, NSUIntegerMax);
                 disableClusterer = YES;
             } else {
-                NSUInteger max = _minUniqueLocationsForClustering > 0 ? _minUniqueLocationsForClustering - 1 : 0;
+                NSUInteger max = _minUniqueLocationsForClustering > 1 ? _minUniqueLocationsForClustering - 1 : 1;
                 annotationSets = CCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, max);
                 if (annotationSets) {
-                    // Create annotation for each unique location because there are too few locations
+                    // Create annotation for each unique location because there are too few locations for clustering
                     disableClusterer = YES;
                 } else {
                     // Create one annotation for entire cell
                     annotationSets = @[allAnnotationsInCell];
-                    disableClusterer = CCHMapClusterControllerIsUniqueLocation(allAnnotationsInCell);
+                    disableClusterer = NO;
                 }
             }
 
