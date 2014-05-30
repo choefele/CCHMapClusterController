@@ -48,8 +48,8 @@ To try out the clustering, experiment with the example included in this project,
 - [Custom annotation views](#custom-annotation-views)
 - [Custom titles and subtitles for callouts](#custom-titles-and-subtitles-for-callouts)
 - [Positioning cluster annotations](#positioning-cluster-annotations)
-- [Disabling clustering when being zoomed in](#disabling-clustering-when-being-zoomed-in)
 - [Cluster grouping](#cluster-grouping)
+- [Dynamically disabling clustering](#dynamically-disabling-clustering)
 - [Animations](#animations)
 - [Code recipes](#code-recipes)
  - [Finding a clustered annotation](#finding-a-clustered-annotation)
@@ -161,16 +161,6 @@ Instances of these classes can be assigned to `CCHMapClusterController`'s proper
 
 In addition, `CCHMapClusterController` by default reuses cluster annotations for a cell. This is beneficial for incrementally adding more annotations to the clustering (e.g. when downloading batches of data) because you want to avoid the cluster annotation jumping around during updates. Set `reuseExistingClusterAnnotations` to `NO` if you don't want this behavior.
 
-### Disabling clustering when being zoomed in
-
-(Upcoming version)
-
-You can disable clustering depending on how far the map has been zoomed in. When clustering is disabled, each annotation in a cluster annotation will have the same location (`isUniqueLocation` for the `CCHMapClusterAnnotation` instance returns `YES`).
-
-This feature is controlled by the zoom level of the map. A zoom level of 0 means that the entire map fits the screen width and the value increases while zooming in. You can retrieve the current zoom level from `CCHMapClusterController`'s property `zoomLevel`.
-
-To disable clustering, set the `maxZoomLevelForClustering` property to the zoom level where you want clustering to stop. By default, `maxZoomLevelForClustering` is set to `DBL_MAX`, which means clustering is never disabled. The example in this project contains a setting to experiment with this value.
-
 ### Cluster grouping
 
 To have independent groups of clusters, more than one `CCHMapClusterController` can work on the same `MKMapView` instance. Each `CCHMapClusterController` can have its own settings.
@@ -186,6 +176,15 @@ self.mapClusterControllerBlue = [[CCHMapClusterController alloc] initWithMapView
 self.mapClusterControllerBlue.cellSize = ...;
 self.mapClusterControllerBlue.marginFactor = ...;
 ```
+
+### Dynamically disabling clustering
+
+Sometimes it's helpful to disable clustering based on the current map data. This allows you to show unclustered annotations if needed. There are two properties for this purpose:
+
+- `maxZoomLevelForClustering`: controls clustering for the entire map based on how far the map has been zoomed in. To disable clustering, set the `maxZoomLevelForClustering` property to the zoom level where you want clustering to stop. A zoom level of 0 means that the entire map fits the screen width and the value increases when zooming in. You can retrieve the current zoom level from `CCHMapClusterController`'s property `zoomLevel`. By default, `maxZoomLevelForClustering` is set to `DBL_MAX`, which means clustering is never disabled.
+- `minUniqueLocationsForClustering`: controls clustering for a cell based on the number of unique locations in a cell. Clustering is disabled if the number of unique locations in a cell is below this property. By default, `minUniqueLocationsForClustering` is set to 0, which means clustering is never disabled.
+
+The example in this project contains settings to experiment with these properties.
 
 ### Animations
 
