@@ -32,6 +32,7 @@ typedef enum {
 @property (nonatomic, getter = isGroupingEnabled) BOOL groupingEnabled;
 @property (nonatomic) SettingsClusterer clusterer;
 @property (nonatomic) double maxZoomLevelForClustering;
+@property (nonatomic) NSUInteger minUniqueLocationsForClustering;
 @property (nonatomic) SettingsAnimator animator;
 
 @end

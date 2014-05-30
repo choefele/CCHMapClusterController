@@ -17,6 +17,7 @@
         _cellSize = 60;
         _marginFactor = 0.5;
         _maxZoomLevelForClustering = 16;
+        _minUniqueLocationsForClustering = 3;
     }
     
     return self;
@@ -32,6 +33,7 @@
     settings.groupingEnabled = self.groupingEnabled;
     settings.clusterer = self.clusterer;
     settings.maxZoomLevelForClustering = self.maxZoomLevelForClustering;
+    settings.minUniqueLocationsForClustering = self.minUniqueLocationsForClustering;
     settings.animator = self.animator;
     
     return settings;

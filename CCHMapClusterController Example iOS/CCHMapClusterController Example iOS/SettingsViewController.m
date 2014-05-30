@@ -21,12 +21,14 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellSizeTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *marginFactorTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *maxZoomLevelTableViewCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *minUniqueLocationsTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *groupingEnabledTableViewCell;
 
 @property (nonatomic) UISwitch *debuggingEnabledSwitch;
 @property (nonatomic) UIStepper *cellSizeStepper;
 @property (nonatomic) UIStepper *marginFactorStepper;
 @property (nonatomic) UIStepper *maxZoomLevelStepper;
+@property (nonatomic) UIStepper *minUniqueLocationsStepper;
 @property (nonatomic) UISwitch *groupingEnabledSwitch;
 
 @end
@@ -77,6 +79,14 @@
     self.maxZoomLevelStepper.value = MIN(MAX(self.settings.maxZoomLevelForClustering, self.maxZoomLevelStepper.minimumValue), self.maxZoomLevelStepper.maximumValue);
     self.maxZoomLevelTableViewCell.accessoryView = self.maxZoomLevelStepper;
     self.maxZoomLevelTableViewCell.detailTextLabel.text = [NSString stringWithFormat:@"%.1f", self.maxZoomLevelStepper.value];
+
+    self.minUniqueLocationsStepper = [self newStepper];
+    self.minUniqueLocationsStepper.minimumValue = 2;
+    self.minUniqueLocationsStepper.maximumValue = 10;
+    self.minUniqueLocationsStepper.stepValue = 1;
+    self.minUniqueLocationsStepper.value = MIN(MAX(self.settings.minUniqueLocationsForClustering, self.minUniqueLocationsStepper.minimumValue), self.minUniqueLocationsStepper.maximumValue);
+    self.minUniqueLocationsTableViewCell.accessoryView = self.minUniqueLocationsStepper;
+    self.minUniqueLocationsTableViewCell.detailTextLabel.text = [NSString stringWithFormat:@"%.1f", self.minUniqueLocationsStepper.value];
 
     // SECTION_ANIMATOR
     NSIndexPath *animatorIndexPath = [NSIndexPath indexPathForRow:(NSInteger)self.settings.clusterer inSection:SECTION_ANIMATOR];
@@ -155,6 +165,7 @@
     self.settings.dataSet = (SettingsDataSet)[self selectedRowForSection:SECTION_DATA_SET];
     self.settings.clusterer = (SettingsClusterer)[self selectedRowForSection:SECTION_CLUSTERER];
     self.settings.maxZoomLevelForClustering = self.maxZoomLevelStepper.value;
+    self.settings.minUniqueLocationsForClustering = (NSUInteger)self.minUniqueLocationsStepper.value;
     self.settings.animator = (SettingsAnimator)[self selectedRowForSection:SECTION_ANIMATOR];
 
     if (self.completionBlock) {

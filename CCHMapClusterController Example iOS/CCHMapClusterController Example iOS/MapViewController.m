@@ -82,6 +82,7 @@
     }
     self.mapClusterControllerRed.clusterer = self.mapClusterer;
     self.mapClusterControllerRed.maxZoomLevelForClustering = settings.maxZoomLevelForClustering;
+    self.mapClusterControllerRed.minUniqueLocationsForClustering = settings.minUniqueLocationsForClustering;
 
     if (settings.animator == SettingsAnimatorFadeInOut) {
         self.mapAnimator = [[CCHFadeInOutMapAnimator alloc] init];
@@ -100,6 +101,7 @@
         self.mapClusterControllerBlue.marginFactor = settings.marginFactor;
         self.mapClusterControllerBlue.clusterer = self.mapClusterer;
         self.mapClusterControllerBlue.maxZoomLevelForClustering = settings.maxZoomLevelForClustering;
+        self.mapClusterControllerBlue.minUniqueLocationsForClustering = settings.minUniqueLocationsForClustering;
         self.mapClusterControllerBlue.animator = self.mapAnimator;
     } else {
         self.mapClusterControllerBlue = nil;
