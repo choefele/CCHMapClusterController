@@ -63,7 +63,7 @@
 
 @implementation CCHMapClusterController
 
-- (id)initWithMapView:(MKMapView *)mapView
+- (instancetype)initWithMapView:(MKMapView *)mapView
 {
     self = [super init];
     if (self) {

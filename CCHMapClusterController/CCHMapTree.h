@@ -30,8 +30,8 @@
 
 @property (nonatomic, copy, readonly) NSSet *annotations;
 
-- (id)init;
-- (id)initWithNodeCapacity:(NSUInteger)nodeCapacity minLatitude:(double)minLatitude maxLatitude:(double)maxLatitude minLongitude:(double)minLongitude maxLongitude:(double)maxLongitude;
+- (instancetype)init;
+- (instancetype)initWithNodeCapacity:(NSUInteger)nodeCapacity minLatitude:(double)minLatitude maxLatitude:(double)maxLatitude minLongitude:(double)minLongitude maxLongitude:(double)maxLongitude;
 
 - (BOOL)addAnnotations:(NSArray *)annotations;
 - (BOOL)removeAnnotations:(NSArray *)annotations;

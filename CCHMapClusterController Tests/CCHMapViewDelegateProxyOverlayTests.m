@@ -42,11 +42,11 @@
 
 @interface MapViewDelegateReturnsValue : NSObject<MKMapViewDelegate>
 @property (nonatomic, assign) Class valueClass;
-- (id)initWithValueClass:(Class)valueClass;
+- (instancetype)initWithValueClass:(Class)valueClass;
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay;
 @end
 @implementation MapViewDelegateReturnsValue
-- (id)initWithValueClass:(Class)valueClass {
+- (instancetype)initWithValueClass:(Class)valueClass {
     self = [super init];
     if (self) {
         self.valueClass = valueClass;
@@ -86,11 +86,11 @@
 
 @interface MapViewDelegateReturnsValue : NSObject<MKMapViewDelegate>
 @property (nonatomic, assign) Class valueClass;
-- (id)initWithValueClass:(Class)valueClass;
+- (instancetype)initWithValueClass:(Class)valueClass;
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay;
 @end
 @implementation MapViewDelegateReturnsValue
-- (id)initWithValueClass:(Class)valueClass {
+- (instancetype)initWithValueClass:(Class)valueClass {
     self = [super init];
     if (self) {
         self.valueClass = valueClass;

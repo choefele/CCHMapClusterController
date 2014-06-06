@@ -38,7 +38,7 @@
 
 @implementation CCHMapTreeUnsafeMutableArray
 
-- (id)initWithCapacity:(NSUInteger)capacity
+- (instancetype)initWithCapacity:(NSUInteger)capacity
 {
     self = [super init];
     if (self) {

@@ -73,7 +73,7 @@
  Initializes the cluster controller.
  @param mapView `MKMapView` to use to display clusters.
  */
-- (id)initWithMapView:(MKMapView *)mapView;
+- (instancetype)initWithMapView:(MKMapView *)mapView;
 
 /** 
  Adds annotations and immediately updates clustering.
