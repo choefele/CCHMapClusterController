@@ -1,6 +1,10 @@
 Changes
 =======
 
+## Upcoming version
+
+- Added recipe to describe how `MKMapView` handles taps on annotation views (thanks to thomasouk for the question)
+
 ## 1.6.0
 
 - `CCHMapClusterController` now has a new property `maxZoomLevelForClustering`, which disables clustering if the current zoom level exceeds this value. When disabled, all cluster annotations on the map cluster will have one unique location. The current zoom level can be queried with the property `zoomLevel`. Thanks to tspacek for the code and onato and iGriever for suggesting this feature.
