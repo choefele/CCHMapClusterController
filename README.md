@@ -54,6 +54,7 @@ To try out the clustering, experiment with the example included in this project,
 - [Code recipes](#code-recipes)
  - [Finding a clustered annotation](#finding-a-clustered-annotation)
  - [Centering the map without changing the zoom level](#centering-the-map-without-changing-the-zoom-level)
+ - [Receiving taps on annotation views](#receiving-taps-on-annotation-views)
  - [Zooming in to a cluster](#zooming-in-to-a-cluster)
  - [Showing callout accessory views for unclustered annotations only](#showing-callout-accessory-views-for-unclustered-annotations-only)
 - [Additional reading](#additional-reading)
@@ -227,6 +228,23 @@ The following code avoids this problem:
     [mapView setVisibleMapRect:rect animated:YES];
 }
 ```
+
+#### Receiving taps on annotation views
+
+`mapView:didSelectAnnotationView:` behaves differently, depending on the state of the annotation view's `canShowCallout` property.
+
+If `canShowCallout` is set to `YES`, a tap on the annotation view will open a callout. The map view will only call `mapView:didSelectAnnotationView:` if your annotation title is set to a non-zero-length string. For this reason, you will have to implement `mapClusterController:titleForMapClusterAnnotation:` to return a title for a cluster annotation.
+
+If you don't want to show a callout on your annotation view, you have to set `canShowCallout` to `NO` (the default). Once you have done this, `mapView:didSelectAnnotationView:` will be called without setting a title.
+
+One caveat is that the map view will remember the last selection. To be able to select the same annotation view again, you have to unselect its annotation first:
+
+````Obj-C
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    [mapView deselectAnnotation:view.annotation animated:NO];
+}
+````
 
 #### Zooming in to a cluster
 
