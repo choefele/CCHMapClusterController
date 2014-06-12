@@ -33,7 +33,7 @@
 - (NSString *)title
 {
     if (_title == nil && [self.delegate respondsToSelector:@selector(mapClusterController:titleForMapClusterAnnotation:)]) {
-        _title = [self.delegate mapClusterController:nil titleForMapClusterAnnotation:self];
+        _title = [self.delegate mapClusterController:self.mapClusterController titleForMapClusterAnnotation:self];
     }
 
     return _title;
@@ -42,7 +42,7 @@
 - (NSString *)subtitle
 {
     if (_subtitle == nil && [self.delegate respondsToSelector:@selector(mapClusterController:subtitleForMapClusterAnnotation:)]) {
-        _subtitle = [self.delegate mapClusterController:nil subtitleForMapClusterAnnotation:self];
+        _subtitle = [self.delegate mapClusterController:self.mapClusterController subtitleForMapClusterAnnotation:self];
     }
     
     return _subtitle;
