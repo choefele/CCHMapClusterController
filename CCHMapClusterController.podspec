@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'CCHMapClusterController'
-  s.version  = '1.6.0'
+  s.version  = '1.6.1'
   s.license  = 'MIT'
   s.summary  = 'High-performance map clustering with MapKit for iOS and OS X. Integrate with 4 lines of code.'
   s.homepage = 'https://github.com/choefele/CCHMapClusterController'
