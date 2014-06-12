@@ -1,8 +1,9 @@
 Changes
 =======
 
-## Upcoming version
+## 1.6.1
 
+- Bug fix for missing `CCHMapClusterController` instance in delegate methods (thanks to Palleas for the pull request)
 - Added recipe to describe how `MKMapView` handles taps on annotation views (thanks to thomasouk for the question)
 
 ## 1.6.0
