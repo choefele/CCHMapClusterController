@@ -27,8 +27,17 @@
 
 #import "CCHMapClusterer.h"
 
+/**
+ `CCHMapClusterer` implementation that positions a cluster annotation near the center of the cluster cell.
+ */
 @interface CCHNearCenterMapClusterer : NSObject<CCHMapClusterer>
 
+/**
+ Returns the coordinate of the annotation closest to the center of the cell.
+ @param mapClusterController map cluster controller.
+ @param annotations annotations in this cluster (annotations are of type `CCHMapClusterAnnotation`).
+ @param mapRect the area that's covered by this cluster.
+ */
 - (CLLocationCoordinate2D)mapClusterController:(CCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
 
 @end

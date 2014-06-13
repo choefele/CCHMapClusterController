@@ -27,11 +27,27 @@
 
 #import "CCHMapAnimator.h"
 
+/**
+ `CCHMapAnimator` implementation that fades annotation views in and out.
+ */
 @interface CCHFadeInOutMapAnimator : NSObject<CCHMapAnimator>
 
+/** The animation's duration. */
 @property (nonatomic, assign) NSTimeInterval duration;
 
+/**
+ Fades annotation views in to make the visible.
+ @param mapClusterController map cluster controller.
+ @param annotationViews .
+ */
 - (void)mapClusterController:(CCHMapClusterController *)mapClusterController didAddAnnotationViews:(NSArray *)annotationViews;
+
+/**
+ Fades annotation views out to hide them.
+ @param mapClusterController map cluster controller.
+ @param annotations annotations to animate (annotations are of type `CCHMapClusterAnnotation`).
+ @param completionHandler this completion handler must be called after the animation has finished.
+ */
 - (void)mapClusterController:(CCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
 
 @end

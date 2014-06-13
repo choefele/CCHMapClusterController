@@ -25,8 +25,6 @@
 
 #import "CCHNearCenterMapClusterer.h"
 
-#import "CCHMapClusterController.h"
-
 #import <float.h>
 
 @implementation CCHNearCenterMapClusterer

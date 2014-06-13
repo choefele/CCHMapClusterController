@@ -27,8 +27,18 @@
 
 #import "CCHMapClusterer.h"
 
+/**
+ `CCHMapClusterer` implementation that positions a cluster annotation at the average coordinate
+ of all annotations in a cluster.
+ */
 @interface CCHCenterOfMassMapClusterer : NSObject<CCHMapClusterer>
 
+/**
+ Returns the average (or center of mass) coordinate of all annotations.
+ @param mapClusterController map cluster controller.
+ @param annotations annotations in this cluster (annotations are of type `CCHMapClusterAnnotation`).
+ @param mapRect the area that's covered by this cluster.
+ */
 - (CLLocationCoordinate2D)mapClusterController:(CCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
 
 @end

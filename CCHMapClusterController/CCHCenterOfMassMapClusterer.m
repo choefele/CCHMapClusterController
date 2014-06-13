@@ -25,8 +25,6 @@
 
 #import "CCHCenterOfMassMapClusterer.h"
 
-#import "CCHMapClusterController.h"
-
 @implementation CCHCenterOfMassMapClusterer
 
 - (CLLocationCoordinate2D)mapClusterController:(CCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect
