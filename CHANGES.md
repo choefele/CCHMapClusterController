@@ -1,6 +1,9 @@
 Changes
 =======
 
+## Upcoming version
+- Excluded private header files from pod
+
 ## 1.6.1
 
 - Bug fix for missing `CCHMapClusterController` instance in delegate methods (thanks to Palleas for the pull request)
