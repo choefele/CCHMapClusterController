@@ -1,8 +1,9 @@
 Changes
 =======
 
-## Upcoming version
+## 1.6.2
 - Excluded private header files from pod
+- Updated documentation
 
 ## 1.6.1
 
