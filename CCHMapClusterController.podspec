@@ -1,17 +1,18 @@
-Pod::Spec.new do |s|
-  s.name     = 'CCHMapClusterController'
-  s.version  = '1.6.1'
-  s.license  = 'MIT'
-  s.summary  = 'High-performance map clustering with MapKit for iOS and OS X. Integrate with 4 lines of code.'
-  s.homepage = 'https://github.com/choefele/CCHMapClusterController'
-  s.authors  = { 'Claus Höfele' => 'claus@claushoefele.com' }
-  s.social_media_url = 'https://twitter.com/claushoefele'
-  s.source   = { :git => 'https://github.com/choefele/CCHMapClusterController.git', :tag => s.version.to_s }
-  s.frameworks = 'MapKit', 'CoreLocation'
-  s.requires_arc = true
+Pod::Spec.new do |spec|
+  spec.name     = 'CCHMapClusterController'
+  spec.version  = '1.6.1'
+  spec.license  = 'MIT'
+  spec.summary  = 'High-performance map clustering with MapKit for iOS and OS X. Integrate with 4 lines of code.'
+  spec.homepage = 'https://github.com/choefele/CCHMapClusterController'
+  spec.authors  = { 'Claus Höfele' => 'claus@claushoefele.com' }
+  spec.social_media_url = 'https://twitter.com/claushoefele'
+  spec.source   = { :git => 'https://github.com/choefele/CCHMapClusterController.git', :tag => s.version.to_s }
+  spec.frameworks = 'MapKit', 'CoreLocation'
+  spec.requires_arc = true
 
-  s.ios.deployment_target = '6.0'
-  s.osx.deployment_target = '10.9'
+  spec.ios.deployment_target = '6.0'
+  spec.osx.deployment_target = '10.9'
 
-  s.source_files = 'CCHMapClusterController/*.{h,m}'
+  spec.source_files = 'CCHMapClusterController/*.{h, m}'
+  spec.private_header_files = "CCHMapClusterController/{CCHMapTree, CCHMapTreeUtils, CCHMapClusterControllerUtils, CCHMapClusterControllerDebugPolygon}.h, "
 end
