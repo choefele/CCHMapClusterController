@@ -6,7 +6,7 @@ Pod::Spec.new do |spec|
   spec.homepage = 'https://github.com/choefele/CCHMapClusterController'
   spec.authors  = { 'Claus Höfele' => 'claus@claushoefele.com' }
   spec.social_media_url = 'https://twitter.com/claushoefele'
-  spec.source   = { :git => 'https://github.com/choefele/CCHMapClusterController.git', :tag => s.version.to_s }
+  spec.source   = { :git => 'https://github.com/choefele/CCHMapClusterController.git', :tag => spec.version.to_s }
   spec.frameworks = 'MapKit', 'CoreLocation'
   spec.requires_arc = true
 
