@@ -1,6 +1,9 @@
 Changes
 =======
 
+## 1.6.3
+- `CCHMapClusterController` now builds with Xcode 6/iOS 8 (thanks to detouch for the pull request and rosskimes for letting me know about the problem)
+
 ## 1.6.2
 - Excluded private header files from pod
 - Updated documentation
