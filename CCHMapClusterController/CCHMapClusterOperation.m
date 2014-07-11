@@ -54,6 +54,9 @@
 
 @implementation CCHMapClusterOperation
 
+@synthesize executing = _executing;
+@synthesize finished = _finished;
+
 - (instancetype)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering minUniqueLocationsForClustering:(NSUInteger)minUniqueLocationsForClustering
 {
     self = [super init];
