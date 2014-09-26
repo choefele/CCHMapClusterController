@@ -1,6 +1,9 @@
 Changes
 =======
 
+## 1.6.4
+- The completion handlers for `addAnnotations:withCompletionHandler:` and `removeAnnotations:withCompletionHandler:` are now guaranteed to be called on the main thread. Thanks to robertjpayne for the pull request
+
 ## 1.6.3
 - `CCHMapClusterController` now builds with Xcode 6/iOS 8 (thanks to detouch for the pull request and rosskimes for letting me know about the problem)
 
