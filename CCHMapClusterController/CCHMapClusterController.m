@@ -179,7 +179,14 @@
     operation.animator = self.animator;
     operation.clusterControllerDelegate = self.delegate;
     operation.clusterController = self;
-    operation.completionBlock = completionHandler;
+    
+    if (completionHandler) {
+        operation.completionBlock = ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler();
+            });
+        };
+    };
     
     [self.backgroundQueue addOperation:operation];
 
