@@ -3,7 +3,7 @@ CCHMapClusterController
 
 `CCHMapClusterController` solves the problem of displaying many annotations on an `MKMapView` and is available under the MIT license.
 
-[![Build Status](https://travis-ci.org/choefele/CCHMapClusterController.png?branch=master)](https://travis-ci.org/choefele/CCHMapClusterController)&nbsp;![Version](https://cocoapod-badges.herokuapp.com/v/CCHMapClusterController/badge.png)&nbsp;![Platform](https://cocoapod-badges.herokuapp.com/p/CCHMapClusterController/badge.png)&nbsp;[![Issues in Progress](https://badge.waffle.io/choefele/cchmapclustercontroller.png?label=in%20progress&title=In%20Progress)](https://waffle.io/choefele/cchmapclustercontroller)
+[![Build Status](https://travis-ci.org/choefele/CCHMapClusterController.svg?branch=master)](https://travis-ci.org/choefele/CCHMapClusterController)&nbsp;![Version](https://cocoapod-badges.herokuapp.com/v/CCHMapClusterController/badge.png)&nbsp;![Platform](https://cocoapod-badges.herokuapp.com/p/CCHMapClusterController/badge.png)&nbsp;[![Issues in Progress](https://badge.waffle.io/choefele/cchmapclustercontroller.png?label=in%20progress&title=In%20Progress)](https://waffle.io/choefele/cchmapclustercontroller)
 
 See [Changes](https://github.com/choefele/CCHMapClusterController/blob/master/CHANGES.md) for a high-level overview of recent updates.
 
