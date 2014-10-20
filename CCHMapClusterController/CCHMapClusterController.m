@@ -100,7 +100,17 @@
 
 - (NSSet *)annotations
 {
-    return [self.allAnnotationsMapTree.annotations copy];
+    NSMutableSet *annotations = [[NSMutableSet alloc] init];
+    for (id<MKAnnotation> annotation in self.mapView.annotations) {
+        if ([annotation isKindOfClass:CCHMapClusterAnnotation.class]) {
+            CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotation;
+            if (clusterAnnotation.mapClusterController == self) {
+                [annotations unionSet:clusterAnnotation.annotations];
+            }
+        }
+    }
+    
+    return annotations;
 }
 
 - (void)setClusterer:(id<CCHMapClusterer>)clusterer
