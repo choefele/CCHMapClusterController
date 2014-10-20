@@ -5,4 +5,4 @@ install: echo
 script:
   - export LC_CTYPE=en_US.UTF-8
   - set -o pipefail
-  - xcodebuild -workspace CCHMapClusterController.xcworkspace -scheme 'CCHMapClusterController Example iOS' -sdk iphonesimulator7.0 -configuration Debug -destination 'platform=iOS Simulator,OS=7.0,name=iPhone Retina (4-inch)' test | xcpretty -c && xcodebuild -workspace CCHMapClusterController.xcworkspace -scheme 'CCHMapClusterController Example OS X' -sdk macosx10.9 -configuration Debug test | xcpretty -c
+  - xcodebuild -workspace CCHMapClusterController.xcworkspace -scheme 'CCHMapClusterController Example iOS' -sdk iphonesimulator -configuration Debug -destination 'platform=iOS Simulator,OS=7.0,name=iPhone Retina (4-inch)' test | xcpretty -c && xcodebuild -workspace CCHMapClusterController.xcworkspace -scheme 'CCHMapClusterController Example OS X' -sdk macosx10.9 -configuration Debug test | xcpretty -c
