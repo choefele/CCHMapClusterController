@@ -1,5 +1,7 @@
 Changes
 =======
+## 1.6.5
+- Make `annotations` property thread-safe. Thanks for alxon and nverinaud for reporting this problem.
 
 ## 1.6.4
 - The completion handlers for `addAnnotations:withCompletionHandler:` and `removeAnnotations:withCompletionHandler:` are now guaranteed to be called on the main thread. Thanks to robertjpayne for the pull request
