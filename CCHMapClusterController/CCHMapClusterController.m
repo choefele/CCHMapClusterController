@@ -55,6 +55,7 @@
 @property (nonatomic) id<MKAnnotation> annotationToSelect;
 @property (nonatomic) CCHMapClusterAnnotation *mapClusterAnnotationToSelect;
 @property (nonatomic) MKCoordinateSpan regionSpanBeforeChange;
+@property (nonatomic) CLLocationDistance mapCameraAltitudeBeforeRegionChange;
 @property (nonatomic, getter = isRegionChanging) BOOL regionChanging;
 @property (nonatomic) id<CCHMapClusterer> strongClusterer;
 @property (nonatomic) id<CCHMapAnimator> strongAnimator;
@@ -279,6 +280,11 @@
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
 {
     self.regionSpanBeforeChange = mapView.region.span;
+    
+    if ([mapView respondsToSelector:@selector(camera)]) {
+        self.mapCameraAltitudeBeforeRegionChange = mapView.camera.altitude;
+    }
+    
     self.regionChanging = YES;
 }
 
@@ -286,9 +292,18 @@
 {
     self.regionChanging = NO;
     
-    // Deselect all annotations when zooming in/out. Longitude delta will not change
-    // unless zoom changes (in contrast to latitude delta).
-    BOOL hasZoomed = !fequal(mapView.region.span.longitudeDelta, self.regionSpanBeforeChange.longitudeDelta);
+    // Deselect all annotations when zooming in/out.
+    BOOL hasZoomed;
+    if ([mapView respondsToSelector:@selector(camera)]) {
+        hasZoomed = !fequal(mapView.camera.altitude, self.mapCameraAltitudeBeforeRegionChange);
+    }
+    else {
+        // Longitude delta will not change unless zoom changes (in contrast to
+        // latitude delta). Unfortunately this is not true while heading is
+        // changed
+        hasZoomed = !fequal(mapView.region.span.longitudeDelta, self.regionSpanBeforeChange.longitudeDelta);
+    }
+
     if (hasZoomed) {
         [self deselectAllAnnotations];
     }
