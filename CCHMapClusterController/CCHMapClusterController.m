@@ -294,7 +294,8 @@
     
     // Deselect all annotations when zooming in/out.
     BOOL hasZoomed;
-    if ([mapView respondsToSelector:@selector(camera)]) {
+    if (mapView.userTrackingMode == MKUserTrackingModeFollowWithHeading && [mapView respondsToSelector:@selector(camera)])
+    {
         hasZoomed = !fequal(mapView.camera.altitude, self.mapCameraAltitudeBeforeRegionChange);
     }
     else {
