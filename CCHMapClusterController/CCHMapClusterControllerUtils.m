@@ -162,7 +162,7 @@ NSSet *CCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotati
     NSSet *filteredAnnotations = [NSMutableSet setWithArray:annotations];
     filteredAnnotations = [filteredAnnotations filteredSetUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         BOOL evaluation = NO;
-        if ([evaluatedObject isKindOfClass:CCHMapClusterAnnotation.class]) {
+        if ([evaluatedObject isKindOfClass:CCHMapClusterAnnotation.class] && ![evaluatedObject isExcludedFromClustering]) {
             CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)evaluatedObject;
             evaluation = (clusterAnnotation.mapClusterController == mapClusterController);
         }

@@ -241,6 +241,12 @@
 {
     NSArray *selectedAnnotations = self.mapView.selectedAnnotations;
     for (id<MKAnnotation> selectedAnnotation in selectedAnnotations) {
+        if ([selectedAnnotation isKindOfClass:[CCHMapClusterAnnotation class]]) {
+            CCHMapClusterAnnotation *clusterAnnotation = selectedAnnotation;
+            if (clusterAnnotation.isExcludedFromClustering) {
+                continue;
+            }
+        }
         [self.mapView deselectAnnotation:selectedAnnotation animated:YES];
     }
 }

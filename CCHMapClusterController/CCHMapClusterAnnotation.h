@@ -49,6 +49,9 @@
 /** Annotations contained in this cluster. */
 @property (nonatomic, copy) NSSet *annotations;
 
+/** Set to `YES` to exclude this annotation from further clustering. */
+@property (nonatomic, assign, getter=isExcludedFromClustering) BOOL excludedFromClustering;
+
 /** Returns YES if this cluster contains more than one annotation. */
 - (BOOL)isCluster;
 /** Returns YES if all annotations in this cluster have the same location. */
