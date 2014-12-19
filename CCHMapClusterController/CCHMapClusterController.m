@@ -47,6 +47,7 @@
 
 @interface CCHMapClusterController()<MKMapViewDelegate>
 
+@property (nonatomic) NSMutableSet *allAnnotations;
 @property (nonatomic) CCHMapTree *allAnnotationsMapTree;
 @property (nonatomic) CCHMapTree *visibleAnnotationsMapTree;
 @property (nonatomic) NSOperationQueue *backgroundQueue;
@@ -58,8 +59,6 @@
 @property (nonatomic, getter = isRegionChanging) BOOL regionChanging;
 @property (nonatomic) id<CCHMapClusterer> strongClusterer;
 @property (nonatomic) id<CCHMapAnimator> strongAnimator;
-
-@property (nonatomic, strong) NSMutableSet *allAnnotations;
 
 @end
 
@@ -73,6 +72,7 @@
         _cellSize = 60;
         _maxZoomLevelForClustering = DBL_MAX;
         _mapView = mapView;
+        _allAnnotations = [NSMutableSet new];
         _allAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
         _visibleAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
         _backgroundQueue = [[NSOperationQueue alloc] init];
@@ -93,8 +93,6 @@
         id<CCHMapAnimator> animator = [[CCHFadeInOutMapAnimator alloc] init];
         _animator = animator;
         _strongAnimator = animator;
-        
-        _allAnnotations = [NSMutableSet new];
         
         [self setReuseExistingClusterAnnotations:YES];
     }
