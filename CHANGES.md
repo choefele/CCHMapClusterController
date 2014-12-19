@@ -1,5 +1,8 @@
 Changes
 =======
+## Upcoming version
+- Fix implementation of `annotations` property. Thanks to tarbrain for the code.
+
 ## 1.6.5
 - Make `annotations` property thread-safe. Thanks for alxon and nverinaud for reporting this problem.
 
