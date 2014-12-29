@@ -177,8 +177,9 @@
 	[self.allAnnotations addObjectsFromArray:annotationsToAdd];
 	
 	[self.backgroundQueue addOperationWithBlock:^{
-		BOOL updated = [self.allAnnotationsMapTree removeAnnotations:annotationsToRemove]
-		|| [self.allAnnotationsMapTree addAnnotations:annotationsToAdd];
+		BOOL updatedRemove = [self.allAnnotationsMapTree removeAnnotations:annotationsToRemove];
+		BOOL updatedAdd = [self.allAnnotationsMapTree addAnnotations:annotationsToAdd];
+		BOOL updated = updatedRemove || updatedAdd;
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (updated && !self.isRegionChanging) {
