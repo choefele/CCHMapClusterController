@@ -169,6 +169,27 @@
     }];
 }
 
+- (void)removeAnnotations:(NSArray *)annotationsToRemove andAddAnnotations:(NSArray *)annotationsToAdd withCompletionHandler:(void (^)())completionHandler
+{
+	[self cancelAllClusterOperations];
+
+	[self.allAnnotations minusSet:[NSSet setWithArray:annotationsToRemove]];
+	[self.allAnnotations addObjectsFromArray:annotationsToAdd];
+	
+	[self.backgroundQueue addOperationWithBlock:^{
+		BOOL updated = [self.allAnnotationsMapTree removeAnnotations:annotationsToRemove]
+		|| [self.allAnnotationsMapTree addAnnotations:annotationsToAdd];
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (updated && !self.isRegionChanging) {
+				[self updateAnnotationsWithCompletionHandler:completionHandler];
+			} else if (completionHandler) {
+				completionHandler();
+			}
+		});
+	}];
+}
+
 - (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler
 {
     [self cancelAllClusterOperations];

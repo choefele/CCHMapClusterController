@@ -78,16 +78,24 @@
 /** 
  Adds annotations and immediately updates clustering.
  @param annotations Annotations to add.
- @param completionHandler Called when the clustering finished updating.
+ @param completionHandler Called on main thread when the clustering finished updating.
  */
 - (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
 
 /**
  Removes annotations and immediately updates clustering.
- @param annotations Annotations to add.
- @param completionHandler Called when the clustering finished updating.
+ @param annotations Annotations to remove.
+ @param completionHandler Called on main thread when the clustering finished updating.
  */
 - (void)removeAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
+
+/**
+ Removes annotations, then adds new annotations and immediately updates clustering.
+ @param annotationsToRemove Annotations to remove.
+ @param annotationsToAdd Annotations to add.
+ @param completionHandler Called on main thread when the clustering finished updating.
+ */
+- (void)removeAnnotations:(NSArray *)annotationsToRemove andAddAnnotations:(NSArray *)annotationsToAdd withCompletionHandler:(void (^)())completionHandler;
 
 /** 
  Zooms to the position of the cluster that contains the given annotation and selects the cluster's annotation view.
