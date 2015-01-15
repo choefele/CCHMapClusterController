@@ -136,11 +136,12 @@
                             [allAnnotationSets addObject:[NSSet setWithObject:annotation]];
                         }
                     }
-                    NSMutableSet *remainingSets = allAnnotationsInCell.mutableCopy;
-                    [remainingSets minusSet:excludedAnnotations];
-                    [allAnnotationSets addObject:remainingSets];
                     
-                    // Create one annotation for entire cell
+                    // Create one set for all other annotations
+                    NSMutableSet *remainingAnnotations = allAnnotationsInCell.mutableCopy;
+                    [remainingAnnotations minusSet:excludedAnnotations];
+                    [allAnnotationSets addObject:remainingAnnotations];
+                    
                     annotationSets = allAnnotationSets;
                     annotationSetsAreUniqueLocations = NO;
                 }
