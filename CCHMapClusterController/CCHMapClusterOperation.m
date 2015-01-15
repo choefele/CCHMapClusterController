@@ -102,8 +102,8 @@
     self.executing = YES;
     
     double zoomLevel = CCHMapClusterControllerZoomLevelForRegion(self.mapViewRegion.center.longitude, self.mapViewRegion.span.longitudeDelta, self.mapViewWidth);
-    BOOL disableClustering = (zoomLevel > self.maxZoomLevelForClustering);
     BOOL respondsToSelector = [_clusterControllerDelegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)];
+    BOOL disableClustering = (zoomLevel > self.maxZoomLevelForClustering);
     
     // For each cell in the grid, pick one cluster annotation to show
     MKMapRect gridMapRect = [self.class gridMapRectForMapRect:self.mapViewVisibleMapRect withCellMapSize:self.cellMapSize marginFactor:self.marginFactor];
@@ -114,6 +114,7 @@
         if (allAnnotationsInCell.count > 0) {
             BOOL annotationSetsAreUniqueLocations;
             NSArray *annotationSets;
+            
             if (disableClustering) {
                 // Create annotation for each unique location because clustering is disabled
                 annotationSets = CCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, NSUIntegerMax);
@@ -125,8 +126,22 @@
                     // Create annotation for each unique location because there are too few locations for clustering
                     annotationSetsAreUniqueLocations = YES;
                 } else {
+                    
+                    // Create a separate set for each excluded annotation
+                    NSMutableArray *allAnnotationSets = NSMutableArray.new;
+                    NSMutableSet *excludedAnnotations = NSMutableSet.new;
+                    for (CCHMapClusterAnnotation *annotation in allAnnotationsInCell.allObjects) {
+                        if (annotation.isExcludedFromClustering) {
+                            [excludedAnnotations addObject:annotation];
+                            [allAnnotationSets addObject:[NSSet setWithObject:annotation]];
+                        }
+                    }
+                    NSMutableSet *remainingSets = allAnnotationsInCell.mutableCopy;
+                    [remainingSets minusSet:excludedAnnotations];
+                    [allAnnotationSets addObject:remainingSets];
+                    
                     // Create one annotation for entire cell
-                    annotationSets = @[allAnnotationsInCell];
+                    annotationSets = allAnnotationSets;
                     annotationSetsAreUniqueLocations = NO;
                 }
             }
