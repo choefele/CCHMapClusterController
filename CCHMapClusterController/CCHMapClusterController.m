@@ -95,6 +95,7 @@
         _strongAnimator = animator;
         
         _allAnnotations = [NSMutableSet new];
+        _excludedAnnotations = [NSMutableSet new];
         
         [self setReuseExistingClusterAnnotations:YES];
     }

@@ -69,6 +69,9 @@
 /** Displays the grid used for clustering. */
 @property (nonatomic, getter = isDebuggingEnabled) BOOL debuggingEnabled;
 
+/** Holds all annotations wich should be excluded from clustering. */
+@property (nonatomic, strong) NSMutableSet *excludedAnnotations;
+
 /**
  Initializes the cluster controller.
  @param mapView `MKMapView` to use to display clusters.

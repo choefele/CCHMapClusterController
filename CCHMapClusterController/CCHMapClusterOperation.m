@@ -31,6 +31,7 @@
 #import "CCHMapClusterer.h"
 #import "CCHMapAnimator.h"
 #import "CCHMapClusterControllerDelegate.h"
+#import "CCHMapClusterController.h"
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 
@@ -131,7 +132,7 @@
                     NSMutableArray *allAnnotationSets = NSMutableArray.new;
                     NSMutableSet *excludedAnnotations = NSMutableSet.new;
                     for (CCHMapClusterAnnotation *annotation in allAnnotationsInCell.allObjects) {
-                        if (annotation.isExcludedFromClustering) {
+                        if ([self.clusterController.excludedAnnotations member:annotation]) {
                             [excludedAnnotations addObject:annotation];
                             [allAnnotationSets addObject:[NSSet setWithObject:annotation]];
                         }

@@ -24,7 +24,7 @@
 //
 
 #import "CCHMapClusterControllerUtils.h"
-
+#import "CCHMapClusterController.h"
 #import "CCHMapClusterAnnotation.h"
 
 #import <float.h>
@@ -165,7 +165,7 @@ NSSet *CCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotati
         if ([evaluatedObject isKindOfClass:CCHMapClusterAnnotation.class]) {
             
             CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)evaluatedObject;
-            evaluation = (clusterAnnotation.mapClusterController == mapClusterController && ![clusterAnnotation.annotations.anyObject isExcludedFromClustering]);
+            evaluation = (clusterAnnotation.mapClusterController == mapClusterController && [mapClusterController.excludedAnnotations member:clusterAnnotation.annotations.anyObject]);
         }
         return evaluation;
     }]];
