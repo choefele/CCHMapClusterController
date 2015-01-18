@@ -158,7 +158,9 @@
 {
     [self cancelAllClusterOperations];
     
-    [self.allAnnotations minusSet:[NSSet setWithArray:annotations]];
+    NSSet *annotationsToRemove = [NSSet setWithArray:annotations];
+    [self.excludedAnnotations minusSet:annotationsToRemove];
+    [self.allAnnotations minusSet:annotationsToRemove];
     
     [self.backgroundQueue addOperationWithBlock:^{
         BOOL updated = [self.allAnnotationsMapTree removeAnnotations:annotations];
