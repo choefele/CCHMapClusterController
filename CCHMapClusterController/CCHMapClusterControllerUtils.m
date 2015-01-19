@@ -165,7 +165,7 @@ NSSet *CCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotati
         if ([evaluatedObject isKindOfClass:CCHMapClusterAnnotation.class]) {
             
             CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)evaluatedObject;
-            evaluation = (clusterAnnotation.mapClusterController == mapClusterController && [mapClusterController.excludedAnnotations member:clusterAnnotation.annotations.anyObject]);
+            evaluation = (clusterAnnotation.mapClusterController == mapClusterController);
         }
         return evaluation;
     }]];
