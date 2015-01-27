@@ -58,7 +58,12 @@
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (instancetype)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering minUniqueLocationsForClustering:(NSUInteger)minUniqueLocationsForClustering
+- (instancetype)initWithMapView:(MKMapView *)mapView
+                       cellSize:(double)cellSize
+                   marginFactor:(double)marginFactor
+reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation
+      maxZoomLevelForClustering:(double)maxZoomLevelForClustering
+minUniqueLocationsForClustering:(NSUInteger)minUniqueLocationsForClustering
 {
     self = [super init];
     if (self) {
@@ -115,7 +120,6 @@
         if (allAnnotationsInCell.count > 0) {
             BOOL annotationSetsAreUniqueLocations;
             NSArray *annotationSets;
-            
             if (disableClustering) {
                 // Create annotation for each unique location because clustering is disabled
                 annotationSets = CCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, NSUIntegerMax);
@@ -128,22 +132,11 @@
                     annotationSetsAreUniqueLocations = YES;
                 } else {
                     
-                    // Create a separate set for each excluded annotation
-                    NSMutableArray *allAnnotationSets = NSMutableArray.new;
-                    NSMutableSet *excludedAnnotations = NSMutableSet.new;
-                    for (CCHMapClusterAnnotation *annotation in allAnnotationsInCell.allObjects) {
-                        if ([self.clusterController.excludedAnnotations member:annotation]) {
-                            [excludedAnnotations addObject:annotation];
-                            //[allAnnotationSets addObject:[NSSet setWithObject:annotation]];
-                        }
-                    }
-                    
-                    // Create one set for all other annotations
+                    // Create one annotation for entire cell minus the excluded annotations.
                     NSMutableSet *remainingAnnotations = allAnnotationsInCell.mutableCopy;
-                    [remainingAnnotations minusSet:excludedAnnotations];
-                    [allAnnotationSets addObject:remainingAnnotations];
+                    [remainingAnnotations minusSet:self.excludedAnnotations];
                     
-                    annotationSets = allAnnotationSets;
+                    annotationSets = @[remainingAnnotations];
                     annotationSetsAreUniqueLocations = NO;
                 }
             }
@@ -208,18 +201,20 @@
     NSMutableSet *annotationsToRemoveAsSet = [NSMutableSet setWithSet:annotationsBeforeAsSet];
     [annotationsToRemoveAsSet minusSet:clusters];
     
+    // ignore excluded annotations
     NSMutableSet *annotationsToExcludeAsSet = NSMutableSet.new;
     for (CCHMapClusterAnnotation *clusterAnnotation in _mapViewAnnotations) {
         if ([clusterAnnotation isKindOfClass:MKUserLocation.class]) {
             continue;
         }
         if (!clusterAnnotation.isCluster) {
-            if ([self.clusterController.excludedAnnotations member:clusterAnnotation.annotations.anyObject]) {
+            if ([self.excludedAnnotations member:clusterAnnotation.annotations.anyObject]) {
                 [annotationsToExcludeAsSet addObject:clusterAnnotation];
             }
         }
     }
     [annotationsToRemoveAsSet minusSet:annotationsToExcludeAsSet];
+    // ...
     
     NSArray *annotationsToRemove = [annotationsToRemoveAsSet allObjects];
     
