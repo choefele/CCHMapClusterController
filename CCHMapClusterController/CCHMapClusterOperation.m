@@ -134,7 +134,7 @@
                     for (CCHMapClusterAnnotation *annotation in allAnnotationsInCell.allObjects) {
                         if ([self.clusterController.excludedAnnotations member:annotation]) {
                             [excludedAnnotations addObject:annotation];
-                            [allAnnotationSets addObject:[NSSet setWithObject:annotation]];
+                            //[allAnnotationSets addObject:[NSSet setWithObject:annotation]];
                         }
                     }
                     
@@ -207,6 +207,20 @@
     NSArray *annotationsToAdd = [annotationsToAddAsSet allObjects];
     NSMutableSet *annotationsToRemoveAsSet = [NSMutableSet setWithSet:annotationsBeforeAsSet];
     [annotationsToRemoveAsSet minusSet:clusters];
+    
+    NSMutableSet *annotationsToExcludeAsSet = NSMutableSet.new;
+    for (CCHMapClusterAnnotation *clusterAnnotation in _mapViewAnnotations) {
+        if ([clusterAnnotation isKindOfClass:MKUserLocation.class]) {
+            continue;
+        }
+        if (!clusterAnnotation.isCluster) {
+            if ([self.clusterController.excludedAnnotations member:clusterAnnotation.annotations.anyObject]) {
+                [annotationsToExcludeAsSet addObject:clusterAnnotation];
+            }
+        }
+    }
+    [annotationsToRemoveAsSet minusSet:annotationsToExcludeAsSet];
+    
     NSArray *annotationsToRemove = [annotationsToRemoveAsSet allObjects];
     
     // Show cluster annotations on map
