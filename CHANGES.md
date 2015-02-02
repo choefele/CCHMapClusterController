@@ -1,6 +1,6 @@
 Changes
 =======
-## Upcoming version
+## 1.6.6
 - Fix implementation of `annotations` property. Thanks to tarbrain for the code.
 
 ## 1.6.5
