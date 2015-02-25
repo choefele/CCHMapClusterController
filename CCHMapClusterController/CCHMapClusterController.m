@@ -220,12 +220,10 @@
     
     // Add polygons outlining each cell
     CCHMapClusterControllerEnumerateCells(gridMapRect, cellMapSize, ^(MKMapRect cellMapRect) {
-        //        cellMapRect.origin.x -= MKMapSizeWorld.width;  // fixes issue when view port spans 180th meridian
-        
         MKMapPoint points[4];
         points[0] = MKMapPointMake(MKMapRectGetMinX(cellMapRect), MKMapRectGetMinY(cellMapRect));
-        points[1] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect), MKMapRectGetMinY(cellMapRect));
-        points[2] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect), MKMapRectGetMaxY(cellMapRect));
+        points[1] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect) + MKMapSizeWorld.width, MKMapRectGetMinY(cellMapRect));
+        points[2] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect) + MKMapSizeWorld.width, MKMapRectGetMaxY(cellMapRect));
         points[3] = MKMapPointMake(MKMapRectGetMinX(cellMapRect), MKMapRectGetMaxY(cellMapRect));
         CCHMapClusterControllerDebugPolygon *debugPolygon = (CCHMapClusterControllerDebugPolygon *)[CCHMapClusterControllerDebugPolygon polygonWithPoints:points count:4];
         debugPolygon.mapClusterController = self;
