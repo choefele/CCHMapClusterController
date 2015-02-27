@@ -217,18 +217,28 @@
             }
         }
     }
-    
-    // Add polygons outlining each cell
-    CCHMapClusterControllerEnumerateCells(gridMapRect, cellMapSize, ^(MKMapRect cellMapRect) {
-        MKMapPoint points[4];
-        points[0] = MKMapPointMake(MKMapRectGetMinX(cellMapRect), MKMapRectGetMinY(cellMapRect));
-        points[1] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect) + MKMapSizeWorld.width, MKMapRectGetMinY(cellMapRect));
-        points[2] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect) + MKMapSizeWorld.width, MKMapRectGetMaxY(cellMapRect));
-        points[3] = MKMapPointMake(MKMapRectGetMinX(cellMapRect), MKMapRectGetMaxY(cellMapRect));
-        CCHMapClusterControllerDebugPolygon *debugPolygon = (CCHMapClusterControllerDebugPolygon *)[CCHMapClusterControllerDebugPolygon polygonWithPoints:points count:4];
-        debugPolygon.mapClusterController = self;
-        [mapView addOverlay:debugPolygon];
-    });
+
+    int yCells = ceil((MKMapRectGetHeight(gridMapRect) + 0.1)/cellMapSize);
+    int xCells = ceil((MKMapRectGetWidth(gridMapRect) + 0.1)/cellMapSize);
+    MKMapPoint points[yCells * 3 + 1 + xCells * 3 + 1];
+    int pointCount = 0;
+    points[pointCount++] = MKMapPointMake(MKMapRectGetMinX(gridMapRect), MKMapRectGetMinY(gridMapRect));
+    for (double x = MKMapRectGetMinX(gridMapRect); x <= MKMapRectGetMaxX(gridMapRect)+0.1; x += cellMapSize) {
+        points[pointCount++] = MKMapPointMake(x, MKMapRectGetMinY(gridMapRect));
+        points[pointCount++] = MKMapPointMake(x, MKMapRectGetMaxY(gridMapRect));
+        points[pointCount++] = MKMapPointMake(x, MKMapRectGetMinY(gridMapRect));
+    }
+
+    points[pointCount++] = MKMapPointMake(MKMapRectGetMinX(gridMapRect), MKMapRectGetMinY(gridMapRect));
+    for (double y = MKMapRectGetMinY(gridMapRect); y <= MKMapRectGetMaxY(gridMapRect)+0.1; y += cellMapSize) {
+        points[pointCount++] = MKMapPointMake(MKMapRectGetMinX(gridMapRect), y);
+        points[pointCount++] = MKMapPointMake(MKMapRectGetMaxX(gridMapRect), y);
+        points[pointCount++] = MKMapPointMake(MKMapRectGetMinX(gridMapRect), y);
+    }
+
+    CCHMapClusterControllerDebugPolygon *debugPolygon = (CCHMapClusterControllerDebugPolygon *)[CCHMapClusterControllerDebugPolygon polygonWithPoints:points count:pointCount];
+    debugPolygon.mapClusterController = self;
+    [mapView addOverlay:debugPolygon];
 }
 
 - (void)deselectAllAnnotations
