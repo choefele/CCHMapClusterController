@@ -56,4 +56,18 @@
  */
 - (void)mapClusterController:(CCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation;
 
+/**
+ Called before the given cluster annotations are added to the map.
+ @param mapClusterController The cluster controller sending the message.
+ @param mapClusterAnnotations The cluster annotations that will be added.
+ */
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willAddClusterAnnotations:(NSArray *)mapClusterAnnotations;
+
+/**
+ Called before the given cluster annotations are removed from the map.
+ @param mapClusterController The cluster controller sending the message.
+ @param mapClusterAnnotations The cluster annotations that will be added.
+ */
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willRemoveClusterAnnotations:(NSArray *)mapClusterAnnotations;
+
 @end
