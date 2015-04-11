@@ -33,6 +33,13 @@
 @protocol CCHMapAnimator;
 @protocol CCHMapClusterControllerDelegate;
 
+
+typedef enum {
+	ClusterMethodGridBased,
+	ClusterMethodDistanceBased
+} CCHClusterMethod;
+
+
 @interface CCHMapClusterOperation : NSOperation
 
 @property (nonatomic) CCHMapTree *allAnnotationsMapTree;
@@ -41,6 +48,7 @@
 @property (nonatomic) id<CCHMapAnimator> animator;
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> clusterControllerDelegate;
 @property (nonatomic, weak) CCHMapClusterController *clusterController;
+@property (nonatomic) CCHClusterMethod clusterMethod;
 
 - (instancetype)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering minUniqueLocationsForClustering:(NSUInteger)minUniqueLocationsForClustering;
 
