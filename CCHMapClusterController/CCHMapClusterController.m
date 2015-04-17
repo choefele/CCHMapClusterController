@@ -239,20 +239,6 @@
     });
 }
 
-- (void)deselectAllAnnotations
-{
-    //    NSArray *selectedAnnotations = self.mapView.selectedAnnotations;
-    //    for (id<MKAnnotation> selectedAnnotation in selectedAnnotations) {
-    //        if ([selectedAnnotation isKindOfClass:[CCHMapClusterAnnotation class]]) {
-    //            CCHMapClusterAnnotation *clusterAnnotation = selectedAnnotation;
-    //            if (clusterAnnotation.isExcludedFromClustering) {
-    //                continue;
-    //            }
-    //        }
-    //        [self.mapView deselectAnnotation:selectedAnnotation animated:YES];
-    //    }
-}
-
 - (void)selectAnnotation:(id<MKAnnotation>)annotation andZoomToRegionWithLatitudinalMeters:(CLLocationDistance)latitudinalMeters longitudinalMeters:(CLLocationDistance)longitudinalMeters
 {
     // Check for valid annotation
@@ -261,9 +247,6 @@
     if (!existingAnnotation) {
         return;
     }
-    
-    // Deselect annotations
-    [self deselectAllAnnotations];
     
     // Zoom to annotation
     self.annotationToSelect = annotation;
@@ -293,13 +276,6 @@
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
     self.regionChanging = NO;
-    
-    // Deselect all annotations when zooming in/out. Longitude delta will not change
-    // unless zoom changes (in contrast to latitude delta).
-    BOOL hasZoomed = !fequal(mapView.region.span.longitudeDelta, self.regionSpanBeforeChange.longitudeDelta);
-    if (hasZoomed) {
-        [self deselectAllAnnotations];
-    }
     
     // Update annotations
     [self updateAnnotationsWithCompletionHandler:^{

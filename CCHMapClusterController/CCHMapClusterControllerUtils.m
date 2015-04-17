@@ -24,7 +24,6 @@
 //
 
 #import "CCHMapClusterControllerUtils.h"
-#import "CCHMapClusterController.h"
 #import "CCHMapClusterAnnotation.h"
 
 #import <float.h>

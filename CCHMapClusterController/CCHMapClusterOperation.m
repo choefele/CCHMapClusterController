@@ -204,7 +204,7 @@ minUniqueLocationsForClustering:(NSUInteger)minUniqueLocationsForClustering
     // ignore excluded annotations
     NSMutableSet *annotationsToExcludeAsSet = NSMutableSet.new;
     for (CCHMapClusterAnnotation *clusterAnnotation in _mapViewAnnotations) {
-        if ([clusterAnnotation isKindOfClass:MKUserLocation.class]) {
+        if (![clusterAnnotation isKindOfClass:CCHMapClusterAnnotation.class]) {
             continue;
         }
         if (!clusterAnnotation.isCluster) {
