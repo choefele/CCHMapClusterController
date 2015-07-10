@@ -89,6 +89,12 @@
  */
 - (void)removeAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
 
+/**
+ Removes All annotations and immediately updates clustering.
+ @param completionHandler Called when the clustering finished updating.
+ */
+- (void)removeAllAnnotationswithCompletionHandler:(void (^)())completionHandler;
+
 /** 
  Zooms to the position of the cluster that contains the given annotation and selects the cluster's annotation view.
  @param annotation The annotation to look for. Uses `isEqual:` to check for a matching annotation previously added with `addAnnotations:withCompletionHandler:`.
