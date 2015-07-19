@@ -43,6 +43,11 @@ MKMapRect CCHMapClusterControllerAlignMapRectToCellSize(MKMapRect mapRect, doubl
     double endX = ceil(MKMapRectGetMaxX(mapRect) / cellSize) * cellSize;
     double endY = ceil(MKMapRectGetMaxY(mapRect) / cellSize) * cellSize;
     
+    if (startX >= MKMapSizeWorld.width) {
+        startX -= MKMapSizeWorld.width;
+        endX -= MKMapSizeWorld.width;
+    }
+    
     return MKMapRectMake(startX, startY, endX - startX, endY - startY);
 }
 

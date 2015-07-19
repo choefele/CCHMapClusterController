@@ -137,6 +137,26 @@
     
     return view;
 }
+
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
+{
+    MKOverlayRenderer *renderer;
+	
+    // Target can override return value
+    if ([self.target respondsToSelector:@selector(mapView:rendererForOverlay:)]) {
+        renderer = [self.target mapView:mapView rendererForOverlay:overlay];
+    }
+	
+    // Default return value for debug polygons
+    if (renderer == nil && [overlay isKindOfClass:CCHMapClusterControllerDebugPolygon.class]) {
+        MKPolygonRenderer *polygonRenderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
+        polygonRenderer.strokeColor = [UIColor.blueColor colorWithAlphaComponent:0.7];
+        polygonRenderer.lineWidth = 1;
+        renderer = polygonRenderer;
+    }
+    
+    return renderer;
+}
 #else
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
 {
