@@ -64,6 +64,71 @@
 
 @implementation CCHMapClusterController
 
+- (annotationPositionFixerBlock) defaultAnnotationPositionFixer {
+    __weak typeof(self) weakSelf = self;
+    return ^(MKMapRect currentCellMapRect, CLLocationCoordinate2D currentAnnotationCoordinate, CCHMapClusterAnnotation* __unsafe_unretained *annotationsByCells, struct annotationsByCellsArrayCoordinate arrayIndexes) {
+        __block CGPoint currentAnnotationCenter = [weakSelf.mapView convertCoordinate: currentAnnotationCoordinate toPointToView: weakSelf.mapView];
+        NSUInteger estimatedDiameter = weakSelf.approximatedAnnotationViewRadius * 2;
+        __unsafe_unretained CCHMapClusterAnnotation* annotationForCell = annotationsByCells[arrayIndexes.x*arrayIndexes.maxY + arrayIndexes.y];
+        
+        // check if we should move annotationForCell out of the border of the cell to prevent intersection with other annotation
+        __block CLLocationCoordinate2D newCoordinate = currentAnnotationCoordinate;
+        __block BOOL shouldUpdateCoordinate = NO;
+        if (arrayIndexes.x>0) {
+            // check left cell...
+            __unsafe_unretained CCHMapClusterAnnotation * leftAnnotation = annotationsByCells[(arrayIndexes.x-1)*arrayIndexes.maxY + arrayIndexes.y];
+            if (nil != leftAnnotation) {
+                CGFloat distance = CCHMapClusterControllerScreenDistanceFromPointToAnnotationInMapView(currentAnnotationCenter,leftAnnotation, _mapView);
+                if (distance < estimatedDiameter) {
+                    //move !!!
+                    CGFloat newX = currentAnnotationCenter.x + estimatedDiameter - distance;
+                    CGPoint right = [weakSelf.mapView convertCoordinate: MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMaxX(currentCellMapRect), MKMapRectGetMaxY(currentCellMapRect))) toPointToView: weakSelf.mapView];
+                    
+                    if (newX > right.x) {
+                        newX = right.x;
+                    }
+                    currentAnnotationCenter = CGPointMake(newX, currentAnnotationCenter.y);
+                    //dispatch_async(dispatch_get_main_queue(), ^{
+                        // newCoordinate will have longitude updated...
+                        newCoordinate = [weakSelf.mapView convertPoint:currentAnnotationCenter toCoordinateFromView:weakSelf.mapView];
+                        shouldUpdateCoordinate = YES;
+                    //});
+                }
+            }
+        }
+        
+        if (arrayIndexes.y>0) {
+            // check left cell...
+            __unsafe_unretained CCHMapClusterAnnotation * topAnnotation = annotationsByCells[arrayIndexes.x*arrayIndexes.maxY + (arrayIndexes.y-1)];
+            if (nil != topAnnotation) {
+                
+                CGFloat distance = CCHMapClusterControllerScreenDistanceFromPointToAnnotationInMapView(currentAnnotationCenter,topAnnotation,_mapView);
+                if (distance < estimatedDiameter) {
+                    //move !!!
+                    CGFloat newY = currentAnnotationCenter.y + estimatedDiameter - distance;
+                    
+                    CGPoint bottom = [weakSelf.mapView convertCoordinate: MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMaxX(currentCellMapRect), MKMapRectGetMaxY(currentCellMapRect))) toPointToView: weakSelf.mapView];
+                    
+                    if (newY > bottom.y) {
+                        newY = bottom.y;
+                    }
+                    currentAnnotationCenter = CGPointMake(currentAnnotationCenter.x, newY);
+                    //dispatch_async(dispatch_get_main_queue(), ^{
+                        CLLocationCoordinate2D c = [weakSelf.mapView convertPoint:currentAnnotationCenter toCoordinateFromView: weakSelf.mapView];
+                        newCoordinate = CLLocationCoordinate2DMake(c.latitude, newCoordinate.longitude);
+                        shouldUpdateCoordinate = YES;
+                    //});
+                }
+            }
+        }
+        if (shouldUpdateCoordinate) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+            annotationForCell.coordinate = newCoordinate;
+            });
+        }
+    };
+}
+
 - (instancetype)initWithMapView:(MKMapView *)mapView
 {
     self = [super init];
@@ -95,6 +160,8 @@
         _strongAnimator = animator;
         
         [self setReuseExistingClusterAnnotations:YES];
+        
+        self.fixAnnotationPosition = [self defaultAnnotationPositionFixer];
     }
     
     return self;
@@ -316,5 +383,7 @@
         }
     }];
 }
+
+
 
 @end

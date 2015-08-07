@@ -26,15 +26,16 @@
 - (id)copyWithZone:(NSZone *)zone
 {
     Settings *settings = [[Settings alloc] init];
-    settings.debuggingEnabled = self.isDebuggingEnabled;
-    settings.cellSize = self.cellSize;
-    settings.marginFactor = self.marginFactor;
-    settings.dataSet = self.dataSet;
-    settings.groupingEnabled = self.groupingEnabled;
-    settings.clusterer = self.clusterer;
-    settings.maxZoomLevelForClustering = self.maxZoomLevelForClustering;
-    settings.minUniqueLocationsForClustering = self.minUniqueLocationsForClustering;
-    settings.animator = self.animator;
+    settings.debuggingEnabled = self->_debuggingEnabled;
+    settings.cellSize = self->_cellSize;
+    settings.approximatedAnnotationRadius = self->_approximatedAnnotationRadius;
+    settings.marginFactor = self->_marginFactor;
+    settings.dataSet = self->_dataSet;
+    settings.groupingEnabled = self->_groupingEnabled;
+    settings.clusterer = self->_clusterer;
+    settings.maxZoomLevelForClustering = self->_maxZoomLevelForClustering;
+    settings.minUniqueLocationsForClustering = self->_minUniqueLocationsForClustering;
+    settings.animator = self->_animator;
     
     return settings;
 }

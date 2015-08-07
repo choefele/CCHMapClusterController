@@ -41,6 +41,7 @@
 @property (nonatomic) id<CCHMapAnimator> animator;
 @property (nonatomic, weak) id<CCHMapClusterControllerDelegate> clusterControllerDelegate;
 @property (nonatomic, weak) CCHMapClusterController *clusterController;
+@property (nonatomic, assign) BOOL skipAnnotationPositionFixing;
 
 - (instancetype)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering minUniqueLocationsForClustering:(NSUInteger)minUniqueLocationsForClustering;
 

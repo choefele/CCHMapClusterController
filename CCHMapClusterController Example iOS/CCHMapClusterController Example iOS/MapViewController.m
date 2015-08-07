@@ -51,6 +51,8 @@
     self.mapClusterControllerRed = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     self.mapClusterControllerRed.delegate = self;
     
+    self.mapClusterControllerRed.approximatedAnnotationViewRadius = 20.0f;
+
     // Read annotations
     self.dataReader = [[DataReader alloc] init];
     self.dataReader.delegate = self;
@@ -73,6 +75,7 @@
     // Map cluster controller settings
     self.mapClusterControllerRed.debuggingEnabled = settings.isDebuggingEnabled;
     self.mapClusterControllerRed.cellSize = settings.cellSize;
+    self.mapClusterControllerRed.approximatedAnnotationViewRadius = settings.approximatedAnnotationRadius;
     self.mapClusterControllerRed.marginFactor = settings.marginFactor;
     
     if (settings.clusterer == SettingsClustererCenterOfMass) {
@@ -98,6 +101,7 @@
         
         self.mapClusterControllerBlue.debuggingEnabled = settings.isDebuggingEnabled;
         self.mapClusterControllerBlue.cellSize = settings.cellSize + 20;
+        self.mapClusterControllerBlue.approximatedAnnotationViewRadius = settings.approximatedAnnotationRadius;
         self.mapClusterControllerBlue.marginFactor = settings.marginFactor;
         self.mapClusterControllerBlue.clusterer = self.mapClusterer;
         self.mapClusterControllerBlue.maxZoomLevelForClustering = settings.maxZoomLevelForClustering;
@@ -145,12 +149,14 @@
     }
 }
 
+
 - (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController titleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
 {
     NSUInteger numAnnotations = mapClusterAnnotation.annotations.count;
     NSString *unit = numAnnotations > 1 ? @"annotations" : @"annotation";
     return [NSString stringWithFormat:@"%tu %@", numAnnotations, unit];
 }
+
 
 - (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
 {

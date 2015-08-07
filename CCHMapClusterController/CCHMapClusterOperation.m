@@ -31,6 +31,7 @@
 #import "CCHMapClusterer.h"
 #import "CCHMapAnimator.h"
 #import "CCHMapClusterControllerDelegate.h"
+#import "CCHMapClusterController.h"
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 
@@ -74,6 +75,7 @@
         
         _executing = NO;
         _finished = NO;
+        _skipAnnotationPositionFixing = NO;
     }
     
     return self;
@@ -100,15 +102,34 @@
 - (void)start
 {
     self.executing = YES;
-    
+
     double zoomLevel = CCHMapClusterControllerZoomLevelForRegion(self.mapViewRegion.center.longitude, self.mapViewRegion.span.longitudeDelta, self.mapViewWidth);
     BOOL disableClustering = (zoomLevel > self.maxZoomLevelForClustering);
     BOOL respondsToSelector = [_clusterControllerDelegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)];
     
     // For each cell in the grid, pick one cluster annotation to show
     MKMapRect gridMapRect = [self.class gridMapRectForMapRect:self.mapViewVisibleMapRect withCellMapSize:self.cellMapSize marginFactor:self.marginFactor];
+    
+    NSUInteger xCellsMaxIdx = gridMapRect.size.width / _cellMapSize;
+    NSUInteger yCellsMaxIdx = gridMapRect.size.height / _cellMapSize;
+    
+    // http://stackoverflow.com/questions/917783/how-do-i-work-with-dynamic-multi-dimensional-arrays-in-c
+    // variable-length arrays can not be used in blocks :-(
+    // so let's use good old C pointer arythmetics
+    CCHMapClusterAnnotation* __unsafe_unretained *annotationsByCells = NULL;
+    
+    if (
+           !fequal(0.0f, self.clusterController.approximatedAnnotationViewRadius)
+        && nil != self.clusterController.fixAnnotationPosition
+        && self.skipAnnotationPositionFixing == NO
+    )
+    {
+        // allocate two-dimensional array for annotations, emulating our cluster grid
+        annotationsByCells = (CCHMapClusterAnnotation* __unsafe_unretained *) calloc((xCellsMaxIdx+1) * (yCellsMaxIdx+1), sizeof(CCHMapClusterAnnotation * __unsafe_unretained));
+    }
+    
     NSMutableSet *clusters = [NSMutableSet set];
-    CCHMapClusterControllerEnumerateCells(gridMapRect, _cellMapSize, ^(MKMapRect cellMapRect) {
+    CCHMapClusterControllerEnumerateCellsWithIndexes(gridMapRect, _cellMapSize, ^(MKMapRect cellMapRect, NSUInteger x, NSUInteger y) {
         NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellMapRect];
         
         if (allAnnotationsInCell.count > 0) {
@@ -162,24 +183,38 @@
                 } else {
                     // For an existing cluster annotation, this will implicitly update its annotation view
                     [visibleAnnotationsInCell removeObject:annotationForCell];
-                    annotationForCell.annotations = annotationSet;
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        if (annotationSetsAreUniqueLocations) {
-                            annotationForCell.coordinate = coordinate;
-                        }
+                        annotationForCell.annotations = annotationSet;
+                        annotationForCell.coordinate = coordinate;
+                        assert( MKMapRectContainsPoint(cellMapRect, MKMapPointForCoordinate(coordinate)));
                         annotationForCell.title = nil;
                         annotationForCell.subtitle = nil;
+                    
                         if (respondsToSelector) {
                             [_clusterControllerDelegate mapClusterController:_clusterController willReuseMapClusterAnnotation:annotationForCell];
                         }
                     });
                 }
                 
+                if (NULL != annotationsByCells) {
+                    // store current annotation for back reference...
+                    annotationsByCells[x*yCellsMaxIdx + y] = annotationForCell;
+                    if (x != 0 && y != 0) {
+                        if ([annotationForCell isCluster]) {
+                            struct annotationsByCellsArrayCoordinate arrayIndexes = {x, y, xCellsMaxIdx, yCellsMaxIdx};
+                            _clusterController.fixAnnotationPosition(cellMapRect, coordinate, annotationsByCells, arrayIndexes);
+                        }
+                    }
+                }
                 // Collect cluster annotations
                 [clusters addObject:annotationForCell];
             }
         }
     });
+    
+    if (NULL != annotationsByCells) {
+        free(annotationsByCells);
+    }
     
     // Figure out difference between new and old clusters
     NSSet *annotationsBeforeAsSet = CCHMapClusterControllerClusterAnnotationsForAnnotations(self.mapViewAnnotations, self.clusterController);
@@ -191,7 +226,7 @@
     NSMutableSet *annotationsToRemoveAsSet = [NSMutableSet setWithSet:annotationsBeforeAsSet];
     [annotationsToRemoveAsSet minusSet:clusters];
     NSArray *annotationsToRemove = [annotationsToRemoveAsSet allObjects];
-    
+
     // Show cluster annotations on map
     [_visibleAnnotationsMapTree removeAnnotations:annotationsToRemove];
     [_visibleAnnotationsMapTree addAnnotations:annotationsToAdd];

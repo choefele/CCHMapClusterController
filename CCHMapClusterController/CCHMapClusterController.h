@@ -29,6 +29,21 @@
 @protocol CCHMapClusterControllerDelegate;
 @protocol CCHMapClusterer;
 @protocol CCHMapAnimator;
+@class CCHMapClusterAnnotation;
+
+struct annotationsByCellsArrayCoordinate {
+    unsigned short x; // x index starting from 0
+    unsigned short y; // y index starting from 0
+    unsigned short maxX; // maximum x index
+    unsigned short maxY; // maximum y index
+};
+
+typedef void (^annotationPositionFixerBlock)(
+                                             MKMapRect currentCellMapRect,
+                                             CLLocationCoordinate2D currentAnnotationCoordinate,
+                                             CCHMapClusterAnnotation* __unsafe_unretained *annotationsByCells,
+                                             struct annotationsByCellsArrayCoordinate arrayIndexes
+                                             );
 
 /**
  Controller to cluster annotations. Automatically updates clustering when user zooms or pans the map.
@@ -68,6 +83,11 @@
 
 /** Displays the grid used for clustering. */
 @property (nonatomic, getter = isDebuggingEnabled) BOOL debuggingEnabled;
+
+/** Approximated radius of the annotation view, so cluster controller will try to prevent intersections. If set to zero then cluster annotation views will be placed according to the clusterer algorythm without adjustments  (default: 0). */
+@property (nonatomic, assign) CGFloat approximatedAnnotationViewRadius;
+
+@property (nonatomic, copy) annotationPositionFixerBlock fixAnnotationPosition;
 
 /**
  Initializes the cluster controller.
