@@ -51,7 +51,8 @@
 @property (nonatomic) CCHMapTree *allAnnotationsMapTree;
 @property (nonatomic) CCHMapTree *visibleAnnotationsMapTree;
 @property (nonatomic) NSOperationQueue *backgroundQueue;
-@property (nonatomic) MKMapView *mapView;
+// FIXME DIMA == вот здесь у нас cycle
+@property (nonatomic, weak) MKMapView *mapView;
 @property (nonatomic) CCHMapViewDelegateProxy *mapViewDelegateProxy;
 @property (nonatomic) id<MKAnnotation> annotationToSelect;
 @property (nonatomic) CCHMapClusterAnnotation *mapClusterAnnotationToSelect;
@@ -78,7 +79,7 @@
             // check left cell...
             __unsafe_unretained CCHMapClusterAnnotation * leftAnnotation = annotationsByCells[(arrayIndexes.x-1)*arrayIndexes.maxY + arrayIndexes.y];
             if (nil != leftAnnotation) {
-                CGFloat distance = CCHMapClusterControllerScreenDistanceFromPointToAnnotationInMapView(currentAnnotationCenter,leftAnnotation, _mapView);
+                CGFloat distance = CCHMapClusterControllerScreenDistanceFromPointToAnnotationInMapView(currentAnnotationCenter,leftAnnotation, weakSelf.mapView);
                 if (distance < estimatedDiameter) {
                     //move !!!
                     CGFloat newX = currentAnnotationCenter.x + estimatedDiameter - distance;
@@ -102,7 +103,7 @@
             __unsafe_unretained CCHMapClusterAnnotation * topAnnotation = annotationsByCells[arrayIndexes.x*arrayIndexes.maxY + (arrayIndexes.y-1)];
             if (nil != topAnnotation) {
                 
-                CGFloat distance = CCHMapClusterControllerScreenDistanceFromPointToAnnotationInMapView(currentAnnotationCenter,topAnnotation,_mapView);
+                CGFloat distance = CCHMapClusterControllerScreenDistanceFromPointToAnnotationInMapView(currentAnnotationCenter,topAnnotation,weakSelf.mapView);
                 if (distance < estimatedDiameter) {
                     //move !!!
                     CGFloat newY = currentAnnotationCenter.y + estimatedDiameter - distance;
@@ -357,31 +358,38 @@
     }
     
     // Update annotations
+    __weak typeof(self) weakSelf = self;
+    
     [self updateAnnotationsWithCompletionHandler:^{
-        if (self.annotationToSelect) {
+        if (weakSelf.annotationToSelect) {
             // Map has zoomed to selected annotation; search for cluster annotation that contains this annotation
-            CCHMapClusterAnnotation *mapClusterAnnotation = CCHMapClusterControllerClusterAnnotationForAnnotation(self.mapView, self.annotationToSelect, mapView.visibleMapRect);
-            self.annotationToSelect = nil;
+            CCHMapClusterAnnotation *mapClusterAnnotation = CCHMapClusterControllerClusterAnnotationForAnnotation(weakSelf.mapView, weakSelf.annotationToSelect, mapView.visibleMapRect);
+            weakSelf.annotationToSelect = nil;
             
-            if (CCHMapClusterControllerCoordinateEqualToCoordinate(self.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
+            if (CCHMapClusterControllerCoordinateEqualToCoordinate(weakSelf.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
                 // Select immediately since region won't change
-                [self.mapView selectAnnotation:mapClusterAnnotation animated:YES];
+                [weakSelf.mapView selectAnnotation:mapClusterAnnotation animated:YES];
             } else {
                 // Actual selection happens in next call to mapView:regionDidChangeAnimated:
-                self.mapClusterAnnotationToSelect = mapClusterAnnotation;
+                weakSelf.mapClusterAnnotationToSelect = mapClusterAnnotation;
                 
                 // Dispatch async to avoid calling regionDidChangeAnimated immediately
                 dispatch_async(dispatch_get_main_queue(), ^{
                     // No zooming, only panning. Otherwise, annotation might change to a different cluster annotation
-                    [self.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
+                    [weakSelf.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
                 });
             }
-        } else if (self.mapClusterAnnotationToSelect) {
+        } else if (weakSelf.mapClusterAnnotationToSelect) {
             // Map has zoomed to annotation
-            [self.mapView selectAnnotation:self.mapClusterAnnotationToSelect animated:YES];
-            self.mapClusterAnnotationToSelect = nil;
+            [weakSelf.mapView selectAnnotation:weakSelf.mapClusterAnnotationToSelect animated:YES];
+            weakSelf.mapClusterAnnotationToSelect = nil;
         }
     }];
+}
+
+-(void) dealloc {
+    _mapView = nil;
+    _mapViewDelegateProxy = nil;
 }
 
 

@@ -118,6 +118,11 @@
     // so let's use good old C pointer arythmetics
     CCHMapClusterAnnotation* __unsafe_unretained *annotationsByCells = NULL;
     
+    if (self.cancelled) {
+        self.executing = NO;
+        return;
+    }
+    
     if (
            !fequal(0.0f, self.clusterController.approximatedAnnotationViewRadius)
         && nil != self.clusterController.fixAnnotationPosition
@@ -129,7 +134,15 @@
     }
     
     NSMutableSet *clusters = [NSMutableSet set];
+    
+    __weak typeof(self) weakSelf = self;
+    
     CCHMapClusterControllerEnumerateCellsWithIndexes(gridMapRect, _cellMapSize, ^(MKMapRect cellMapRect, NSUInteger x, NSUInteger y) {
+        if (weakSelf.cancelled) {
+            weakSelf.executing = NO;
+            return;
+        }
+        
         NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellMapRect];
         
         if (allAnnotationsInCell.count > 0) {
@@ -155,6 +168,12 @@
             NSMutableSet *visibleAnnotationsInCell = [NSMutableSet setWithSet:[_visibleAnnotationsMapTree annotationsInMapRect:cellMapRect]];
             for (NSSet *annotationSet in annotationSets) {
                 CLLocationCoordinate2D coordinate;
+                
+                if (weakSelf.cancelled) {
+                    weakSelf.executing = NO;
+                    return;
+                }
+                
                 if (annotationSetsAreUniqueLocations) {
                     coordinate = [annotationSet.anyObject coordinate];
                 } else {
@@ -184,6 +203,10 @@
                     // For an existing cluster annotation, this will implicitly update its annotation view
                     [visibleAnnotationsInCell removeObject:annotationForCell];
                     dispatch_async(dispatch_get_main_queue(), ^{
+                        if (weakSelf.cancelled) {
+                            weakSelf.executing = NO;
+                            return;
+                        }
                         annotationForCell.annotations = annotationSet;
                         annotationForCell.coordinate = coordinate;
                         assert( MKMapRectContainsPoint(cellMapRect, MKMapPointForCoordinate(coordinate)));
@@ -194,6 +217,11 @@
                             [_clusterControllerDelegate mapClusterController:_clusterController willReuseMapClusterAnnotation:annotationForCell];
                         }
                     });
+                }
+                
+                if (weakSelf.cancelled) {
+                    weakSelf.executing = NO;
+                    return;
                 }
                 
                 if (NULL != annotationsByCells) {
@@ -214,6 +242,11 @@
     
     if (NULL != annotationsByCells) {
         free(annotationsByCells);
+    }
+    
+    if (self.cancelled) {
+        self.executing = NO;
+        return;
     }
     
     // Figure out difference between new and old clusters

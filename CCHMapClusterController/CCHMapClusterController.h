@@ -53,7 +53,7 @@ typedef void (^annotationPositionFixerBlock)(
 /** Clustered annotations. */
 @property (nonatomic, copy, readonly) NSSet *annotations;
 /** Map view to display clustered annotations. */
-@property (nonatomic, readonly) MKMapView *mapView;
+@property (nonatomic, readonly, weak) MKMapView *mapView; // must be weak to prevent reference cycle
 
 /** Multiplier to extend visible area that's included for clustering (default: 0.5). */
 @property (nonatomic) double marginFactor;
@@ -117,4 +117,5 @@ typedef void (^annotationPositionFixerBlock)(
  */
 - (void)selectAnnotation:(id<MKAnnotation>)annotation andZoomToRegionWithLatitudinalMeters:(CLLocationDistance)latitudinalMeters longitudinalMeters:(CLLocationDistance)longitudinalMeters;
 
+- (void) cancelAllClusterOperations;
 @end
