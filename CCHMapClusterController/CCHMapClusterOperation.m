@@ -264,27 +264,27 @@
     [_visibleAnnotationsMapTree removeAnnotations:annotationsToRemove];
     [_visibleAnnotationsMapTree addAnnotations:annotationsToAdd];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.mapView addAnnotations:annotationsToAdd];
-        [self.animator mapClusterController:self.clusterController willRemoveAnnotations:annotationsToRemove withCompletionHandler:^{
-            [self.mapView removeAnnotations:annotationsToRemove];
-            
-            self.executing = NO;
-            self.finished = YES;
+        [weakSelf.mapView addAnnotations:annotationsToAdd];
+        [weakSelf.animator mapClusterController:self.clusterController willRemoveAnnotations:annotationsToRemove withCompletionHandler:^{
+            [weakSelf.mapView removeAnnotations:annotationsToRemove];
         }];
     });
+    
+    self.executing = NO;
+    self.finished = YES;
 }
 
 - (void)setExecuting:(BOOL)executing
 {
     [self willChangeValueForKey:@"isExecuting"];
-    _executing = YES;
+    _executing = executing;
     [self didChangeValueForKey:@"isExecuting"];
 }
 
 - (void)setFinished:(BOOL)finished
 {
     [self willChangeValueForKey:@"isFinished"];
-    _finished = YES;
+    _finished = finished;
     [self didChangeValueForKey:@"isFinished"];
 }
 
