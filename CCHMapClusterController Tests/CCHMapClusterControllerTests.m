@@ -70,7 +70,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)0);
+    XCTAssertEqual(self.mapView.annotations.count, 0);
 }
 
 - (void)testAddAnnotationsSimple
@@ -85,7 +85,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
+    XCTAssertEqual(self.mapView.annotations.count, 1);
 }
 
 - (void)testAddAnnotations
@@ -122,8 +122,8 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)6);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
+    XCTAssertEqual(self.mapClusterController.annotations.count, 6);
+    XCTAssertEqual(self.mapView.annotations.count, 2);
 
     // Origin MKCoordinateRegion -> bottom left, MKMapRect -> top left
     double cellWidth = visibleMapRect.size.width / 3;
@@ -133,21 +133,21 @@
     // Check bottom left
     MKMapRect bottomLeftMapRect = MKMapRectMake(cellOrigin.x, cellOrigin.y + 2 * cellHeight, cellWidth, cellHeight);
     NSSet *annotationsInMapRect = [self.mapView annotationsInMapRect:bottomLeftMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)1);
+    XCTAssertEqual(annotationsInMapRect.count, 1);
     CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
-    XCTAssertEqual(clusterAnnotation.annotations.count, (NSUInteger)1);
+    XCTAssertEqual(clusterAnnotation.annotations.count, 1);
 
     // Check top right
     MKMapRect topRightMapRect = MKMapRectMake(cellOrigin.x + 2 * cellWidth, cellOrigin.y, cellWidth, cellHeight);
     annotationsInMapRect = [self.mapView annotationsInMapRect:topRightMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)1);
+    XCTAssertEqual(annotationsInMapRect.count, 1);
     clusterAnnotation = (CCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
-    XCTAssertEqual(clusterAnnotation.annotations.count, (NSUInteger)5);
+    XCTAssertEqual(clusterAnnotation.annotations.count, 5);
 
     // Check center
     MKMapRect middleMapRect = MKMapRectMake(cellOrigin.x + cellWidth, cellOrigin.y + cellHeight, cellWidth, cellHeight);
     annotationsInMapRect = [self.mapView annotationsInMapRect:middleMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0);
+    XCTAssertEqual(annotationsInMapRect.count, 0);
 }
 
 - (void)testRemoveAnnotations
@@ -185,7 +185,7 @@
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
     XCTAssertEqual(self.mapClusterController.annotations.count, annotations.count);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
+    XCTAssertEqual(self.mapView.annotations.count, 2);
 
     // Origin MKCoordinateRegion -> bottom left, MKMapRect -> top left
     double cellWidth = visibleMapRect.size.width / 3;
@@ -198,18 +198,18 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapClusterController.annotations.count, (NSUInteger)5);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
+    XCTAssertEqual(self.mapClusterController.annotations.count, 5);
+    XCTAssertEqual(self.mapView.annotations.count, 1);
 
     // Check bottom left
     MKMapRect bottomLeftMapRect = MKMapRectMake(cellOrigin.x, cellOrigin.y + 2 * cellHeight, cellWidth, cellHeight);
     NSSet *annotationsInMapRect = [self.mapView annotationsInMapRect:bottomLeftMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0);
+    XCTAssertEqual(annotationsInMapRect.count, 0);
     
     // Check center
     MKMapRect middleMapRect = MKMapRectMake(cellOrigin.x + cellWidth, cellOrigin.y + cellHeight, cellWidth, cellHeight);
     annotationsInMapRect = [self.mapView annotationsInMapRect:middleMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0);
+    XCTAssertEqual(annotationsInMapRect.count, 0);
 
     // Remove remaining annotations
     self.done = NO;
@@ -217,11 +217,11 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)0);
+    XCTAssertEqual(self.mapView.annotations.count, 0);
     
     // Check visible region
     annotationsInMapRect = [self.mapView annotationsInMapRect:visibleMapRect];
-    XCTAssertEqual(annotationsInMapRect.count, (NSUInteger)0);
+    XCTAssertEqual(annotationsInMapRect.count, 0);
 }
 
 - (void)testAddNonClusteredAnnotations
@@ -243,7 +243,7 @@
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
 
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
+    XCTAssertEqual(self.mapView.annotations.count, 2);
     XCTAssertTrue([self.mapView.annotations containsObject:nonClusteredAnnotation]);
 
     NSMutableArray *annotations = [NSMutableArray arrayWithArray:self.mapView.annotations];
@@ -275,7 +275,7 @@
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
     
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
+    XCTAssertEqual(self.mapView.annotations.count, 2);
     
     CCHMapClusterAnnotation *annotation0 = self.mapView.annotations[0];
     XCTAssertTrue([annotation0 isKindOfClass:CCHMapClusterAnnotation.class]);
@@ -307,7 +307,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
+    XCTAssertEqual(self.mapView.annotations.count, 1);
 }
 
 - (void)testAddAnnotationsMaxZoomLevelDisableClustering
@@ -332,7 +332,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
+    XCTAssertEqual(self.mapView.annotations.count, 2);
 }
 
 - (void)testAddAnnotationsMinUniqueLocationsEnableClustering
@@ -357,7 +357,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
+    XCTAssertEqual(self.mapView.annotations.count, 1);
 }
 
 - (void)testAddAnnotationsMinUniqueLocationsDisableClustering
@@ -382,7 +382,7 @@
         weakSelf.done = YES;
     }];
     XCTAssertTrue([self waitForCompletion:1.0]);
-    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
+    XCTAssertEqual(self.mapView.annotations.count, 2);
 }
 
 #if TARGET_OS_IPHONE

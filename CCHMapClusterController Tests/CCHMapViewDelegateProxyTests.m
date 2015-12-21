@@ -61,7 +61,7 @@
     CCHMapViewDelegateProxy *mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
     XCTAssertEqual(self.mapView.delegate, mapViewDelegateProxy);
     XCTAssertEqual(mapViewDelegateProxy.target, mapViewDelegate);
-    XCTAssertEqual(mapViewDelegateProxy.delegates.count, (NSUInteger)1);
+    XCTAssertEqual(mapViewDelegateProxy.delegates.count, 1);
     XCTAssertEqual(mapViewDelegateProxy.delegates.anyObject, proxyDelegate);
 }
 
@@ -77,7 +77,7 @@
     
     XCTAssertEqual(self.mapView.delegate, mapViewDelegateProxy);
     XCTAssertNil(mapViewDelegateProxy.target);
-    XCTAssertEqual(mapViewDelegateProxy.delegates.count, (NSUInteger)1);
+    XCTAssertEqual(mapViewDelegateProxy.delegates.count, 1);
     XCTAssertEqual(mapViewDelegateProxy.delegates.anyObject, proxyDelegate);
 }
 
@@ -87,7 +87,7 @@
     CCHMapViewDelegateProxy *mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
     XCTAssertEqual(self.mapView.delegate, mapViewDelegateProxy);
     XCTAssertNil(mapViewDelegateProxy.target);
-    XCTAssertEqual(mapViewDelegateProxy.delegates.count, (NSUInteger)1);
+    XCTAssertEqual(mapViewDelegateProxy.delegates.count, 1);
     XCTAssertEqual(mapViewDelegateProxy.delegates.anyObject, proxyDelegate);
 }
 
@@ -101,7 +101,7 @@
 
     XCTAssertEqual(self.mapView.delegate, mapViewDelegateProxy);
     XCTAssertEqual(mapViewDelegateProxy.target, mapViewDelegate);
-    XCTAssertEqual(mapViewDelegateProxy.delegates.count, (NSUInteger)1);
+    XCTAssertEqual(mapViewDelegateProxy.delegates.count, 1);
     XCTAssertEqual(mapViewDelegateProxy.delegates.anyObject, proxyDelegate);
 }
 
@@ -130,7 +130,7 @@
     }
     
     XCTAssertNil(mapViewDelegateProxy.target);
-    XCTAssertEqual(mapViewDelegateProxy.delegates.count, (NSUInteger)1);
+    XCTAssertEqual(mapViewDelegateProxy.delegates.count, 1);
 }
 
 - (void)testAddMultipleDelegateProxies
@@ -145,7 +145,7 @@
     
     XCTAssertEqual(self.mapView.delegate, mapViewDelegateProxy);
     XCTAssertEqual(mapViewDelegateProxy.target, mapViewDelegate);
-    XCTAssertEqual(mapViewDelegateProxy.delegates.count, (NSUInteger)2);
+    XCTAssertEqual(mapViewDelegateProxy.delegates.count, 2);
 }
 
 - (void)testRemoveMultipleDelegateProxies

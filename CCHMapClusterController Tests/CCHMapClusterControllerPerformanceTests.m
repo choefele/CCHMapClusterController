@@ -117,7 +117,7 @@ double performAndTrackTime(int numPasses, dispatch_block_t block)
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
-        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198);
+        XCTAssertEqual(self.clusterCounts.count, 198);
         XCTAssertEqualObjects(clusterCounts, self.clusterCounts);
     });
 
@@ -139,7 +139,7 @@ double performAndTrackTime(int numPasses, dispatch_block_t block)
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
-        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198);
+        XCTAssertEqual(self.clusterCounts.count, 198);
         XCTAssertEqualObjects(clusterCounts, self.clusterCounts);
     });
     
@@ -187,7 +187,7 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
-        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198);
+        XCTAssertEqual(self.clusterCounts.count, 198);
         XCTAssertEqualObjects(clusterCounts, self.clusterCounts);
     });
     
@@ -216,7 +216,7 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
         });
         
-        XCTAssertEqual(self.clusterCounts.count, (NSUInteger)198);
+        XCTAssertEqual(self.clusterCounts.count, 198);
         XCTAssertEqualObjects(clusterCounts, self.clusterCounts);
     });
     

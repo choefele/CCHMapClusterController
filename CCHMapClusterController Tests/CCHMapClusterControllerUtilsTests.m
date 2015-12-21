@@ -267,7 +267,7 @@
         XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__);
         XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__);
     });
-    XCTAssertEqual(numCalls, (NSUInteger)100);
+    XCTAssertEqual(numCalls, 100);
 }
 
 - (void)testEnumerateCellsAlign
@@ -280,7 +280,7 @@
         XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__);
         XCTAssertEqualWithAccuracy(cellRect.size.width, 10, __FLT_EPSILON__);
     });
-    XCTAssertEqual(numCalls, (NSUInteger)100);
+    XCTAssertEqual(numCalls, 100);
 }
 
 - (void)testMapRectForCoordinateRegion
@@ -302,7 +302,7 @@
 - (void)testFilterAnnotationsNil
 {
     NSSet *filteredAnnotations = CCHMapClusterControllerClusterAnnotationsForAnnotations(nil, nil);
-    XCTAssertEqual(filteredAnnotations.count, (NSUInteger)0);
+    XCTAssertEqual(filteredAnnotations.count, 0);
 }
 
 - (void)testFilterAnnotations
@@ -311,7 +311,7 @@
     CCHMapClusterAnnotation *clusterAnnotation = [[CCHMapClusterAnnotation alloc] init];
     NSArray *annotations = @[pointAnnotation, clusterAnnotation];
     NSSet *filteredAnnotations = CCHMapClusterControllerClusterAnnotationsForAnnotations(annotations, nil);
-    XCTAssertEqual(filteredAnnotations.count, (NSUInteger)1);
+    XCTAssertEqual(filteredAnnotations.count, 1);
     XCTAssertEqualObjects(filteredAnnotations.anyObject, clusterAnnotation);
 }
 
@@ -333,8 +333,8 @@
     NSSet *annotations = [NSSet setWithArray:@[annotation0]];
     NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
     
-    XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
-    XCTAssertEqual([uniqueAnnotations[0] count], (NSUInteger)1);
+    XCTAssertEqual(uniqueAnnotations.count, 1);
+    XCTAssertEqual([uniqueAnnotations[0] count], 1);
     XCTAssertEqualObjects([uniqueAnnotations[0] anyObject], annotation0);
 }
 
@@ -348,8 +348,8 @@
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
     NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
     
-    XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
-    XCTAssertEqual([uniqueAnnotations[0] count], (NSUInteger)2);
+    XCTAssertEqual(uniqueAnnotations.count, 1);
+    XCTAssertEqual([uniqueAnnotations[0] count], 2);
 }
 
 - (void)testAnnotationsByUniqueLocationsClose
@@ -362,8 +362,8 @@
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
     NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
     
-    XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)1);
-    XCTAssertEqual([uniqueAnnotations[0] count], (NSUInteger)2);
+    XCTAssertEqual(uniqueAnnotations.count, 1);
+    XCTAssertEqual([uniqueAnnotations[0] count], 2);
 }
 
 - (void)testAnnotationsByUniqueLocationsTwoLocations
@@ -376,7 +376,7 @@
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
     NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
     
-    XCTAssertEqual(uniqueAnnotations.count, (NSUInteger)2);
+    XCTAssertEqual(uniqueAnnotations.count, 2);
 }
 
 - (void)testAnnotationsByUniqueLocationsMax
