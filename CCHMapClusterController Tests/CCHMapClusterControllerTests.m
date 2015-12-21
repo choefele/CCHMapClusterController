@@ -277,10 +277,12 @@
     
     XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
     
-    XCTAssertTrue([self.mapView.annotations[0] isKindOfClass:CCHMapClusterAnnotation.class]);
-    XCTAssertTrue([[self.mapView.annotations[0] annotations] containsObject:clusteredAnnotation]);
-    XCTAssertTrue([self.mapView.annotations[1] isKindOfClass:CCHMapClusterAnnotation.class]);
-    XCTAssertTrue([[self.mapView.annotations[1] annotations] containsObject:clusteredAnnotation]);
+    CCHMapClusterAnnotation *annotation0 = self.mapView.annotations[0];
+    XCTAssertTrue([annotation0 isKindOfClass:CCHMapClusterAnnotation.class]);
+    XCTAssertTrue([annotation0.annotations containsObject:clusteredAnnotation]);
+    CCHMapClusterAnnotation *annotation1 = self.mapView.annotations[1];
+    XCTAssertTrue([annotation1 isKindOfClass:CCHMapClusterAnnotation.class]);
+    XCTAssertTrue([annotation1.annotations containsObject:clusteredAnnotation]);
 }
 
 - (void)testAddAnnotationsMaxZoomLevelEnableClustering

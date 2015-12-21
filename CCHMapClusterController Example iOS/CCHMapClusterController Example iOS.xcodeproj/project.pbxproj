@@ -646,11 +646,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CCHMapClusterController Example iOS.app/CCHMapClusterController Example iOS";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CCHMapClusterController Example iOS/CCHMapClusterController Example iOS-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -669,11 +664,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CCHMapClusterController Example iOS.app/CCHMapClusterController Example iOS";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CCHMapClusterController Example iOS/CCHMapClusterController Example iOS-Prefix.pch";
 				INFOPLIST_FILE = "CCHMapClusterController Example iOSTests/CCHMapClusterController Example iOSTests-Info.plist";

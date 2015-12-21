@@ -172,7 +172,7 @@
     MapViewDelegate *proxyDelegate1 = [[MapViewDelegate alloc] init];
     [mapViewDelegateProxy addDelegate:proxyDelegate1];
     
-    [mapViewDelegateProxy mapView:nil regionDidChangeAnimated:YES];
+    [mapViewDelegateProxy mapView:self.mapView regionDidChangeAnimated:YES];
 
     XCTAssertTrue(mapViewDelegate.called);
     XCTAssertTrue(proxyDelegate0.called);
