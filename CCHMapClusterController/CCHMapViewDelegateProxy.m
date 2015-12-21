@@ -117,27 +117,6 @@
 
 #pragma mark - Map view proxied delegate methods
 
-#if TARGET_OS_IPHONE
-- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
-{
-    MKOverlayView *view;
-    
-    // Target can override return value
-    if ([self.target respondsToSelector:@selector(mapView:viewForOverlay:)]) {
-        view = [self.target mapView:mapView viewForOverlay:overlay];
-    }
-	
-    // Default return value for debug polygons
-    if (view == nil && [overlay isKindOfClass:CCHMapClusterControllerDebugPolygon.class]) {
-        MKPolygonView *polygonView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon *)overlay];
-        polygonView.strokeColor = [UIColor.blueColor colorWithAlphaComponent:0.7];
-        polygonView.lineWidth = 1;
-        view = polygonView;
-    }
-    
-    return view;
-}
-#else
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
 {
     MKOverlayRenderer *renderer;
@@ -150,13 +129,17 @@
     // Default return value for debug polygons
     if (renderer == nil && [overlay isKindOfClass:CCHMapClusterControllerDebugPolygon.class]) {
         MKPolygonRenderer *polygonRenderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
-        polygonRenderer.strokeColor = [NSColor.blueColor colorWithAlphaComponent:0.7];
+#if TARGET_OS_IPHONE
+        UIColor *color = [UIColor.blueColor colorWithAlphaComponent:0.7];
+#else
+        NSColor *color = [NSColor.blueColor colorWithAlphaComponent:0.7];
+#endif
+        polygonRenderer.strokeColor = color;
         polygonRenderer.lineWidth = 1;
         renderer = polygonRenderer;
     }
     
     return renderer;
 }
-#endif
 
 @end

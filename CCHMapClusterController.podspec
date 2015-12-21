@@ -10,7 +10,7 @@ Pod::Spec.new do |spec|
   spec.frameworks = 'MapKit', 'CoreLocation'
   spec.requires_arc = true
 
-  spec.ios.deployment_target = '6.0'
+  spec.ios.deployment_target = '7.0'
   spec.osx.deployment_target = '10.9'
 
   spec.source_files = 'CCHMapClusterController/*.{h,m}'
