@@ -1,5 +1,8 @@
 Changes
 =======
+## 1.7.0
+- Set minimum deployment target to iOS 7.0 and fix deprecation warnings.
+
 ## 1.6.6
 - Fix implementation of `annotations` property. Thanks to tarbrain for the code.
 

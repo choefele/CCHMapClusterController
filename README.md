@@ -62,10 +62,10 @@ To try out the clustering, experiment with the example included in this project,
 
 ### Installation
 
-Use [CocoaPods](http://cocoapods.org) to easily integrate `CCHMapClusterController` into your project. Minimum deployment targets are 6.0 for iOS and 10.9 for OS X.
+Use [CocoaPods](http://cocoapods.org) to easily integrate `CCHMapClusterController` into your project. Minimum deployment targets are 7.0 for iOS and 10.9 for OS X.
 
 ```ruby
-platform :ios, '6.0'
+platform :ios, '7.0'
 pod "CCHMapClusterController"
 ```
 
