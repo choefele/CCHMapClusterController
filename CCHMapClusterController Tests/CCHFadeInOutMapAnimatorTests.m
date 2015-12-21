@@ -45,20 +45,6 @@
     self.done = NO;
 }
 
-- (BOOL)waitForCompletion:(NSTimeInterval)timeoutSecs
-{
-    NSDate *timeoutDate = [NSDate dateWithTimeIntervalSinceNow:timeoutSecs];
-    
-    do {
-        [NSRunLoop.currentRunLoop runMode:NSDefaultRunLoopMode beforeDate:timeoutDate];
-        if (timeoutDate.timeIntervalSinceNow < 0.0) {
-            break;
-        }
-    } while (!self.done);
-    
-    return self.done;
-}
-
 #if TARGET_OS_IPHONE
 - (void)testFadeIn
 {
@@ -71,10 +57,12 @@
 
 - (void)testFadeOutCompletionBlock
 {
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.animator mapClusterController:nil willRemoveAnnotations:nil withCompletionHandler:^{
         self.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
 }
 
 @end

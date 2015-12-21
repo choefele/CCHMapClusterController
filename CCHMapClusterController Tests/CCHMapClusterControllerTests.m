@@ -34,7 +34,6 @@
 
 @property (nonatomic) MKMapView *mapView;
 @property (nonatomic) CCHMapClusterController *mapClusterController;
-@property (nonatomic) BOOL done;
 
 @end
 
@@ -46,30 +45,15 @@
 
     self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, 300, 300)];
     self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
-    self.done = NO;
-}
-
-- (BOOL)waitForCompletion:(NSTimeInterval)timeoutSecs
-{
-    NSDate *timeoutDate = [NSDate dateWithTimeIntervalSinceNow:timeoutSecs];
-    
-    do {
-        [NSRunLoop.currentRunLoop runMode:NSDefaultRunLoopMode beforeDate:timeoutDate];
-        if (timeoutDate.timeIntervalSinceNow < 0.0) {
-            break;
-        }
-    } while (!self.done);
-    
-    return self.done;
 }
 
 - (void)testAddAnnotationsNil
 {
-    __weak CCHMapClusterControllerTests *weakSelf = self;
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController addAnnotations:nil withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     XCTAssertEqual(self.mapView.annotations.count, 0);
 }
 
@@ -80,11 +64,11 @@
     MKCoordinateRegion region = MKCoordinateRegionMake(annotation.coordinate, MKCoordinateSpanMake(3, 3));
     self.mapView.region = region;
     
-    __weak CCHMapClusterControllerTests *weakSelf = self;
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController addAnnotations:@[annotation] withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     XCTAssertEqual(self.mapView.annotations.count, 1);
 }
 
@@ -116,12 +100,12 @@
     MKPointAnnotation *annotation5 = [[MKPointAnnotation alloc] init];
     annotation5.coordinate = CLLocationCoordinate2DMake(53.9, 14.6);
 
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     NSArray *annotations = @[annotation0, annotation1, annotation2, annotation3, annotation4, annotation5];
-    __weak CCHMapClusterControllerTests *weakSelf = self;
     [self.mapClusterController addAnnotations:annotations withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     XCTAssertEqual(self.mapClusterController.annotations.count, 6);
     XCTAssertEqual(self.mapView.annotations.count, 2);
 
@@ -178,12 +162,12 @@
     MKPointAnnotation *annotation5 = [[MKPointAnnotation alloc] init];
     annotation5.coordinate = CLLocationCoordinate2DMake(53.9, 14.6);
     
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     NSArray *annotations = @[annotation0, annotation1, annotation2, annotation3, annotation4, annotation5];
-    __weak CCHMapClusterControllerTests *weakSelf = self;
     [self.mapClusterController addAnnotations:annotations withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     XCTAssertEqual(self.mapClusterController.annotations.count, annotations.count);
     XCTAssertEqual(self.mapView.annotations.count, 2);
 
@@ -193,11 +177,11 @@
     MKMapPoint cellOrigin = visibleMapRect.origin;
     
     // Remove bottom left
-    self.done = NO;
+    expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController removeAnnotations:@[annotation0] withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     XCTAssertEqual(self.mapClusterController.annotations.count, 5);
     XCTAssertEqual(self.mapView.annotations.count, 1);
 
@@ -212,11 +196,11 @@
     XCTAssertEqual(annotationsInMapRect.count, 0);
 
     // Remove remaining annotations
-    self.done = NO;
+    expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController removeAnnotations:annotations withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     XCTAssertEqual(self.mapView.annotations.count, 0);
     
     // Check visible region
@@ -237,11 +221,11 @@
     MKCoordinateRegion region = MKCoordinateRegionMake(clusteredAnnotation.coordinate, MKCoordinateSpanMake(3, 3));
     self.mapView.region = region;
 
-    __weak CCHMapClusterControllerTests *weakSelf = self;
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController addAnnotations:@[clusteredAnnotation] withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
 
     XCTAssertEqual(self.mapView.annotations.count, 2);
     XCTAssertTrue([self.mapView.annotations containsObject:nonClusteredAnnotation]);
@@ -262,18 +246,18 @@
     MKCoordinateRegion region = MKCoordinateRegionMake(clusteredAnnotation.coordinate, MKCoordinateSpanMake(3, 3));
     self.mapView.region = region;
     
-    __weak CCHMapClusterControllerTests *weakSelf = self;
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController addAnnotations:@[clusteredAnnotation] withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
 
-    self.done = NO;
+    expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     CCHMapClusterController *mapClusterController2 = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
     [mapClusterController2 addAnnotations:@[clusteredAnnotation] withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     
     XCTAssertEqual(self.mapView.annotations.count, 2);
     
@@ -302,11 +286,11 @@
     MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
     annotation2.coordinate = CLLocationCoordinate2DMake(0, 0);
 
-    __weak CCHMapClusterControllerTests *weakSelf = self;
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController addAnnotations:@[annotation0, annotation1, annotation2] withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     XCTAssertEqual(self.mapView.annotations.count, 1);
 }
 
@@ -327,11 +311,11 @@
     MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
     annotation2.coordinate = CLLocationCoordinate2DMake(0, 0);
 
-    __weak CCHMapClusterControllerTests *weakSelf = self;
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController addAnnotations:@[annotation0, annotation1, annotation2] withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     XCTAssertEqual(self.mapView.annotations.count, 2);
 }
 
@@ -352,11 +336,11 @@
     MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
     annotation2.coordinate = CLLocationCoordinate2DMake(0, 0);
     
-    __weak CCHMapClusterControllerTests *weakSelf = self;
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController addAnnotations:@[annotation0, annotation1, annotation2] withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     XCTAssertEqual(self.mapView.annotations.count, 1);
 }
 
@@ -377,11 +361,11 @@
     MKPointAnnotation *annotation2 = [[MKPointAnnotation alloc] init];
     annotation2.coordinate = CLLocationCoordinate2DMake(0, 0);
     
-    __weak CCHMapClusterControllerTests *weakSelf = self;
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController addAnnotations:@[annotation0, annotation1, annotation2] withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     XCTAssertEqual(self.mapView.annotations.count, 2);
 }
 
@@ -397,22 +381,22 @@
     self.mapView.region = region;
     
     // Fade in
-    __weak CCHMapClusterControllerTests *weakSelf = self;
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController addAnnotations:@[annotation] withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     
     CCHMapClusterAnnotation *clusterAnnotation = [self.mapView.annotations lastObject];
     MKAnnotationView *annotationView = [self.mapView viewForAnnotation:clusterAnnotation];
     XCTAssertEqualWithAccuracy(annotationView.alpha, 1.0, __FLT_EPSILON__);
     
     // Fade Out
-    self.done = NO;
+    expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
     [self.mapClusterController removeAnnotations:@[annotation] withCompletionHandler:^{
-        weakSelf.done = YES;
+        [expectation fulfill];
     }];
-    XCTAssertTrue([self waitForCompletion:1.0]);
+    [self waitForExpectationsWithTimeout:10 handler:NULL];
     XCTAssertEqualWithAccuracy(annotationView.alpha, 0.0, __FLT_EPSILON__);
 }
 #endif
