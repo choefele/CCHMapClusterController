@@ -62,7 +62,9 @@
 
 @end
 
-@implementation CCHMapClusterController
+@implementation CCHMapClusterController {
+  double _zoomLevelBeforeChange;
+}
 
 - (instancetype)initWithMapView:(MKMapView *)mapView
 {
@@ -274,6 +276,7 @@
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
 {
+    _zoomLevelBeforeChange = self.zoomLevel;
     self.regionSpanBeforeChange = mapView.region.span;
     self.regionChanging = YES;
 }
@@ -284,37 +287,37 @@
 
     // Deselect all annotations when zooming in/out. Longitude delta will not change
     // unless zoom changes (in contrast to latitude delta).
-    BOOL hasZoomed = !fequal(mapView.region.span.longitudeDelta, self.regionSpanBeforeChange.longitudeDelta);
+    BOOL hasZoomed = fabs(self.zoomLevel - _zoomLevelBeforeChange) > 0.001;
     if (hasZoomed) {
         [self deselectAllAnnotations];
-    }
-    
-    // Update annotations
-    [self updateAnnotationsWithCompletionHandler:^{
-        if (self.annotationToSelect) {
-            // Map has zoomed to selected annotation; search for cluster annotation that contains this annotation
-            CCHMapClusterAnnotation *mapClusterAnnotation = CCHMapClusterControllerClusterAnnotationForAnnotation(self.mapView, self.annotationToSelect, mapView.visibleMapRect);
-            self.annotationToSelect = nil;
-            
-            if (CCHMapClusterControllerCoordinateEqualToCoordinate(self.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
-                // Select immediately since region won't change
-                [self.mapView selectAnnotation:mapClusterAnnotation animated:YES];
-            } else {
-                // Actual selection happens in next call to mapView:regionDidChangeAnimated:
-                self.mapClusterAnnotationToSelect = mapClusterAnnotation;
-                
-                // Dispatch async to avoid calling regionDidChangeAnimated immediately
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    // No zooming, only panning. Otherwise, annotation might change to a different cluster annotation
-                    [self.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
-                });
+
+        // Update annotations
+        [self updateAnnotationsWithCompletionHandler:^{
+            if (self.annotationToSelect) {
+                // Map has zoomed to selected annotation; search for cluster annotation that contains this annotation
+                CCHMapClusterAnnotation *mapClusterAnnotation = CCHMapClusterControllerClusterAnnotationForAnnotation(self.mapView, self.annotationToSelect, mapView.visibleMapRect);
+                self.annotationToSelect = nil;
+
+                if (CCHMapClusterControllerCoordinateEqualToCoordinate(self.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
+                    // Select immediately since region won't change
+                    [self.mapView selectAnnotation:mapClusterAnnotation animated:YES];
+                } else {
+                    // Actual selection happens in next call to mapView:regionDidChangeAnimated:
+                    self.mapClusterAnnotationToSelect = mapClusterAnnotation;
+
+                    // Dispatch async to avoid calling regionDidChangeAnimated immediately
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // No zooming, only panning. Otherwise, annotation might change to a different cluster annotation
+                        [self.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
+                    });
+                }
+            } else if (self.mapClusterAnnotationToSelect) {
+                // Map has zoomed to annotation
+                [self.mapView selectAnnotation:self.mapClusterAnnotationToSelect animated:YES];
+                self.mapClusterAnnotationToSelect = nil;
             }
-        } else if (self.mapClusterAnnotationToSelect) {
-            // Map has zoomed to annotation
-            [self.mapView selectAnnotation:self.mapClusterAnnotationToSelect animated:YES];
-            self.mapClusterAnnotationToSelect = nil;
-        }
-    }];
+        }];
+    }
 }
 
 @end
