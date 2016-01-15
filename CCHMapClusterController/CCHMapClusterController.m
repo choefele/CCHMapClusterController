@@ -42,6 +42,7 @@
 #define WORLD_MAX_LAT 85
 #define WORLD_MIN_LON -180
 #define WORLD_MAX_LON 180
+#define ZOOM_EPSILON 0.002
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 
@@ -287,8 +288,9 @@
 
     // Deselect all annotations when zooming in/out. Longitude delta will not change
     // unless zoom changes (in contrast to latitude delta).
-    BOOL hasZoomed = fabs(self.zoomLevel - _zoomLevelBeforeChange) > 0.001;
+    BOOL hasZoomed = fabs(self.zoomLevel - _zoomLevelBeforeChange) > ZOOM_EPSILON;
     if (hasZoomed) {
+        NSLog(@"Zoom 𝛥: %f", fabs(self.zoomLevel - _zoomLevelBeforeChange));
         [self deselectAllAnnotations];
 
         // Update annotations
