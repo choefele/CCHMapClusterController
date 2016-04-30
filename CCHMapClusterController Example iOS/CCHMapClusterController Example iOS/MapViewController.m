@@ -126,7 +126,8 @@
     self.mapView.region = region;
     
     // Remove all current items from the map
-    [self.mapView removeAnnotations:self.mapView.annotations];
+    [self.mapClusterControllerRed removeAnnotations:self.mapClusterControllerRed.annotations.allObjects withCompletionHandler:NULL];
+    [self.mapClusterControllerBlue removeAnnotations:self.mapClusterControllerBlue.annotations.allObjects withCompletionHandler:NULL];
     for (id<MKOverlay> overlay in self.mapView.overlays) {
         [self.mapView removeOverlay:overlay];
     }
