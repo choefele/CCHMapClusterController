@@ -51,7 +51,8 @@
 @property (nonatomic) CCHMapTree *allAnnotationsMapTree;
 @property (nonatomic) CCHMapTree *visibleAnnotationsMapTree;
 @property (nonatomic) NSOperationQueue *backgroundQueue;
-@property (nonatomic) MKMapView *mapView;
+// FIXME DIMA == вот здесь у нас cycle
+@property (nonatomic, weak) MKMapView *mapView;
 @property (nonatomic) CCHMapViewDelegateProxy *mapViewDelegateProxy;
 @property (nonatomic) id<MKAnnotation> annotationToSelect;
 @property (nonatomic) CCHMapClusterAnnotation *mapClusterAnnotationToSelect;
@@ -63,6 +64,71 @@
 @end
 
 @implementation CCHMapClusterController
+
+- (annotationPositionFixerBlock) defaultAnnotationPositionFixer {
+    __weak typeof(self) weakSelf = self;
+    return ^(MKMapRect currentCellMapRect, CLLocationCoordinate2D currentAnnotationCoordinate, CCHMapClusterAnnotation* __unsafe_unretained *annotationsByCells, struct annotationsByCellsArrayCoordinate arrayIndexes) {
+        __block CGPoint currentAnnotationCenter = [weakSelf.mapView convertCoordinate: currentAnnotationCoordinate toPointToView: weakSelf.mapView];
+        NSUInteger estimatedDiameter = weakSelf.approximatedAnnotationViewRadius * 2;
+        __unsafe_unretained CCHMapClusterAnnotation* annotationForCell = annotationsByCells[arrayIndexes.x*arrayIndexes.maxY + arrayIndexes.y];
+        
+        // check if we should move annotationForCell out of the border of the cell to prevent intersection with other annotation
+        __block CLLocationCoordinate2D newCoordinate = currentAnnotationCoordinate;
+        __block BOOL shouldUpdateCoordinate = NO;
+        if (arrayIndexes.x>0) {
+            // check left cell...
+            __unsafe_unretained CCHMapClusterAnnotation * leftAnnotation = annotationsByCells[(arrayIndexes.x-1)*arrayIndexes.maxY + arrayIndexes.y];
+            if (nil != leftAnnotation) {
+                CGFloat distance = CCHMapClusterControllerScreenDistanceFromPointToAnnotationInMapView(currentAnnotationCenter,leftAnnotation, weakSelf.mapView);
+                if (distance < estimatedDiameter) {
+                    //move !!!
+                    CGFloat newX = currentAnnotationCenter.x + estimatedDiameter - distance;
+                    CGPoint right = [weakSelf.mapView convertCoordinate: MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMaxX(currentCellMapRect), MKMapRectGetMaxY(currentCellMapRect))) toPointToView: weakSelf.mapView];
+                    
+                    if (newX > right.x) {
+                        newX = right.x;
+                    }
+                    currentAnnotationCenter = CGPointMake(newX, currentAnnotationCenter.y);
+                    //dispatch_async(dispatch_get_main_queue(), ^{
+                        // newCoordinate will have longitude updated...
+                        newCoordinate = [weakSelf.mapView convertPoint:currentAnnotationCenter toCoordinateFromView:weakSelf.mapView];
+                        shouldUpdateCoordinate = YES;
+                    //});
+                }
+            }
+        }
+        
+        if (arrayIndexes.y>0) {
+            // check left cell...
+            __unsafe_unretained CCHMapClusterAnnotation * topAnnotation = annotationsByCells[arrayIndexes.x*arrayIndexes.maxY + (arrayIndexes.y-1)];
+            if (nil != topAnnotation) {
+                
+                CGFloat distance = CCHMapClusterControllerScreenDistanceFromPointToAnnotationInMapView(currentAnnotationCenter,topAnnotation,weakSelf.mapView);
+                if (distance < estimatedDiameter) {
+                    //move !!!
+                    CGFloat newY = currentAnnotationCenter.y + estimatedDiameter - distance;
+                    
+                    CGPoint bottom = [weakSelf.mapView convertCoordinate: MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMaxX(currentCellMapRect), MKMapRectGetMaxY(currentCellMapRect))) toPointToView: weakSelf.mapView];
+                    
+                    if (newY > bottom.y) {
+                        newY = bottom.y;
+                    }
+                    currentAnnotationCenter = CGPointMake(currentAnnotationCenter.x, newY);
+                    //dispatch_async(dispatch_get_main_queue(), ^{
+                        CLLocationCoordinate2D c = [weakSelf.mapView convertPoint:currentAnnotationCenter toCoordinateFromView: weakSelf.mapView];
+                        newCoordinate = CLLocationCoordinate2DMake(c.latitude, newCoordinate.longitude);
+                        shouldUpdateCoordinate = YES;
+                    //});
+                }
+            }
+        }
+        if (shouldUpdateCoordinate) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+            annotationForCell.coordinate = newCoordinate;
+            });
+        }
+    };
+}
 
 - (instancetype)initWithMapView:(MKMapView *)mapView
 {
@@ -95,6 +161,8 @@
         _strongAnimator = animator;
         
         [self setReuseExistingClusterAnnotations:YES];
+        
+        self.fixAnnotationPosition = [self defaultAnnotationPositionFixer];
     }
     
     return self;
@@ -290,31 +358,40 @@
     }
     
     // Update annotations
+    __weak typeof(self) weakSelf = self;
+    
     [self updateAnnotationsWithCompletionHandler:^{
-        if (self.annotationToSelect) {
+        if (weakSelf.annotationToSelect) {
             // Map has zoomed to selected annotation; search for cluster annotation that contains this annotation
-            CCHMapClusterAnnotation *mapClusterAnnotation = CCHMapClusterControllerClusterAnnotationForAnnotation(self.mapView, self.annotationToSelect, mapView.visibleMapRect);
-            self.annotationToSelect = nil;
+            CCHMapClusterAnnotation *mapClusterAnnotation = CCHMapClusterControllerClusterAnnotationForAnnotation(weakSelf.mapView, weakSelf.annotationToSelect, mapView.visibleMapRect);
+            weakSelf.annotationToSelect = nil;
             
-            if (CCHMapClusterControllerCoordinateEqualToCoordinate(self.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
+            if (CCHMapClusterControllerCoordinateEqualToCoordinate(weakSelf.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
                 // Select immediately since region won't change
-                [self.mapView selectAnnotation:mapClusterAnnotation animated:YES];
+                [weakSelf.mapView selectAnnotation:mapClusterAnnotation animated:YES];
             } else {
                 // Actual selection happens in next call to mapView:regionDidChangeAnimated:
-                self.mapClusterAnnotationToSelect = mapClusterAnnotation;
+                weakSelf.mapClusterAnnotationToSelect = mapClusterAnnotation;
                 
                 // Dispatch async to avoid calling regionDidChangeAnimated immediately
                 dispatch_async(dispatch_get_main_queue(), ^{
                     // No zooming, only panning. Otherwise, annotation might change to a different cluster annotation
-                    [self.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
+                    [weakSelf.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
                 });
             }
-        } else if (self.mapClusterAnnotationToSelect) {
+        } else if (weakSelf.mapClusterAnnotationToSelect) {
             // Map has zoomed to annotation
-            [self.mapView selectAnnotation:self.mapClusterAnnotationToSelect animated:YES];
-            self.mapClusterAnnotationToSelect = nil;
+            [weakSelf.mapView selectAnnotation:weakSelf.mapClusterAnnotationToSelect animated:YES];
+            weakSelf.mapClusterAnnotationToSelect = nil;
         }
     }];
 }
+
+-(void) dealloc {
+    _mapView = nil;
+    _mapViewDelegateProxy = nil;
+}
+
+
 
 @end

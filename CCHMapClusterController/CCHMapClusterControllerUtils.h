@@ -40,8 +40,13 @@ double CCHMapClusterControllerAlignMapLengthToWorldWidth(double mapLength);
 BOOL CCHMapClusterControllerCoordinateEqualToCoordinate(CLLocationCoordinate2D coordinate0, CLLocationCoordinate2D coordinate1);
 CCHMapClusterAnnotation *CCHMapClusterControllerClusterAnnotationForAnnotation(MKMapView *mapView, id<MKAnnotation> annotation, MKMapRect mapRect);
 void CCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, void (^block)(MKMapRect cellMapRect));
+void CCHMapClusterControllerEnumerateCellsWithIndexes(MKMapRect mapRect, double cellSize, void (^block)(MKMapRect cellMapRect, NSUInteger x, NSUInteger y));
+
 MKMapRect CCHMapClusterControllerMapRectForCoordinateRegion(MKCoordinateRegion coordinateRegion);
 NSSet *CCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotations, CCHMapClusterController *mapClusterController);
 double CCHMapClusterControllerZoomLevelForRegion(CLLocationDegrees longitudeCenter, CLLocationDegrees longitudeDelta, CGFloat width);
 NSArray *CCHMapClusterControllerAnnotationSetsByUniqueLocations(NSSet *annotations, NSUInteger maxUniqueLocations);
 BOOL CCHMapClusterControllerIsUniqueLocation(NSSet *annotations);
+
+/** optimized for speed, returns distance in screen points between screen point (fromPoint) on mapView and the center of the annotation (toAnnotation).*/
+CGFloat CCHMapClusterControllerScreenDistanceFromPointToAnnotationInMapView(CGPoint fromPoint, CCHMapClusterAnnotation *toAnnotation, MKMapView *mapView);

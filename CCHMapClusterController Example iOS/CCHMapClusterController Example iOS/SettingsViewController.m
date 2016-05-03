@@ -19,6 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *debuggingEnabledTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellSizeTableViewCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *approximatedAnnotationRadiusTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *marginFactorTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *maxZoomLevelTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *minUniqueLocationsTableViewCell;
@@ -26,6 +27,7 @@
 
 @property (nonatomic) UISwitch *debuggingEnabledSwitch;
 @property (nonatomic) UIStepper *cellSizeStepper;
+@property (nonatomic) UIStepper *approximatedAnnotationRadiusStepper;
 @property (nonatomic) UIStepper *marginFactorStepper;
 @property (nonatomic) UIStepper *maxZoomLevelStepper;
 @property (nonatomic) UIStepper *minUniqueLocationsStepper;
@@ -51,6 +53,14 @@
     self.cellSizeStepper.value = MIN(MAX(self.settings.cellSize, self.cellSizeStepper.minimumValue), self.cellSizeStepper.maximumValue);
     self.cellSizeTableViewCell.accessoryView = self.cellSizeStepper;
     self.cellSizeTableViewCell.detailTextLabel.text = [NSString stringWithFormat:@"%.1f", self.cellSizeStepper.value];
+    
+    self.approximatedAnnotationRadiusStepper = [self newStepper];
+    self.approximatedAnnotationRadiusStepper.minimumValue = 0;
+    self.approximatedAnnotationRadiusStepper.maximumValue = 200;
+    self.approximatedAnnotationRadiusStepper.stepValue = 1;
+    self.approximatedAnnotationRadiusStepper.value = self.settings.approximatedAnnotationRadius;
+    self.approximatedAnnotationRadiusTableViewCell.accessoryView = self.approximatedAnnotationRadiusStepper;
+    self.approximatedAnnotationRadiusTableViewCell.detailTextLabel.text = [NSString stringWithFormat:@"%.1f", self.approximatedAnnotationRadiusStepper.value];
     
     self.marginFactorStepper = [self newStepper];
     self.marginFactorStepper.minimumValue = -0.2;
@@ -160,6 +170,7 @@
 {
     self.settings.debuggingEnabled = self.debuggingEnabledSwitch.on;
     self.settings.cellSize = self.cellSizeStepper.value;
+    self.settings.approximatedAnnotationRadius = self.approximatedAnnotationRadiusStepper.value;
     self.settings.marginFactor = self.marginFactorStepper.value;
     self.settings.groupingEnabled = self.groupingEnabledSwitch.on;
     self.settings.dataSet = (SettingsDataSet)[self selectedRowForSection:SECTION_DATA_SET];

@@ -28,7 +28,7 @@
 #import "CCHMapClusterer.h"
 
 /**
- `CCHMapClusterer` implementation that positions a cluster annotation near the center of the cluster cell.
+ `CCHMapClusterer` implementation that look up existing annotation with the closest to the center of the cluster cell coordinates and positions resulting cluster annotation to the coordinates found.
  */
 @interface CCHNearCenterMapClusterer : NSObject<CCHMapClusterer>
 

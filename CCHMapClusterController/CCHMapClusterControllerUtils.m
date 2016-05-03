@@ -140,7 +140,33 @@ void CCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, v
             
             cellRect.origin.x += MKMapRectGetWidth(cellRect);
         }
-        cellRect.origin.y += MKMapRectGetWidth(cellRect);
+        cellRect.origin.y += MKMapRectGetHeight(cellRect);
+    }
+}
+
+void CCHMapClusterControllerEnumerateCellsWithIndexes(MKMapRect mapRect, double cellSize, void (^block)(MKMapRect cellMapRect, NSUInteger x, NSUInteger y))
+{
+    NSCAssert(block != NULL, @"Block argument can't be NULL");
+    if (block == nil) {
+        return;
+    }
+    
+    NSUInteger y=0;
+    MKMapRect cellRect = MKMapRectMake(0, MKMapRectGetMinY(mapRect), cellSize, cellSize);
+    
+    while (MKMapRectGetMinY(cellRect) < MKMapRectGetMaxY(mapRect)) {
+        cellRect.origin.x = MKMapRectGetMinX(mapRect);
+        NSUInteger x=0;
+        while (MKMapRectGetMinX(cellRect) < MKMapRectGetMaxX(mapRect)) {
+            // Wrap around the origin's longitude
+            MKMapRect rect = MKMapRectMake(fmod(cellRect.origin.x, MKMapSizeWorld.width), cellRect.origin.y, cellRect.size.width, cellRect.size.height);
+            block(rect, x, y);
+            
+            cellRect.origin.x += MKMapRectGetWidth(cellRect);
+            x++;
+        }
+        cellRect.origin.y += MKMapRectGetHeight(cellRect);
+        y++;
     }
 }
 
@@ -321,4 +347,15 @@ BOOL CCHMapClusterControllerIsUniqueLocation(NSSet *annotations)
     }
     
     return (geohash != nil);
+}
+
+CGFloat CCHMapClusterControllerScreenDistanceFromPointToAnnotationInMapView(CGPoint fromPoint, CCHMapClusterAnnotation *toAnnotation, MKMapView *mapView) {
+    CGPoint annotationCenter = [mapView convertCoordinate:toAnnotation.coordinate toPointToView: mapView];
+    
+    CGFloat dx = fromPoint.x - annotationCenter.x;
+    CGFloat dy = fromPoint.y - annotationCenter.y;
+    
+    CGFloat distance = sqrtf(dx*dx + dy*dy);
+    return distance;
+    
 }

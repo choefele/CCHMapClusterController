@@ -15,7 +15,7 @@ If you have your project set up with an `MKMapView`, integrating clustering will
 
 <pre>
 <b>#import "CCHMapClusterController.h"</b>
-  
+
 @interface ViewController()
 
 <b>@property (strong, nonatomic) CCHMapClusterController *mapClusterController;</b>
@@ -25,7 +25,7 @@ If you have your project set up with an `MKMapView`, integrating clustering will
 - (void)viewDidLoad
 {
   [super viewDidLoad]
-    
+
   NSArray annotations = ...
   <b>self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
   [self.mapClusterController addAnnotations:annotations withCompletionHandler:NULL];</b>
@@ -33,7 +33,7 @@ If you have your project set up with an `MKMapView`, integrating clustering will
 </pre>
 
 <p align="center" >
-  <img src="MapClustering.png" alt="Map Clustering" title="Map Clustering">
+  <img src="MapClustering.png" alt="Map Clustering" title="Map Clustering"/>
 </p>
 
 Don't worry about manually updating the clusters; `CCHMapClusterController` automatically knows when changes have occurred that require the clusters to regroup.
@@ -49,6 +49,7 @@ To try out the clustering, experiment with the example included in this project,
 - [Custom titles and subtitles for callouts](#custom-titles-and-subtitles-for-callouts)
 - [Positioning cluster annotations](#positioning-cluster-annotations)
 - [Cluster grouping](#cluster-grouping)
+- [Second-pass clustering](#second-pass-clustering)
 - [Dynamically disabling clustering](#dynamically-disabling-clustering)
 - [Animations](#animations)
 - [Code recipes](#code-recipes)
@@ -76,9 +77,9 @@ pod "CCHMapClusterController"
 
 ### Performance
 
-The clustering algorithm splits a rectangular area of the map into a grid of square cells. For each cell, a representation for the annotations in this cell is selected and displayed. 
+The clustering algorithm splits a rectangular area of the map into a grid of square cells. For each cell, a representation for the annotations in this cell is selected and displayed.
 
-The quad tree implementation used to gather annotations for a cell is based on [TBQuadTree](https://github.com/thoughtbot/TBAnnotationClustering/blob/master/TBAnnotationClustering/TBQuadTree.h) and is very fast. For this reason, performance is less dependent on the number of clustered annotations, but rather on the number of visible clusters on the map. This number can be configured with the cell size and the margin factor (see below). 
+The quad tree implementation used to gather annotations for a cell is based on [TBQuadTree](https://github.com/thoughtbot/TBAnnotationClustering/blob/master/TBAnnotationClustering/TBQuadTree.h) and is very fast. For this reason, performance is less dependent on the number of clustered annotations, but rather on the number of visible clusters on the map. This number can be configured with the cell size and the margin factor (see below).
 
 Other factors are the density of the clustered annotations (annotations spread over a large area cluster faster) and the way annotation views are implemented (if possible, use images instead of `drawRect:`).
 
@@ -102,17 +103,17 @@ Customizing the look of cluster annotations is possible via the standard `mapVie
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
     MKAnnotationView *annotationView;
-    
+
     if ([annotation isKindOfClass:CCHMapClusterAnnotation.class]) {
         ...
         annotationView = clusterAnnotationView;
     }
-    
+
     return annotationView;
 }
 ```
 
-In addition, the delegate method `mapClusterController:willReuseMapClusterAnnotation:` is called when a cluster annotation is reused for a cell. The reused cluster annotation will have the same location as before, but will contain different annotations. This avoids annotations moving around while adding more data (see the property `reuseExistingClusterAnnotations` below on how to disable this behavior). 
+In addition, the delegate method `mapClusterController:willReuseMapClusterAnnotation:` is called when a cluster annotation is reused for a cell. The reused cluster annotation will have the same location as before, but will contain different annotations. This avoids annotations moving around while adding more data (see the property `reuseExistingClusterAnnotations` below on how to disable this behavior).
 
 Make sure that you implement both `mapView:viewForAnnotation:` and `mapClusterController:willReuseMapClusterAnnotation:` to always have the annotation view in a consistent state.
 
@@ -171,12 +172,30 @@ To have independent groups of clusters, more than one `CCHMapClusterController` 
 self.mapClusterControllerRed = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
 self.mapClusterControllerRed.cellSize = ...;
 self.mapClusterControllerRed.marginFactor = ...;
-    
+
 // Second cluster controller
 self.mapClusterControllerBlue = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
 self.mapClusterControllerBlue.cellSize = ...;
 self.mapClusterControllerBlue.marginFactor = ...;
 ```
+
+### Second-pass clustering
+
+Clustering algorithm may result in visual overlapping of the cluster annotations illustrated on the example below:
+
+<p align="center" >
+  <img src="ClusterAnnotationsOverlap.png" alt="Cluster Annotations Overlapping" title="Cluster Annotations Overlapping"/>
+</p>
+
+If you wish to fix overlapping just set `approximatedAnnotationViewRadius` property of the `CCHMapClusterController` to the positive value in screen points. Second-pass algorythm assumes all annotations to be circles with the same radius and repositions annotations to prevent overlapping. Setting `approximatedAnnotationViewRadius` to zero disables second-pass clustering. Default value is 0, so second-pass clustering is disabled by default.
+
+Result of the second-pass algorythm illustrated below:
+
+<p align="center" >
+  <img src="ClusterAnnotationsOverlapFixed.png" alt="Cluster Annotations Overlapping Fixed" title="Cluster Annotations Overlapping Fixed"/>
+</p>
+
+You can overwrite default second-pass algorythm by setting `fixAnnotationPosition` property of the `CCHMapClusterController` to the block of type `annotationPositionFixerBlock`.
 
 ### Dynamically disabling clustering
 
@@ -206,11 +225,11 @@ For this to work, you have to figure out which cluster contains the selected ann
 ```Objective-C
 id<MKAnnotation> clusteredAnnotation = ...
 [self.mapClusterController addAnnotations:@[clusteredAnnotation] withCompletionHandler:NULL];
-    
+
 ...
-    
+
 [self.mapClusterController selectAnnotation:clusteredAnnotation andZoomToRegionWithLatitudinalMeters:1000 longitudinalMeters:1000];
-``` 
+```
 
 #### Centering the map without changing the zoom level
 
@@ -274,7 +293,7 @@ This can be achieved by setting up the accessory views and then controlling thei
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
     MKAnnotationView *annotationView;
-    
+
     if ([annotation isKindOfClass:CCHMapClusterAnnotation.class]) {
         annotationView = ...
         annotationView.rightCalloutAccessoryView = ...

@@ -27,6 +27,7 @@ typedef enum {
 
 @property (nonatomic, getter = isDebuggingEnabled) BOOL debuggingEnabled;
 @property (nonatomic) double cellSize;
+@property (nonatomic) double approximatedAnnotationRadius;
 @property (nonatomic) double marginFactor;
 @property (nonatomic) SettingsDataSet dataSet;
 @property (nonatomic, getter = isGroupingEnabled) BOOL groupingEnabled;
