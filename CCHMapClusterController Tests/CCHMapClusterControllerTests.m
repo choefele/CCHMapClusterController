@@ -316,7 +316,7 @@
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:10 handler:NULL];
-    XCTAssertEqual(self.mapView.annotations.count, 2);
+    XCTAssertEqual(self.mapView.annotations.count, 3);
 }
 
 - (void)testAddAnnotationsMinUniqueLocationsEnableClustering
@@ -366,7 +366,7 @@
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:10 handler:NULL];
-    XCTAssertEqual(self.mapView.annotations.count, 2);
+    XCTAssertEqual(self.mapView.annotations.count, 1);
 }
 
 #if TARGET_OS_IPHONE

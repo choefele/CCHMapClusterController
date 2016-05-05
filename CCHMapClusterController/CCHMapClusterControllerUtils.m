@@ -281,30 +281,18 @@ static NSString *hashForCoordinate(CLLocationCoordinate2D coordinate, NSUInteger
 
 NSArray *CCHMapClusterControllerAnnotationSetsByUniqueLocations(NSSet *annotations, NSUInteger maxUniqueLocations)
 {
-    NSMutableDictionary *annotationsByGeohash;
-    
-    if (maxUniqueLocations > 0) {
-        annotationsByGeohash = [NSMutableDictionary dictionary];
-        
-        for (id<MKAnnotation> annotation in annotations) {
-            // Add annotation to unique locations
-            NSString *geohash = hashForCoordinate(annotation.coordinate, GEOHASH_LENGTH);
-            NSMutableSet *annotationsAtLocation = [annotationsByGeohash objectForKey:geohash];
-            if (!annotationsAtLocation) {
-                annotationsAtLocation = [NSMutableSet set];
-            }
-            [annotationsAtLocation addObject:annotation];
-            [annotationsByGeohash setObject:annotationsAtLocation forKey:geohash];
-            
-            // Return nil if max has been reached
-            if (annotationsByGeohash.count > maxUniqueLocations) {
-                annotationsByGeohash = nil;
-                break;
-            }
-        }
+    // Return nil if max has been reached.
+    if (annotations.count > maxUniqueLocations) {
+        return nil;
     }
     
-    return [annotationsByGeohash allValues];
+    NSMutableArray *arrayOfSets = [[NSMutableArray alloc] init];
+    for (id<MKAnnotation> annotation in annotations) {
+        NSSet *set = [[NSSet alloc] initWithArray:@[annotation]];
+        [arrayOfSets addObject:set];
+    }
+    
+    return [arrayOfSets copy];
 }
 
 BOOL CCHMapClusterControllerIsUniqueLocation(NSSet *annotations)
