@@ -33,6 +33,8 @@
 @property (nonatomic) id<CCHMapClusterer> mapClusterer;
 @property (nonatomic) id<CCHMapAnimator> mapAnimator;
 
+@property (nonatomic, weak) MKPointAnnotation *lastViewedAnnotation;
+
 @end
 
 @implementation MapViewController
@@ -61,9 +63,29 @@
 
 - (IBAction)resetSettings
 {
-    self.count = 0;
-    Settings *settings = [[Settings alloc] init];
-    [self updateWithSettings:settings];
+    if (self.settings == nil) {
+        self.count = 0;
+        Settings *settings = [[Settings alloc] init];
+        [self updateWithSettings:settings];
+    } else {
+        if (self.lastViewedAnnotation == nil || self.lastViewedAnnotation == self.dataReader.westAnnotation) {
+            [self selectAnnotation: self.dataReader.eastAnnotation];
+        } else {
+            [self selectAnnotation: self.dataReader.westAnnotation];
+        }
+    }
+}
+             
+- (void)selectAnnotation:(MKPointAnnotation *)annotation {
+    MKMapRect visibleMapRect = self.mapView.visibleMapRect;
+    MKMapPoint topLeftMKMapPoint = self.mapView.visibleMapRect.origin;
+    MKMapPoint topRightMKMapPoint = MKMapPointMake(topLeftMKMapPoint.x + visibleMapRect.size.width, topLeftMKMapPoint.y);
+    MKMapPoint bottomLeftMKMapPoint = MKMapPointMake(topLeftMKMapPoint.x, topLeftMKMapPoint.y + visibleMapRect.size.height);
+    CLLocationDistance latitudinalMetersOfMapExtent = MKMetersBetweenMapPoints(topLeftMKMapPoint, bottomLeftMKMapPoint);
+    CLLocationDistance longitudinalMetersOfMapExtent = MKMetersBetweenMapPoints(topLeftMKMapPoint, topRightMKMapPoint);
+    
+    [self.mapClusterControllerRed selectAnnotation:annotation andZoomToRegionWithLatitudinalMeters:latitudinalMetersOfMapExtent longitudinalMeters: longitudinalMetersOfMapExtent];
+    self.lastViewedAnnotation = annotation;
 }
 
 - (void)updateWithSettings:(Settings *)settings
@@ -115,7 +137,7 @@
     if (self.settings.dataSet == SettingsDataSetBerlin) {
         // 5000+ items near Berlin
         CLLocationCoordinate2D location = CLLocationCoordinate2DMake(52.516221, 13.377829);
-        region = MKCoordinateRegionMakeWithDistance(location, 45000, 45000);
+        region = MKCoordinateRegionMakeWithDistance(location, 15000, 15000);
         [self.dataReader startReadingBerlinData];
     } else {
         // 80000+ items in the US

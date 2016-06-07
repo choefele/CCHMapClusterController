@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class MKPointAnnotation;
+
 @protocol DataReaderDelegate;
 
 @interface DataReader : NSObject
@@ -17,5 +19,8 @@
 - (void)startReadingBerlinData;
 - (void)startReadingUSData;
 - (void)stopReadingData;
+
+@property (nonatomic, strong) MKPointAnnotation *eastAnnotation;
+@property (nonatomic, strong) MKPointAnnotation *westAnnotation;
 
 @end
