@@ -84,7 +84,7 @@
     CLLocationDistance latitudinalMetersOfMapExtent = MKMetersBetweenMapPoints(topLeftMKMapPoint, bottomLeftMKMapPoint);
     CLLocationDistance longitudinalMetersOfMapExtent = MKMetersBetweenMapPoints(topLeftMKMapPoint, topRightMKMapPoint);
     
-    [self.mapClusterControllerRed selectAnnotation:annotation andZoomToRegionWithLatitudinalMeters:latitudinalMetersOfMapExtent longitudinalMeters: longitudinalMetersOfMapExtent];
+    [self.mapClusterControllerRed selectAnnotation:annotation];
     self.lastViewedAnnotation = annotation;
 }
 
