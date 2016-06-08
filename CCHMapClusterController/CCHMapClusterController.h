@@ -97,4 +97,10 @@
  */
 - (void)selectAnnotation:(id<MKAnnotation>)annotation andZoomToRegionWithLatitudinalMeters:(CLLocationDistance)latitudinalMeters longitudinalMeters:(CLLocationDistance)longitudinalMeters;
 
+/**
+ Centers the map to the position of the cluster that contains the given annotation and selects the cluster's annotation view.
+ @param annotation The annotation to look for. Uses `isEqual:` to check for a matching annotation previously added with `addAnnotations:withCompletionHandler:`.
+ */
+- (void)selectAnnotation:(id<MKAnnotation>)annotation;
+
 @end
