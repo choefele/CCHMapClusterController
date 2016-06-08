@@ -296,18 +296,20 @@
             CCHMapClusterAnnotation *mapClusterAnnotation = CCHMapClusterControllerClusterAnnotationForAnnotation(self.mapView, self.annotationToSelect, mapView.visibleMapRect);
             self.annotationToSelect = nil;
             
-            if (CCHMapClusterControllerCoordinateEqualToCoordinate(self.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
-                // Select immediately since region won't change
-                [self.mapView selectAnnotation:mapClusterAnnotation animated:YES];
-            } else {
-                // Actual selection happens in next call to mapView:regionDidChangeAnimated:
-                self.mapClusterAnnotationToSelect = mapClusterAnnotation;
-                
-                // Dispatch async to avoid calling regionDidChangeAnimated immediately
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    // No zooming, only panning. Otherwise, annotation might change to a different cluster annotation
-                    [self.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
-                });
+            if (mapClusterAnnotation) {
+                if (CCHMapClusterControllerCoordinateEqualToCoordinate(self.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
+                    // Select immediately since region won't change
+                    [self.mapView selectAnnotation:mapClusterAnnotation animated:YES];
+                } else {
+                    // Actual selection happens in next call to mapView:regionDidChangeAnimated:
+                    self.mapClusterAnnotationToSelect = mapClusterAnnotation;
+                    
+                    // Dispatch async to avoid calling regionDidChangeAnimated immediately
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // No zooming, only panning. Otherwise, annotation might change to a different cluster annotation
+                        [self.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
+                    });
+                }
             }
         } else if (self.mapClusterAnnotationToSelect) {
             // Map has zoomed to annotation
