@@ -307,7 +307,11 @@
                     // Dispatch async to avoid calling regionDidChangeAnimated immediately
                     dispatch_async(dispatch_get_main_queue(), ^{
                         // No zooming, only panning. Otherwise, annotation might change to a different cluster annotation
-                        [self.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
+                        MKMapPoint point = MKMapPointForCoordinate(mapClusterAnnotation.coordinate);
+                        MKMapRect rect = [self.mapView visibleMapRect];
+                        rect.origin.x = point.x - rect.size.width * 0.5;
+                        rect.origin.y = point.y - rect.size.height * 0.5;
+                        [self.mapView setVisibleMapRect:rect animated:YES];
                     });
                 }
             }
