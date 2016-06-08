@@ -77,13 +77,6 @@
 }
              
 - (void)selectAnnotation:(MKPointAnnotation *)annotation {
-    MKMapRect visibleMapRect = self.mapView.visibleMapRect;
-    MKMapPoint topLeftMKMapPoint = self.mapView.visibleMapRect.origin;
-    MKMapPoint topRightMKMapPoint = MKMapPointMake(topLeftMKMapPoint.x + visibleMapRect.size.width, topLeftMKMapPoint.y);
-    MKMapPoint bottomLeftMKMapPoint = MKMapPointMake(topLeftMKMapPoint.x, topLeftMKMapPoint.y + visibleMapRect.size.height);
-    CLLocationDistance latitudinalMetersOfMapExtent = MKMetersBetweenMapPoints(topLeftMKMapPoint, bottomLeftMKMapPoint);
-    CLLocationDistance longitudinalMetersOfMapExtent = MKMetersBetweenMapPoints(topLeftMKMapPoint, topRightMKMapPoint);
-    
     [self.mapClusterControllerRed selectAnnotation:annotation];
     self.lastViewedAnnotation = annotation;
 }
