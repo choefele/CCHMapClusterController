@@ -315,9 +315,9 @@
         if (self.annotationToSelect) {
             // Map has zoomed to selected annotation; search for cluster annotation that contains this annotation
             CCHMapClusterAnnotation *mapClusterAnnotation = CCHMapClusterControllerClusterAnnotationForAnnotation(self.mapView, self.annotationToSelect, mapView.visibleMapRect);
-            self.annotationToSelect = nil;
             
             if (mapClusterAnnotation) {
+                self.annotationToSelect = nil;
                 if (CCHMapClusterControllerCoordinateEqualToCoordinate(self.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
                     // Select immediately since region won't change
                     [self.mapView selectAnnotation:mapClusterAnnotation animated:YES];
