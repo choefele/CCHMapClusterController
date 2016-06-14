@@ -50,7 +50,13 @@
             NSString *latitudeAsString = [annotationAsJSON valueForKeyPath:@"location.coordinates.latitude"];
             NSString *longitudeAsString = [annotationAsJSON valueForKeyPath:@"location.coordinates.longitude"];
             annotation.coordinate = CLLocationCoordinate2DMake(latitudeAsString.doubleValue, longitudeAsString.doubleValue);
-            annotation.title = [annotationAsJSON valueForKeyPath:@"person.lastName"];
+            annotation.title = [NSString stringWithFormat:@"%@ %@", [annotationAsJSON valueForKeyPath:@"person.firstName"], [annotationAsJSON valueForKeyPath:@"person.lastName"]];
+            
+            if ([annotation.title isEqualToString:@"Curt Bejach"]) {
+                self.eastAnnotation = annotation;
+            } else if ([annotation.title isEqualToString:@"Felix Lazarus"]) {
+                self.westAnnotation = annotation;
+            }
 
             [annotations addObject:annotation];
             
