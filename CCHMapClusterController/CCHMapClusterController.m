@@ -260,6 +260,11 @@
     if ([self isReadyToSelectAnnotation:annotation]) {
         self.annotationToSelect = annotation;
         [self centerMapOnAnnotation: annotation];
+        if (CCHMapClusterControllerCoordinateEqualToCoordinate(annotation.coordinate, self.mapView.centerCoordinate)) {
+            // Manually call update methods because region won't change
+            [self mapView:self.mapView regionWillChangeAnimated:YES];
+            [self mapView:self.mapView regionDidChangeAnimated:YES];
+        }
     }
 }
 
