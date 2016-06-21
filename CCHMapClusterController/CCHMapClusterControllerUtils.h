@@ -31,11 +31,7 @@
 
 MKMapRect CCHMapClusterControllerAlignMapRectToCellSize(MKMapRect mapRect, double cellSize);
 CCHMapClusterAnnotation *CCHMapClusterControllerFindVisibleAnnotation(NSSet *annotations, NSSet *visibleAnnotations);
-#if TARGET_OS_IPHONE
-double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, UIView *view, double length);
-#else
-double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, NSView *view, double length);
-#endif
+double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, double length);
 double CCHMapClusterControllerAlignMapLengthToWorldWidth(double mapLength);
 BOOL CCHMapClusterControllerCoordinateEqualToCoordinate(CLLocationCoordinate2D coordinate0, CLLocationCoordinate2D coordinate1);
 CCHMapClusterAnnotation *CCHMapClusterControllerClusterAnnotationForAnnotation(MKMapView *mapView, id<MKAnnotation> annotation, MKMapRect mapRect);
