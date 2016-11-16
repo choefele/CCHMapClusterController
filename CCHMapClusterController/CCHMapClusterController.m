@@ -169,6 +169,24 @@
     }];
 }
 
+- (void)removeAllAnnotationswithCompletionHandler:(void (^)())completionHandler{
+    [self cancelAllClusterOperations];
+    
+    NSArray* annotations = [self.allAnnotations allObjects];
+    [self.allAnnotations removeAllObjects];
+    
+    [self.backgroundQueue addOperationWithBlock:^{
+        BOOL updated = [self.allAnnotationsMapTree removeAnnotations:annotations];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (updated && !self.isRegionChanging) {
+                [self updateAnnotationsWithCompletionHandler:completionHandler];
+            } else if (completionHandler) {
+                completionHandler();
+            }
+        });
+    }];
+}
+
 - (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler
 {
     [self cancelAllClusterOperations];
