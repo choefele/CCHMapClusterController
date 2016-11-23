@@ -196,7 +196,13 @@
     [_visibleAnnotationsMapTree removeAnnotations:annotationsToRemove];
     [_visibleAnnotationsMapTree addAnnotations:annotationsToAdd];
     dispatch_async(dispatch_get_main_queue(), ^{
+        if ([_clusterControllerDelegate respondsToSelector:@selector(mapClusterController:willAddClusterAnnotations:)]) {
+            [_clusterControllerDelegate mapClusterController:_clusterController willAddClusterAnnotations:annotationsToAdd];
+        }
         [self.mapView addAnnotations:annotationsToAdd];
+        if ([_clusterControllerDelegate respondsToSelector:@selector(mapClusterController:willRemoveClusterAnnotations:)]) {
+            [_clusterControllerDelegate mapClusterController:_clusterController willRemoveClusterAnnotations:annotationsToRemove];
+        }
         [self.animator mapClusterController:self.clusterController willRemoveAnnotations:annotationsToRemove withCompletionHandler:^{
             [self.mapView removeAnnotations:annotationsToRemove];
             
