@@ -237,6 +237,50 @@
     XCTAssertTrue([clusterAnnotation.annotations containsObject:clusteredAnnotation]);
 }
 
+- (void)testShouldOnlyAddNewAnnotationsWhenMapRegionChangesWhenNotReusingAnnotations
+{
+    self.mapClusterController.reuseExistingClusterAnnotations = NO;
+    
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(30, 0);
+    MKPointAnnotation *visibleAnnotation = [[MKPointAnnotation alloc] init];
+    visibleAnnotation.coordinate = coordinate;
+    MKPointAnnotation *offscreenAnnotation = [[MKPointAnnotation alloc] init];
+    offscreenAnnotation.coordinate = CLLocationCoordinate2DMake(40, 0);
+    
+    MKCoordinateRegion region = MKCoordinateRegionMake(visibleAnnotation.coordinate, MKCoordinateSpanMake(8, 8));
+    self.mapView.region = region;
+    
+    __weak CCHMapClusterControllerTests *weakSelf = self;
+    [self.mapClusterController addAnnotations:@[visibleAnnotation, offscreenAnnotation] withCompletionHandler:^{
+        weakSelf.done = YES;
+    }];
+    XCTAssertTrue([self waitForCompletion:1.0]);
+
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)1);
+    CCHMapClusterAnnotation *visibleClusterAnnotation = [self.mapView.annotations firstObject];
+    XCTAssertEqual([visibleClusterAnnotation.annotations count], (NSUInteger)1);
+    XCTAssertTrue([visibleClusterAnnotation.annotations containsObject:visibleAnnotation]);
+    
+    CLLocationCoordinate2D shiftedCoordinate = CLLocationCoordinate2DMake(35, 0);
+    region = MKCoordinateRegionMake(shiftedCoordinate, MKCoordinateSpanMake(8, 8));
+    self.mapView.region = region;
+    
+    // add zero annotations to ensure map has moved and clustering has updated
+    weakSelf.done = NO;
+    [self.mapClusterController addAnnotations:@[] withCompletionHandler:^{
+        weakSelf.done = YES;
+    }];
+    XCTAssertTrue([self waitForCompletion:1.0]);
+
+    XCTAssertEqual(self.mapView.annotations.count, (NSUInteger)2);
+    XCTAssertTrue([self.mapView.annotations containsObject:visibleClusterAnnotation]);
+    
+    NSMutableArray *annotations = [NSMutableArray arrayWithArray:self.mapView.annotations];
+    [annotations removeObject:visibleClusterAnnotation];
+    CCHMapClusterAnnotation* otherClusterAnnotation = [annotations firstObject];
+    XCTAssertEqual([otherClusterAnnotation.annotations anyObject], offscreenAnnotation);
+}
+
 - (void)testAddAnnotationsWithDifferentControllers
 {
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(52.5, 13.5);

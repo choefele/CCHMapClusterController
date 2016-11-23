@@ -266,6 +266,20 @@
 
 #pragma mark - Map view proxied delegate methods
 
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+    if (mapView.userTrackingMode != MKUserTrackingModeNone) {
+        [self updateAnnotationsWithCompletionHandler:NULL];
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated
+{
+    if (mapView.userTrackingMode != MKUserTrackingModeNone) {
+        [self updateAnnotationsWithCompletionHandler:NULL];
+    }
+}
+
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)annotationViews
 {
     // Animate annotations that get added

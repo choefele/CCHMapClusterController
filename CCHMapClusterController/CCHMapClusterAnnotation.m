@@ -77,4 +77,17 @@
     return mapRect;
 }
 
+- (BOOL)isEqual:(id)object
+{
+    return [object respondsToSelector:@selector(mapClusterController)]
+    && [(id)[object mapClusterController] isEqual:_mapClusterController]
+    && [object respondsToSelector:@selector(annotations)]
+    && [[object annotations] isEqual:_annotations];
+}
+
+- (NSUInteger)hash
+{
+    return [_annotations hash];
+}
+
 @end
