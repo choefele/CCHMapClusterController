@@ -3,6 +3,8 @@ CCHMapClusterController
 
 `CCHMapClusterController` solves the problem of displaying many annotations on an `MKMapView` and is available under the MIT license.
 
+_Note_: With iOS 11, Apple introduced [map clustering support in MapKit](https://developer.apple.com/videos/play/wwdc2017/237/). You can continue using `CCHMapClusterController` on iOS 11, but for new projects, I suggest to check out if the built-in functionality is a match for your needs. I will still accept PRs for bug fixes and small enhancements but won't otherwise implement any new functionality.
+
 [![Build Status](https://img.shields.io/travis/choefele/CCHMapClusterController.svg)](https://travis-ci.org/choefele/CCHMapClusterController)&nbsp;![Version](https://img.shields.io/cocoapods/v/CCHMapClusterController.svg)&nbsp;![Platform](http://img.shields.io/cocoapods/p/CCHMapClusterController.svg)
 
 See [Changes](https://github.com/choefele/CCHMapClusterController/blob/master/CHANGES.md) for a high-level overview of recent updates.
