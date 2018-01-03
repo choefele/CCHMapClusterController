@@ -57,7 +57,7 @@
 #endif
 }
 
-- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)(void))completionHandler
 {
 #if TARGET_OS_IPHONE
     MKMapView *mapView = mapClusterController.mapView;

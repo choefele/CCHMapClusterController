@@ -48,6 +48,6 @@
  @param annotations annotations to animate (annotations are of type `CCHMapClusterAnnotation`).
  @param completionHandler this completion handler must be called after the animation has finished.
  */
-- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)(void))completionHandler;
 
 @end

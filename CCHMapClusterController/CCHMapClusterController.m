@@ -133,7 +133,7 @@
     }
 }
 
-- (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
+- (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)(void))completionHandler
 {
     [self cancelAllClusterOperations];
     
@@ -151,7 +151,7 @@
     }];
 }
 
-- (void)removeAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
+- (void)removeAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)(void))completionHandler
 {
     [self cancelAllClusterOperations];
     
@@ -169,7 +169,7 @@
     }];
 }
 
-- (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler
+- (void)updateAnnotationsWithCompletionHandler:(void (^)(void))completionHandler
 {
     [self cancelAllClusterOperations];
     
