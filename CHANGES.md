@@ -1,5 +1,9 @@
 Changes
 =======
+## 1.7.1
+- Fix block declaration warnings and update project files to Xcode 9.2. Thanks @damarte for the PR.
+- Fix crash due to usage of KVO #136
+
 ## 1.7.0
 - Set minimum deployment target to iOS 7.0 and fix deprecation warnings.
 
