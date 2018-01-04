@@ -31,7 +31,7 @@
 
 @property (nonatomic) NSHashTable *delegates;
 @property (nonatomic, weak) NSObject<MKMapViewDelegate> *target;
-@property (nonatomic, weak) MKMapView *mapView;
+@property (nonatomic) MKMapView *mapView;
 
 @end
 
