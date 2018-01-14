@@ -185,6 +185,7 @@
     operation.animator = self.animator;
     operation.clusterControllerDelegate = self.delegate;
     operation.clusterController = self;
+    operation.clusterMethod = ClusterMethodDistanceBased;
     
     if (completionHandler) {
         operation.completionBlock = ^{
