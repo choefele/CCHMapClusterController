@@ -1,5 +1,8 @@
 Changes
 =======
+## 1.7.2
+- Fix warnings when building with CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF. Thanks Gareth Redman for the PR.
+
 ## 1.7.1
 - Fix block declaration warnings and update project files to Xcode 9.2. Thanks @damarte for the PR.
 - Fix crash due to usage of KVO #136
