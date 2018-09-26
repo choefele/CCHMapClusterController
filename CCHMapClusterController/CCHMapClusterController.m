@@ -42,6 +42,7 @@
 #define WORLD_MAX_LAT 85
 #define WORLD_MIN_LON -180
 #define WORLD_MAX_LON 180
+#define ZOOM_EPSILON 0.002
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 
@@ -62,7 +63,9 @@
 
 @end
 
-@implementation CCHMapClusterController
+@implementation CCHMapClusterController {
+  double _zoomLevelBeforeChange;
+}
 
 - (instancetype)initWithMapView:(MKMapView *)mapView
 {
@@ -77,7 +80,7 @@
         _visibleAnnotationsMapTree = [[CCHMapTree alloc] initWithNodeCapacity:NODE_CAPACITY minLatitude:WORLD_MIN_LAT maxLatitude:WORLD_MAX_LAT minLongitude:WORLD_MIN_LON maxLongitude:WORLD_MAX_LON];
         _backgroundQueue = [[NSOperationQueue alloc] init];
         _backgroundQueue.maxConcurrentOperationCount = 1;   // sync access to allAnnotationsMapTree & visibleAnnotationsMapTree
-        
+
         if ([mapView.delegate isKindOfClass:CCHMapViewDelegateProxy.class]) {
             CCHMapViewDelegateProxy *delegateProxy = (CCHMapViewDelegateProxy *)mapView.delegate;
             [delegateProxy addDelegate:self];
@@ -85,7 +88,7 @@
         } else {
             _mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:self];
         }
-        
+
         // Keep strong reference to default instance because public property is weak
         id<CCHMapClusterer> clusterer = [[CCHCenterOfMassMapClusterer alloc] init];
         _clusterer = clusterer;
@@ -93,10 +96,10 @@
         id<CCHMapAnimator> animator = [[CCHFadeInOutMapAnimator alloc] init];
         _animator = animator;
         _strongAnimator = animator;
-        
+
         [self setReuseExistingClusterAnnotations:YES];
     }
-    
+
     return self;
 }
 
@@ -136,9 +139,9 @@
 - (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)(void))completionHandler
 {
     [self cancelAllClusterOperations];
-    
+
     [self.allAnnotations addObjectsFromArray:annotations];
-    
+
     [self.backgroundQueue addOperationWithBlock:^{
         BOOL updated = [self.allAnnotationsMapTree addAnnotations:annotations];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -154,9 +157,9 @@
 - (void)removeAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)(void))completionHandler
 {
     [self cancelAllClusterOperations];
-    
+
     [self.allAnnotations minusSet:[NSSet setWithArray:annotations]];
-    
+
     [self.backgroundQueue addOperationWithBlock:^{
         BOOL updated = [self.allAnnotationsMapTree removeAnnotations:annotations];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -172,7 +175,7 @@
 - (void)updateAnnotationsWithCompletionHandler:(void (^)(void))completionHandler
 {
     [self cancelAllClusterOperations];
-    
+
     CCHMapClusterOperation *operation = [[CCHMapClusterOperation alloc] initWithMapView:self.mapView
                                                                                cellSize:self.cellSize
                                                                            marginFactor:self.marginFactor
@@ -185,7 +188,7 @@
     operation.animator = self.animator;
     operation.clusterControllerDelegate = self.delegate;
     operation.clusterController = self;
-    
+
     if (completionHandler) {
         operation.completionBlock = ^{
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -193,9 +196,9 @@
             });
         };
     };
-    
+
     [self.backgroundQueue addOperation:operation];
-    
+
     // Debugging
     if (self.isDebuggingEnabled) {
         double cellMapSize = [CCHMapClusterOperation cellMapSizeForCellSize:self.cellSize withMapView:self.mapView];
@@ -207,7 +210,7 @@
 - (void)updateDebugPolygonsInGridMapRect:(MKMapRect)gridMapRect withCellMapSize:(double)cellMapSize
 {
     MKMapView *mapView = self.mapView;
-    
+
     // Remove old polygons
     for (id<MKOverlay> overlay in mapView.overlays) {
         if ([overlay isKindOfClass:CCHMapClusterControllerDebugPolygon.class]) {
@@ -217,11 +220,11 @@
             }
         }
     }
-    
+
     // Add polygons outlining each cell
     CCHMapClusterControllerEnumerateCells(gridMapRect, cellMapSize, ^(MKMapRect cellMapRect) {
         //        cellMapRect.origin.x -= MKMapSizeWorld.width;  // fixes issue when view port spans 180th meridian
-        
+
         MKMapPoint points[4];
         points[0] = MKMapPointMake(MKMapRectGetMinX(cellMapRect), MKMapRectGetMinY(cellMapRect));
         points[1] = MKMapPointMake(MKMapRectGetMaxX(cellMapRect), MKMapRectGetMinY(cellMapRect));
@@ -249,10 +252,10 @@
     if (!existingAnnotation) {
         return;
     }
-    
+
     // Deselect annotations
     [self deselectAllAnnotations];
-    
+
     // Zoom to annotation
     self.annotationToSelect = annotation;
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation.coordinate, latitudinalMeters, longitudinalMeters);
@@ -274,6 +277,7 @@
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
 {
+    _zoomLevelBeforeChange = self.zoomLevel;
     self.regionSpanBeforeChange = mapView.region.span;
     self.regionChanging = YES;
 }
@@ -281,40 +285,41 @@
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
     self.regionChanging = NO;
-    
+
     // Deselect all annotations when zooming in/out. Longitude delta will not change
     // unless zoom changes (in contrast to latitude delta).
-    BOOL hasZoomed = !fequal(mapView.region.span.longitudeDelta, self.regionSpanBeforeChange.longitudeDelta);
+    BOOL hasZoomed = fabs(self.zoomLevel - _zoomLevelBeforeChange) > ZOOM_EPSILON;
     if (hasZoomed) {
+        NSLog(@"Zoom 𝛥: %f", fabs(self.zoomLevel - _zoomLevelBeforeChange));
         [self deselectAllAnnotations];
-    }
-    
-    // Update annotations
-    [self updateAnnotationsWithCompletionHandler:^{
-        if (self.annotationToSelect) {
-            // Map has zoomed to selected annotation; search for cluster annotation that contains this annotation
-            CCHMapClusterAnnotation *mapClusterAnnotation = CCHMapClusterControllerClusterAnnotationForAnnotation(self.mapView, self.annotationToSelect, mapView.visibleMapRect);
-            self.annotationToSelect = nil;
-            
-            if (CCHMapClusterControllerCoordinateEqualToCoordinate(self.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
-                // Select immediately since region won't change
-                [self.mapView selectAnnotation:mapClusterAnnotation animated:YES];
-            } else {
-                // Actual selection happens in next call to mapView:regionDidChangeAnimated:
-                self.mapClusterAnnotationToSelect = mapClusterAnnotation;
-                
-                // Dispatch async to avoid calling regionDidChangeAnimated immediately
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    // No zooming, only panning. Otherwise, annotation might change to a different cluster annotation
-                    [self.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
-                });
+
+        // Update annotations
+        [self updateAnnotationsWithCompletionHandler:^{
+            if (self.annotationToSelect) {
+                // Map has zoomed to selected annotation; search for cluster annotation that contains this annotation
+                CCHMapClusterAnnotation *mapClusterAnnotation = CCHMapClusterControllerClusterAnnotationForAnnotation(self.mapView, self.annotationToSelect, mapView.visibleMapRect);
+                self.annotationToSelect = nil;
+
+                if (CCHMapClusterControllerCoordinateEqualToCoordinate(self.mapView.centerCoordinate, mapClusterAnnotation.coordinate)) {
+                    // Select immediately since region won't change
+                    [self.mapView selectAnnotation:mapClusterAnnotation animated:YES];
+                } else {
+                    // Actual selection happens in next call to mapView:regionDidChangeAnimated:
+                    self.mapClusterAnnotationToSelect = mapClusterAnnotation;
+
+                    // Dispatch async to avoid calling regionDidChangeAnimated immediately
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // No zooming, only panning. Otherwise, annotation might change to a different cluster annotation
+                        [self.mapView setCenterCoordinate:mapClusterAnnotation.coordinate animated:NO];
+                    });
+                }
+            } else if (self.mapClusterAnnotationToSelect) {
+                // Map has zoomed to annotation
+                [self.mapView selectAnnotation:self.mapClusterAnnotationToSelect animated:YES];
+                self.mapClusterAnnotationToSelect = nil;
             }
-        } else if (self.mapClusterAnnotationToSelect) {
-            // Map has zoomed to annotation
-            [self.mapView selectAnnotation:self.mapClusterAnnotationToSelect animated:YES];
-            self.mapClusterAnnotationToSelect = nil;
-        }
-    }];
+        }];
+    }
 }
 
 @end
