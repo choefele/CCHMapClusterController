@@ -82,6 +82,12 @@
  */
 - (void)addAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)(void))completionHandler;
 
+/** 
+ Updates annotations.
+ @param completionHandler Called when the clustering finished updating.
+ */
+- (void)updateAnnotationsWithCompletionHandler:(void (^)())completionHandler;
+
 /**
  Removes annotations and immediately updates clustering.
  @param annotations Annotations to add.
