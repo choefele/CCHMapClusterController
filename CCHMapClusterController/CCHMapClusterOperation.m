@@ -82,7 +82,7 @@
 + (double)cellMapSizeForCellSize:(double)cellSize withMapView:(MKMapView *)mapView
 {
     // World size is multiple of cell size so that cells wrap around at the 180th meridian
-    double cellMapSize = CCHMapClusterControllerMapLengthForLength(mapView, mapView.superview, cellSize);
+    double cellMapSize = CCHMapClusterControllerMapLengthForLength(mapView, cellSize);
     cellMapSize = CCHMapClusterControllerAlignMapLengthToWorldWidth(cellMapSize);
     
     return cellMapSize;

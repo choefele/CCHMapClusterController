@@ -59,15 +59,11 @@ CCHMapClusterAnnotation *CCHMapClusterControllerFindVisibleAnnotation(NSSet *ann
     return nil;
 }
 
-#if TARGET_OS_IPHONE
-double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, UIView *view, double length)
-#else
-double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, NSView *view, double length)
-#endif
+double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, double length)
 {
     // Convert points to coordinates
-    CLLocationCoordinate2D leftCoordinate = [mapView convertPoint:CGPointZero toCoordinateFromView:view];
-    CLLocationCoordinate2D rightCoordinate = [mapView convertPoint:CGPointMake(length, 0) toCoordinateFromView:view];
+    CLLocationCoordinate2D leftCoordinate = [mapView convertPoint:CGPointZero toCoordinateFromView:mapView];
+    CLLocationCoordinate2D rightCoordinate = [mapView convertPoint:CGPointMake(length, 0) toCoordinateFromView:mapView];
     
     // Convert coordinates to map points
     MKMapPoint leftMapPoint = MKMapPointForCoordinate(leftCoordinate);
